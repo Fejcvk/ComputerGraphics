@@ -12,46 +12,48 @@ namespace WindowsFormsApp1
 {
     public partial class Form1 : Form
     {
-
+        Bitmap globalBitmap;
         public Form1()
         {
             InitializeComponent();
-            pictureBox1.Image = Properties.Resources.singapur;
+            globalBitmap = Properties.Resources.singapur2;
+            pictureBox1.Image = globalBitmap;
             pictureBox2.Image = pictureBox1.Image;
+            comboBox1.SelectedIndex = 0;
         }
         #region inverse filter
         private void button6_Click(object sender, EventArgs e)
         {
-            var bitmap = (Bitmap)pictureBox1.Image;
-            inversionFilter(bitmap);
+            inversionFilter();
         }
-        private void inversionFilter(Bitmap bmp)
+        private void inversionFilter()
         {
-            var temp = bmp;
-            for(int y = 0; y < bmp.Height; y++)
+            var bmp = new Bitmap(globalBitmap);
+            for (int y = 0; y < bmp.Height; y++)
             {
-                for(int x = 0; x < bmp.Width; x++)
+                for (int x = 0; x < bmp.Width; x++)
                 {
                     var pixel = bmp.GetPixel(x, y);
                     var r = 255 - pixel.R;
                     var g = 255 - pixel.G;
                     var b = 255 - pixel.B;
-                    temp.SetPixel(x, y, Color.FromArgb(pixel.A, r, g, b));
+                    bmp.SetPixel(x, y, Color.FromArgb(pixel.A, r, g, b));
                 }
             }
-            pictureBox2.Image = temp;
+            pictureBox2.Image = bmp;
         }
         #endregion
         #region clearButton
         private void button10_Click(object sender, EventArgs e)
         {
-            pictureBox2.Image = Properties.Resources.singapur; 
+            pictureBox2.Image = Properties.Resources.singapur2;
+            pictureBox1.Image = pictureBox2.Image;
         }
         #endregion
         #region brighntess filter
         private void button7_Click(object sender, EventArgs e)
         {
-            var bitmap = (Bitmap)pictureBox1.Image;
+            var bitmap = new Bitmap(globalBitmap);
             var brightnessCoefficient = 30;
             brightnessConvertion(bitmap, brightnessCoefficient);
         }
@@ -59,9 +61,9 @@ namespace WindowsFormsApp1
         private void brightnessConvertion(Bitmap bmp, int brightnessCoefficient)
         {
             var temp = bmp;
-            for(int y = 0; y < bmp.Height; y++)
+            for (int y = 0; y < bmp.Height; y++)
             {
-                for(int x = 0; x < bmp.Width; x++)
+                for (int x = 0; x < bmp.Width; x++)
                 {
                     var pixel = bmp.GetPixel(x, y);
 
@@ -77,27 +79,27 @@ namespace WindowsFormsApp1
         #region contrast filter
         private void button8_Click(object sender, EventArgs e)
         {
-            var bitmap = (Bitmap)pictureBox1.Image;
-            var contrastCoefficient = 2.0 ;
-            contrastFilter(bitmap, contrastCoefficient);
+            var contrastCoefficient = 2.0;
+            contrastFilter(contrastCoefficient);
         }
-        private void contrastFilter(Bitmap bmp, double contrastCoefficient)
+        private void contrastFilter(double contrastCoefficient)
         {
-            for(int y = 0; y < bmp.Height; y++)
+            var bitmap = new Bitmap(globalBitmap);
+            for (int y = 0; y < bitmap.Height; y++)
             {
-                for(int x = 0; x < bmp.Width; x++)
+                for (int x = 0; x < bitmap.Width; x++)
                 {
-                    var pixel = bmp.GetPixel(x, y);
-                    var r = (contrastEnchancement((double)pixel.R, contrastCoefficient) < 0) ? 0 : 
+                    var pixel = bitmap.GetPixel(x, y);
+                    var r = (contrastEnchancement((double)pixel.R, contrastCoefficient) < 0) ? 0 :
                         (contrastEnchancement((double)pixel.R, contrastCoefficient) < 255.0) ? (int)contrastEnchancement((double)pixel.R, contrastCoefficient) : 255;
-                    var g = (contrastEnchancement((double)pixel.G, contrastCoefficient) < 0) ? 0 : 
+                    var g = (contrastEnchancement((double)pixel.G, contrastCoefficient) < 0) ? 0 :
                         (contrastEnchancement((double)pixel.G, contrastCoefficient) < 255.0) ? (int)contrastEnchancement((double)pixel.G, contrastCoefficient) : 255;
-                    var b = (contrastEnchancement((double)pixel.B, contrastCoefficient) < 0) ? 0 : 
+                    var b = (contrastEnchancement((double)pixel.B, contrastCoefficient) < 0) ? 0 :
                         (contrastEnchancement((double)pixel.B, contrastCoefficient) < 255.0) ? (int)contrastEnchancement((double)pixel.B, contrastCoefficient) : 255;
-                    bmp.SetPixel(x, y, Color.FromArgb(pixel.A, r, g, b));
+                    bitmap.SetPixel(x, y, Color.FromArgb(pixel.A, r, g, b));
                 }
             }
-            pictureBox2.Image = bmp;
+            pictureBox2.Image = bitmap;
         }
         private double contrastEnchancement(double channelValue, double contrastCoefficient)
         {
@@ -107,7 +109,7 @@ namespace WindowsFormsApp1
         #region grayscale
         private void button1_Click(object sender, EventArgs e)
         {
-            Bitmap bitmap = (Bitmap)pictureBox1.Image;
+            var bitmap = new Bitmap(globalBitmap);
             grayScale(bitmap);
         }
         private void grayScale(Bitmap bmp)
@@ -120,122 +122,111 @@ namespace WindowsFormsApp1
                     var pixel = bmp.GetPixel(x, y);
                     var sumOfChannelValues = (pixel.R + pixel.G + pixel.B) / 3;
                     var grayScaleValueOfThePixel = (sumOfChannelValues < 255) ? sumOfChannelValues : 255;
-                    bitmap.SetPixel(x, y, Color.FromArgb(grayScaleValueOfThePixel, grayScaleValueOfThePixel, grayScaleValueOfThePixel));
+                    bitmap.SetPixel(x, y, Color.FromArgb(pixel.A, grayScaleValueOfThePixel, grayScaleValueOfThePixel, grayScaleValueOfThePixel));
                 }
             }
             pictureBox2.Image = bitmap;
         }
         #endregion
-
+        #region convolution filters
         private void button9_Click(object sender, EventArgs e)
         {
-            double [,] matrix =
-            {
-                {0.0,-1.0d / 4.0d ,0.0},
-                {-1.0d / 4.0d ,2.0d,-1.0d/4.0d},
-                {0.0,-1.0d / 4.0d ,0.0}
-            };
-
-            double[,] matrix2 =
-            {
-                { 1 / 9.0d, 1 / 9.0d, 1 / 9.0d },
-                { 1 / 9.0d, 1 / 9.0d, 1 / 9.0d },
-                { 1 / 9.0d, 1 / 9.0d, 1 / 9.0d }
-            };
-            double[,] matrix3 = { { -1.0d, -1.0d, -1.0d }, { -1.0d, 9.0d, -1.0d }, { -1.0d, -1.0d, -1.0d } };
-            Bitmap bitmap = (Bitmap)pictureBox1.Image;
-            //convolutionFilter(matrix3,bitmap, false,true);
-            test(matrix3, true);
-        }
-        private void convolutionFilter(double [,] matrix, Bitmap bmp, bool ifNeedToBeGrayScaled, bool ifNeedToBeBinarized)
-        {
-            Bitmap tempBitmap;
-            if (ifNeedToBeGrayScaled)
-            {
-                grayScale(bmp);
+            //default value for divisor
+            int divisor = 1;
+            //indentify filter
+            int[,] matrix = { { 0, 0, 0 }, { 0, 1, 0 }, { 0, 0, 0 } };
+            Bitmap bitmap = new Bitmap(globalBitmap);
+            //blur
+            if (comboBox1.SelectedIndex == 0) {
+                divisor = 9;
+                matrix = new int[,]{
+                        { 1,1,1 },
+                        { 1,1,1 },
+                        { 1,1,1 }
+                     };
             }
-            tempBitmap = bmp;
+            //gausian blur
+            else if (comboBox1.SelectedIndex == 1)
+            {
+                divisor = 8;
+                matrix = new int[,]{
+                        { 0,1,0 },
+                        { 1,4,1 },
+                        { 0,1,0 }
+                     };
+            }
+            // sharpener
+            else if (comboBox1.SelectedIndex == 2)
+            {
+                matrix = new int[,]{
+                        { 0,-1,0 },
+                        { -1,5,-1 },
+                        { 0,-1,0 }
+                     };
+            }
+            //mean removal
+            else if (comboBox1.SelectedIndex == 3)
+            {
+                matrix = new int[,]{
+                        { -1,-1,-1 },
+                        { -1,9,-1 },
+                        { -1,-1,-1 }
+                     };
+            }
+            //edge detection vertical
+            else if (comboBox1.SelectedIndex == 4)
+            {
+                matrix = new int[,]{
+                        { 0,0,0},
+                        { -1,1,0},
+                        { 0,0,0}
+                     };
+            }
+            //east embos
+            else if (comboBox1.SelectedIndex == 5)
+            {
+                matrix = new int[,]{
+                        { -1,-1,-1},
+                        { 0,1,0},
+                        { 1,1,1}
+                     };
+            }
+            //   pictureBox2.Image = convolutionFilers(3, 3, matrix, new Point(1, 1), divisor, 127);
+            convolutionFilter(matrix, bitmap, divisor);
+        }
+        private void convolutionFilter(int[,] matrix, Bitmap bmp, int divisor)
+        {
+            Bitmap tempBitmap = new Bitmap(globalBitmap);
             double sumR = 0.0;
             double sumG = 0.0;
             double sumB = 0.0;
             int r, g, b;
-            for(int y = 0; y < bmp.Height - 2; y++){
-                for(int x = 0; x< bmp.Width - 2; x++){
-                    for(int j = 0; j < 3; j++){
-                        for(int i = 0; i < 3; i++) {
-                            var pixel = bmp.GetPixel(x + i, y + j);
-                            sumR += pixel.R * matrix[i, j];
-                            sumG += pixel.G * matrix[i, j];
-                            sumB += pixel.B * matrix[i, j];
+            for (int y = 0; y < bmp.Height - 2; y++) {
+                for (int x = 0; x < bmp.Width - 2; x++) {
+                    sumR = 0; sumG = 0; sumB = 0;
+                    for (int j = 0; j < 3; j++) {
+                        for (int i = 0; i < 3; i++) {
+                            var pixel = globalBitmap.GetPixel(x + i, y + j);
+                            sumR += pixel.R * matrix[j, i];
+                            sumG += pixel.G * matrix[j, i];
+                            sumB += pixel.B * matrix[j, i];
                         }
                     }
+                    sumR /= divisor; sumG /= divisor; sumB /= divisor;
                     sumR = (sumR < 0.0) ? 0.0 : (sumR < 255.0) ? sumR : 255.0;
                     sumG = (sumG < 0.0) ? 0.0 : (sumG < 255.0) ? sumG : 255.0;
                     sumB = (sumB < 0.0) ? 0.0 : (sumB < 255.0) ? sumB : 255.0;
-                    tempBitmap.SetPixel(x + 1, y + 1, Color.FromArgb((int)sumR, (int)sumG, (int)sumG));
+                    tempBitmap.SetPixel(x + 1, y + 1, Color.FromArgb((int)sumR, (int)sumG, (int)sumB));
                     sumR = 0; sumG = 0; sumB = 0;
                 }
             }
-            if (ifNeedToBeBinarized)
-                binarize(tempBitmap);
             pictureBox2.Image = tempBitmap;
         }
-        private void binarize(Bitmap bmp)
+        #endregion
+        //greyscale image, dla pixeli o wartosci x pokazuje jak wyglada ich wartosc 
+        private void drawGraph()
         {
-            Bitmap bitmap = bmp;
-            for(var y = 0; y< bmp.Height; y++)
-            {
-                for(var x = 0; x < bmp.Width; x++)
-                {
-                    var pixel = bmp.GetPixel(x, y);
-                    var value = (pixel.R < 255) ? 0 : 255;
-                    bitmap.SetPixel(x, y, Color.FromArgb(pixel.A,value, value, value));
-                }
-            }
-        }
-        private void test(double[,] matrix, bool grayscale)
-        {
-            Bitmap temp;
-            var bitmap = new Bitmap(pictureBox1.Image);
-            if (grayscale)
-            {
-                grayScale(bitmap);
-            }
-            Color color;
-            double sumR = 0.0;
-            double sumG = 0.0;
-            double sumB = 0.0;
-            temp = bitmap;
-            for (int i = 0; i <= bitmap.Width - 3; i++)
-            {
-                for (int j = 0; j <= bitmap.Height - 3; j++)
-                {
-                    for (int x = i; x <= i + 2; x++)
-                    {
-                        for (int y = j; y <= j + 2; y++)
-                        {
-                            color = bitmap.GetPixel(x, y);
-                            sumR += color.R * matrix[x - i, y - j];
-                            sumG += color.G * matrix[x - i, y - j];
-                            sumB += color.B * matrix[x - i, y - j];
-                        }
-                    }
-                    sumR = sumR > 0 ? (int)Math.Round(sumR, 10) : 0;
-                    sumG = sumG > 0 ? (int)Math.Round(sumG, 10) : 0;
-                    sumB = sumB > 0 ? (int)Math.Round(sumB, 10) : 0;
 
-                    temp.SetPixel(i + 1, j + 1, Color.FromArgb(
-                             sumR < 255 ? (int)Math.Round(sumR, 10) : 255,
-                             sumG < 255 ? (int)Math.Round(sumG, 10) : 255,
-                             sumB < 255 ? (int)Math.Round(sumB, 10) : 255));
-                    sumR = 0;
-                    sumG = 0;
-                    sumB = 0;
-                }
-            }
-            bitmap = temp;
-            binarize(bitmap);
-            pictureBox2.Image = bitmap;
         }
     }
 }

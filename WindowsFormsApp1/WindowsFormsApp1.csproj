@@ -34,6 +34,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Windows.Forms.DataVisualization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -93,6 +94,15 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\singapur.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\singapur2.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\pingwiny.PNG" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\widok.PNG" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
