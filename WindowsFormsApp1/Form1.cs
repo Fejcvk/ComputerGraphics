@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Forms.DataVisualization.Charting;
 
 namespace WindowsFormsApp1
 {
@@ -224,38 +225,49 @@ namespace WindowsFormsApp1
         }
         #endregion
         //greyscale image, dla pixeli o wartosci x pokazuje jak wyglada ich wartosc 
-        private void getMouseClick()
+
+        private int[] createLookupTable(Bitmap modifiedBitmap)
         {
-            
+            int[] lookupTable = new int [256];
+            for (var y = 0; y < globalBitmap.Height; y++)
+            {
+                for (var x = 0; x < globalBitmap.Width; x++)
+                {
+                    var pixel = modifiedBitmap.GetPixel(x, y);
+                    var basePixel = globalBitmap.GetPixel(x, y);
+                    lookupTable[basePixel.R] = pixel.R;
+                }
+            }
+                    return lookupTable;
         }
+
         private void chartSetup()
         {
             Bitmap grayScaleBitmap = (Bitmap)globalBitmap.Clone();
             Bitmap processedBitmap = (Bitmap)globalBitmap.Clone();
-            processedBitmap = contrastFilter(1.6);
-            pictureBox2.Image = processedBitmap;
+            processedBitmap = brightnessConvertion(processedBitmap,20);
+            int[] baseLookupTable = createLookupTable(grayScaleBitmap);
+            int[] processedLookupTable = createLookupTable(processedBitmap);
             this.chart1.Series.Add("Function");
             chart1.Series.Add("Original");
             var origianlSeries = this.chart1.Series["Original"];
             var processedSeries = this.chart1.Series["Function"];
-            processedSeries.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastPoint;
+            processedSeries.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line ;
             origianlSeries.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
             chart1.ChartAreas[0].AxisX.Minimum = 0;
             chart1.ChartAreas[0].AxisX.Interval = 5;
             chart1.ChartAreas[0].AxisY.Maximum = 255;
             chart1.ChartAreas[0].AxisX.Maximum = 255;
             chart1.ChartAreas[0].AxisY.Interval = 5;
-            for (var y = 0; y < globalBitmap.Height; y++)
+            processedSeries.ToolTip = "X =#VALX, Y =#VALY";
+            origianlSeries.ToolTip = "X =#VALX, Y =#VALY";
+
+            for (var i = 0; i < baseLookupTable.Length; i++)
             {
-                for(var x = 0; x < globalBitmap.Width; x++)
-                {
-                    var basePixel = globalBitmap.GetPixel(x, y);
-                    var grayScalePixel = grayScaleBitmap.GetPixel(x, y);
-                    var processedPixel = processedBitmap.GetPixel(x, y);
-                    processedSeries.Points.AddXY(grayScalePixel.R, processedPixel.R);
-                    origianlSeries.Points.AddXY(basePixel.R, basePixel.R);
-                }
+                processedSeries.Points.AddXY(i, processedLookupTable[i]);
+                origianlSeries.Points.AddXY(i, baseLookupTable[i]);
             }
+
         }
 
         private void button2_Click(object sender, EventArgs e)
