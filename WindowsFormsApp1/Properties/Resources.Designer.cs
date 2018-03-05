@@ -93,16 +93,6 @@ namespace WindowsFormsApp1.Properties {
         /// <summary>
         ///   Wyszukuje zlokalizowany zasób typu System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap pingwiny {
-            get {
-                object obj = ResourceManager.GetObject("pingwiny", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Wyszukuje zlokalizowany zasób typu System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap singapur {
             get {
                 object obj = ResourceManager.GetObject("singapur", resourceCulture);
@@ -116,16 +106,6 @@ namespace WindowsFormsApp1.Properties {
         internal static System.Drawing.Bitmap singapur2 {
             get {
                 object obj = ResourceManager.GetObject("singapur2", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Wyszukuje zlokalizowany zasób typu System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap widok {
-            get {
-                object obj = ResourceManager.GetObject("widok", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

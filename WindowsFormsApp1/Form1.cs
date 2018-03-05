@@ -24,11 +24,12 @@ namespace WindowsFormsApp1
         #region inverse filter
         private void button6_Click(object sender, EventArgs e)
         {
-            inversionFilter();
+            Bitmap bitmap = (Bitmap)globalBitmap.Clone();
+            pictureBox2.Image = getInversionFilteredBitmap(bitmap);
         }
-        private void inversionFilter()
+        private Bitmap getInversionFilteredBitmap(Bitmap bitmap)
         {
-            var bmp = new Bitmap(globalBitmap);
+            var bmp = bitmap;
             for (int y = 0; y < bmp.Height; y++)
             {
                 for (int x = 0; x < bmp.Width; x++)
@@ -40,7 +41,7 @@ namespace WindowsFormsApp1
                     bmp.SetPixel(x, y, Color.FromArgb(pixel.A, r, g, b));
                 }
             }
-            pictureBox2.Image = bmp;
+            return bmp;
         }
         #endregion
         #region clearButton
@@ -55,10 +56,10 @@ namespace WindowsFormsApp1
         {
             var bitmap = new Bitmap(globalBitmap);
             var brightnessCoefficient = 30;
-            brightnessConvertion(bitmap, brightnessCoefficient);
+            pictureBox2.Image = brightnessConvertion(bitmap, brightnessCoefficient);
         }
 
-        private void brightnessConvertion(Bitmap bmp, int brightnessCoefficient)
+        private Bitmap brightnessConvertion(Bitmap bmp, int brightnessCoefficient)
         {
             var temp = bmp;
             for (int y = 0; y < bmp.Height; y++)
@@ -73,16 +74,16 @@ namespace WindowsFormsApp1
                     temp.SetPixel(x, y, Color.FromArgb(pixel.A, r, g, b));
                 }
             }
-            pictureBox2.Image = temp;
+            return temp;
         }
         #endregion
         #region contrast filter
         private void button8_Click(object sender, EventArgs e)
         {
             var contrastCoefficient = 2.0;
-            contrastFilter(contrastCoefficient);
+            pictureBox2.Image = contrastFilter(contrastCoefficient);
         }
-        private void contrastFilter(double contrastCoefficient)
+        private Bitmap contrastFilter(double contrastCoefficient)
         {
             var bitmap = new Bitmap(globalBitmap);
             for (int y = 0; y < bitmap.Height; y++)
@@ -99,7 +100,7 @@ namespace WindowsFormsApp1
                     bitmap.SetPixel(x, y, Color.FromArgb(pixel.A, r, g, b));
                 }
             }
-            pictureBox2.Image = bitmap;
+            return bitmap;
         }
         private double contrastEnchancement(double channelValue, double contrastCoefficient)
         {
@@ -110,9 +111,9 @@ namespace WindowsFormsApp1
         private void button1_Click(object sender, EventArgs e)
         {
             var bitmap = new Bitmap(globalBitmap);
-            grayScale(bitmap);
+            pictureBox2.Image = grayScale(bitmap,true);
         }
-        private void grayScale(Bitmap bmp)
+        private Bitmap grayScale(Bitmap bmp,bool needToSetPicture)
         {
             Bitmap bitmap = bmp;
             for (var y = 0; y < bitmap.Height; y++)
@@ -125,7 +126,7 @@ namespace WindowsFormsApp1
                     bitmap.SetPixel(x, y, Color.FromArgb(pixel.A, grayScaleValueOfThePixel, grayScaleValueOfThePixel, grayScaleValueOfThePixel));
                 }
             }
-            pictureBox2.Image = bitmap;
+            return bitmap;
         }
         #endregion
         #region convolution filters
@@ -191,7 +192,6 @@ namespace WindowsFormsApp1
                         { 1,1,1}
                      };
             }
-            //   pictureBox2.Image = convolutionFilers(3, 3, matrix, new Point(1, 1), divisor, 127);
             convolutionFilter(matrix, bitmap, divisor);
         }
         private void convolutionFilter(int[,] matrix, Bitmap bmp, int divisor)
@@ -224,9 +224,43 @@ namespace WindowsFormsApp1
         }
         #endregion
         //greyscale image, dla pixeli o wartosci x pokazuje jak wyglada ich wartosc 
-        private void drawGraph()
+        private void getMouseClick()
         {
+            
+        }
+        private void chartSetup()
+        {
+            Bitmap grayScaleBitmap = (Bitmap)globalBitmap.Clone();
+            Bitmap processedBitmap = (Bitmap)globalBitmap.Clone();
+            processedBitmap = contrastFilter(1.6);
+            pictureBox2.Image = processedBitmap;
+            this.chart1.Series.Add("Function");
+            chart1.Series.Add("Original");
+            var origianlSeries = this.chart1.Series["Original"];
+            var processedSeries = this.chart1.Series["Function"];
+            processedSeries.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastPoint;
+            origianlSeries.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            chart1.ChartAreas[0].AxisX.Minimum = 0;
+            chart1.ChartAreas[0].AxisX.Interval = 5;
+            chart1.ChartAreas[0].AxisY.Maximum = 255;
+            chart1.ChartAreas[0].AxisX.Maximum = 255;
+            chart1.ChartAreas[0].AxisY.Interval = 5;
+            for (var y = 0; y < globalBitmap.Height; y++)
+            {
+                for(var x = 0; x < globalBitmap.Width; x++)
+                {
+                    var basePixel = globalBitmap.GetPixel(x, y);
+                    var grayScalePixel = grayScaleBitmap.GetPixel(x, y);
+                    var processedPixel = processedBitmap.GetPixel(x, y);
+                    processedSeries.Points.AddXY(grayScalePixel.R, processedPixel.R);
+                    origianlSeries.Points.AddXY(basePixel.R, basePixel.R);
+                }
+            }
+        }
 
+        private void button2_Click(object sender, EventArgs e)
+        {
+            chartSetup();
         }
     }
 }
