@@ -139,7 +139,8 @@ namespace WindowsFormsApp1
             int[,] matrix = { { 0, 0, 0 }, { 0, 1, 0 }, { 0, 0, 0 } };
             Bitmap bitmap = new Bitmap(globalBitmap);
             //blur
-            if (comboBox1.SelectedIndex == 0) {
+            if (comboBox1.SelectedIndex == 0)
+            {
                 divisor = 9;
                 matrix = new int[,]{
                         { 1,1,1 },
@@ -350,6 +351,7 @@ namespace WindowsFormsApp1
             button11.Enabled = true;
             editEnabled = true;
             button4.Enabled = false;
+            button13.Enabled = true;
         }
         //Apply changes button
         private void button11_Click(object sender, EventArgs e)
@@ -363,6 +365,7 @@ namespace WindowsFormsApp1
             button11.Enabled = false;
             editEnabled = false;
             button4.Enabled = true;
+            button13.Enabled = false;
         }
         //Add point button
         private void button12_Click(object sender, EventArgs e)
@@ -423,6 +426,39 @@ namespace WindowsFormsApp1
                 }
             }
             pictureBox3.Image = bitmap;
+        }
+        //Delete point
+        private void button13_Click(object sender, EventArgs e)
+        {
+            var processedSeries = this.chart1.Series["Function"];
+            var x = (textBox1.Text != "") ? Int16.Parse(textBox1.Text) : -1;
+            var y = (textBox2.Text != "") ? Int16.Parse(textBox2.Text) : -1;
+            if (x == -1 || y == -1) MessageBox.Show("Cannot add point without values", "Error");
+            else if (x >= 0 && x < 256 && y >= 0 && y < 256)
+            {
+                for (int i = processedSeries.Points.Count - 1; i >= 0; i--)
+                {
+                    var point = processedSeries.Points.ElementAt(i);
+                    if (point.XValue == x)
+                        if (point.YValues[0] == y)
+                            if ((x != 0 && y != 0) && (x != 255 && y != 255))
+                            {
+                                processedSeries.Points.Remove(point);
+                            }
+                            else
+                            {
+                                MessageBox.Show("Cannot remove end points ", "Error");
+                            }
+                    //processedSeries.Points.Remove(new)
+                }
+            }
+            else
+            {
+                MessageBox.Show("Point coordinates have to be between 0 and 255", "Error");
+            }
+            processedSeries.Sort(PointSortOrder.Ascending, "X");
+            foreach (var p in processedSeries.Points)
+                Console.WriteLine(p.ToString());
         }
     }
 }
