@@ -201,7 +201,6 @@ namespace WindowsFormsApp1
             double sumR = 0.0;
             double sumG = 0.0;
             double sumB = 0.0;
-            int r, g, b;
             for (int y = 0; y < bmp.Height - 2; y++) {
                 for (int x = 0; x < bmp.Width - 2; x++) {
                     sumR = 0; sumG = 0; sumB = 0;
@@ -224,8 +223,6 @@ namespace WindowsFormsApp1
             pictureBox2.Image = tempBitmap;
         }
         #endregion
-
-
         private void ChartSetup()
         {
             //TODO: implement to select given filter and then perform operation based on it
@@ -268,7 +265,7 @@ namespace WindowsFormsApp1
             foreach (var p in processedSeries.Points)
                 Console.WriteLine(p.ToString());
         }
-
+        //global variable for edit mode
         bool editEnabled = false;
         #region drag and drop on chart
         private void chart1_MouseMove(object sender, MouseEventArgs e)
