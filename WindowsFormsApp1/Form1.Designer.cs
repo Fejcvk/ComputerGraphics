@@ -28,31 +28,189 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            this.Graph = new System.Windows.Forms.TabPage();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.button12 = new System.Windows.Forms.Button();
+            this.button11 = new System.Windows.Forms.Button();
+            this.button5 = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
+            this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.Filters = new System.Windows.Forms.TabPage();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
-            this.button6 = new System.Windows.Forms.Button();
-            this.button7 = new System.Windows.Forms.Button();
             this.button9 = new System.Windows.Forms.Button();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.button8 = new System.Windows.Forms.Button();
             this.button10 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
-            this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
-            this.button2 = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
+            this.button6 = new System.Windows.Forms.Button();
+            this.button7 = new System.Windows.Forms.Button();
+            this.button8 = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.Filters = new System.Windows.Forms.TabPage();
-            this.Graph = new System.Windows.Forms.TabPage();
+            this.button4 = new System.Windows.Forms.Button();
+            this.pictureBox3 = new System.Windows.Forms.PictureBox();
+            this.Graph.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
+            this.Filters.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
             this.tabControl1.SuspendLayout();
-            this.Filters.SuspendLayout();
-            this.Graph.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
             this.SuspendLayout();
+            // 
+            // Graph
+            // 
+            this.Graph.Controls.Add(this.pictureBox3);
+            this.Graph.Controls.Add(this.button4);
+            this.Graph.Controls.Add(this.label4);
+            this.Graph.Controls.Add(this.label3);
+            this.Graph.Controls.Add(this.textBox2);
+            this.Graph.Controls.Add(this.textBox1);
+            this.Graph.Controls.Add(this.button12);
+            this.Graph.Controls.Add(this.button11);
+            this.Graph.Controls.Add(this.button5);
+            this.Graph.Controls.Add(this.button3);
+            this.Graph.Controls.Add(this.button2);
+            this.Graph.Controls.Add(this.chart1);
+            this.Graph.Location = new System.Drawing.Point(4, 25);
+            this.Graph.Name = "Graph";
+            this.Graph.Padding = new System.Windows.Forms.Padding(3);
+            this.Graph.Size = new System.Drawing.Size(1776, 1015);
+            this.Graph.TabIndex = 1;
+            this.Graph.Text = "Graph";
+            this.Graph.UseVisualStyleBackColor = true;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(64, 826);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(47, 17);
+            this.label4.TabIndex = 25;
+            this.label4.Text = "Y-Axis";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(12, 826);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(47, 17);
+            this.label3.TabIndex = 24;
+            this.label3.Text = "X-Axis";
+            // 
+            // textBox2
+            // 
+            this.textBox2.Location = new System.Drawing.Point(64, 860);
+            this.textBox2.Name = "textBox2";
+            this.textBox2.Size = new System.Drawing.Size(46, 22);
+            this.textBox2.TabIndex = 23;
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(7, 860);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(51, 22);
+            this.textBox1.TabIndex = 22;
+            // 
+            // button12
+            // 
+            this.button12.Enabled = false;
+            this.button12.Location = new System.Drawing.Point(116, 855);
+            this.button12.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.button12.Name = "button12";
+            this.button12.Size = new System.Drawing.Size(150, 33);
+            this.button12.TabIndex = 21;
+            this.button12.Text = "Add point";
+            this.button12.UseVisualStyleBackColor = true;
+            this.button12.Click += new System.EventHandler(this.button12_Click);
+            // 
+            // button11
+            // 
+            this.button11.Enabled = false;
+            this.button11.Location = new System.Drawing.Point(7, 892);
+            this.button11.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.button11.Name = "button11";
+            this.button11.Size = new System.Drawing.Size(259, 33);
+            this.button11.TabIndex = 20;
+            this.button11.Text = "Apply changes";
+            this.button11.UseVisualStyleBackColor = true;
+            this.button11.Click += new System.EventHandler(this.button11_Click);
+            // 
+            // button5
+            // 
+            this.button5.Enabled = false;
+            this.button5.Location = new System.Drawing.Point(7, 929);
+            this.button5.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(259, 33);
+            this.button5.TabIndex = 19;
+            this.button5.Text = "Edit chart";
+            this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.button5_Click);
+            // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(170, 966);
+            this.button3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(96, 33);
+            this.button3.TabIndex = 18;
+            this.button3.Text = "Clear chart";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(7, 966);
+            this.button2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(161, 33);
+            this.button2.TabIndex = 17;
+            this.button2.Text = "Generate Chart";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // chart1
+            // 
+            chartArea3.Name = "ChartArea1";
+            this.chart1.ChartAreas.Add(chartArea3);
+            legend3.Name = "Legend1";
+            this.chart1.Legends.Add(legend3);
+            this.chart1.Location = new System.Drawing.Point(7, 6);
+            this.chart1.Name = "chart1";
+            this.chart1.Size = new System.Drawing.Size(1769, 777);
+            this.chart1.TabIndex = 16;
+            this.chart1.Text = "chart1";
+            this.chart1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.chart1_MouseMove);
+            this.chart1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.chart1_MouseUp);
+            // 
+            // Filters
+            // 
+            this.Filters.Controls.Add(this.pictureBox1);
+            this.Filters.Controls.Add(this.label1);
+            this.Filters.Controls.Add(this.pictureBox2);
+            this.Filters.Controls.Add(this.button9);
+            this.Filters.Controls.Add(this.comboBox1);
+            this.Filters.Controls.Add(this.button10);
+            this.Filters.Controls.Add(this.button1);
+            this.Filters.Controls.Add(this.label2);
+            this.Filters.Controls.Add(this.button6);
+            this.Filters.Controls.Add(this.button7);
+            this.Filters.Controls.Add(this.button8);
+            this.Filters.Location = new System.Drawing.Point(4, 25);
+            this.Filters.Name = "Filters";
+            this.Filters.Padding = new System.Windows.Forms.Padding(3);
+            this.Filters.Size = new System.Drawing.Size(1776, 1015);
+            this.Filters.TabIndex = 0;
+            this.Filters.Text = "Filters";
+            this.Filters.UseVisualStyleBackColor = true;
             // 
             // pictureBox1
             // 
@@ -64,6 +222,15 @@
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(379, 30);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(99, 17);
+            this.label1.TabIndex = 12;
+            this.label1.Text = "Original image";
+            // 
             // pictureBox2
             // 
             this.pictureBox2.Location = new System.Drawing.Point(889, 49);
@@ -73,28 +240,6 @@
             this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox2.TabIndex = 1;
             this.pictureBox2.TabStop = false;
-            // 
-            // button6
-            // 
-            this.button6.Location = new System.Drawing.Point(17, 619);
-            this.button6.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(96, 33);
-            this.button6.TabIndex = 7;
-            this.button6.Text = "inverse";
-            this.button6.UseVisualStyleBackColor = true;
-            this.button6.Click += new System.EventHandler(this.button6_Click);
-            // 
-            // button7
-            // 
-            this.button7.Location = new System.Drawing.Point(119, 619);
-            this.button7.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(197, 33);
-            this.button7.TabIndex = 8;
-            this.button7.Text = "brightness correction";
-            this.button7.UseVisualStyleBackColor = true;
-            this.button7.Click += new System.EventHandler(this.button7_Click);
             // 
             // button9
             // 
@@ -124,35 +269,6 @@
             this.comboBox1.Size = new System.Drawing.Size(192, 24);
             this.comboBox1.TabIndex = 11;
             // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(379, 30);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(99, 17);
-            this.label1.TabIndex = 12;
-            this.label1.Text = "Original image";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(1301, 30);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(117, 17);
-            this.label2.TabIndex = 13;
-            this.label2.Text = "Processed image";
-            // 
-            // button8
-            // 
-            this.button8.Location = new System.Drawing.Point(322, 619);
-            this.button8.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(96, 33);
-            this.button8.TabIndex = 9;
-            this.button8.Text = "contrast";
-            this.button8.UseVisualStyleBackColor = true;
-            this.button8.Click += new System.EventHandler(this.button8_Click);
-            // 
             // button10
             // 
             this.button10.Location = new System.Drawing.Point(17, 734);
@@ -175,28 +291,47 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
-            // chart1
+            // label2
             // 
-            chartArea1.Name = "ChartArea1";
-            this.chart1.ChartAreas.Add(chartArea1);
-            legend1.Name = "Legend1";
-            this.chart1.Legends.Add(legend1);
-            this.chart1.Location = new System.Drawing.Point(7, 6);
-            this.chart1.Name = "chart1";
-            this.chart1.Size = new System.Drawing.Size(1769, 777);
-            this.chart1.TabIndex = 16;
-            this.chart1.Text = "chart1";
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(1301, 30);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(117, 17);
+            this.label2.TabIndex = 13;
+            this.label2.Text = "Processed image";
             // 
-            // button2
+            // button6
             // 
-            this.button2.Location = new System.Drawing.Point(3, 977);
-            this.button2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(96, 33);
-            this.button2.TabIndex = 17;
-            this.button2.Text = "Test chart";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.button6.Location = new System.Drawing.Point(17, 619);
+            this.button6.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(96, 33);
+            this.button6.TabIndex = 7;
+            this.button6.Text = "inverse";
+            this.button6.UseVisualStyleBackColor = true;
+            this.button6.Click += new System.EventHandler(this.button6_Click);
+            // 
+            // button7
+            // 
+            this.button7.Location = new System.Drawing.Point(119, 619);
+            this.button7.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.button7.Name = "button7";
+            this.button7.Size = new System.Drawing.Size(197, 33);
+            this.button7.TabIndex = 8;
+            this.button7.Text = "brightness correction";
+            this.button7.UseVisualStyleBackColor = true;
+            this.button7.Click += new System.EventHandler(this.button7_Click);
+            // 
+            // button8
+            // 
+            this.button8.Location = new System.Drawing.Point(322, 619);
+            this.button8.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.button8.Name = "button8";
+            this.button8.Size = new System.Drawing.Size(96, 33);
+            this.button8.TabIndex = 9;
+            this.button8.Text = "contrast";
+            this.button8.UseVisualStyleBackColor = true;
+            this.button8.Click += new System.EventHandler(this.button8_Click);
             // 
             // tabControl1
             // 
@@ -208,38 +343,27 @@
             this.tabControl1.Size = new System.Drawing.Size(1784, 1044);
             this.tabControl1.TabIndex = 18;
             // 
-            // Filters
+            // button4
             // 
-            this.Filters.Controls.Add(this.pictureBox1);
-            this.Filters.Controls.Add(this.label1);
-            this.Filters.Controls.Add(this.pictureBox2);
-            this.Filters.Controls.Add(this.button9);
-            this.Filters.Controls.Add(this.comboBox1);
-            this.Filters.Controls.Add(this.button10);
-            this.Filters.Controls.Add(this.button1);
-            this.Filters.Controls.Add(this.label2);
-            this.Filters.Controls.Add(this.button6);
-            this.Filters.Controls.Add(this.button7);
-            this.Filters.Controls.Add(this.button8);
-            this.Filters.Location = new System.Drawing.Point(4, 25);
-            this.Filters.Name = "Filters";
-            this.Filters.Padding = new System.Windows.Forms.Padding(3);
-            this.Filters.Size = new System.Drawing.Size(1776, 1015);
-            this.Filters.TabIndex = 0;
-            this.Filters.Text = "Filters";
-            this.Filters.UseVisualStyleBackColor = true;
+            this.button4.Enabled = false;
+            this.button4.Location = new System.Drawing.Point(290, 929);
+            this.button4.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(259, 70);
+            this.button4.TabIndex = 26;
+            this.button4.Text = "Apply filter";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
-            // Graph
+            // pictureBox3
             // 
-            this.Graph.Controls.Add(this.button2);
-            this.Graph.Controls.Add(this.chart1);
-            this.Graph.Location = new System.Drawing.Point(4, 25);
-            this.Graph.Name = "Graph";
-            this.Graph.Padding = new System.Windows.Forms.Padding(3);
-            this.Graph.Size = new System.Drawing.Size(1776, 1015);
-            this.Graph.TabIndex = 1;
-            this.Graph.Text = "Graph";
-            this.Graph.UseVisualStyleBackColor = true;
+            this.pictureBox3.Image = global::WindowsFormsApp1.Properties.Resources.singapur2;
+            this.pictureBox3.Location = new System.Drawing.Point(669, 860);
+            this.pictureBox3.Name = "pictureBox3";
+            this.pictureBox3.Size = new System.Drawing.Size(478, 149);
+            this.pictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox3.TabIndex = 27;
+            this.pictureBox3.TabStop = false;
             // 
             // Form1
             // 
@@ -250,35 +374,47 @@
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "Form1";
             this.Text = "Form1";
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
+            this.Graph.ResumeLayout(false);
+            this.Graph.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).EndInit();
-            this.tabControl1.ResumeLayout(false);
             this.Filters.ResumeLayout(false);
             this.Filters.PerformLayout();
-            this.Graph.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
+            this.tabControl1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
+        private System.Windows.Forms.TabPage Graph;
+        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Button button12;
+        private System.Windows.Forms.Button button11;
+        private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.DataVisualization.Charting.Chart chart1;
+        private System.Windows.Forms.TabPage Filters;
         private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.PictureBox pictureBox2;
-        private System.Windows.Forms.Button button6;
-        private System.Windows.Forms.Button button7;
         private System.Windows.Forms.Button button9;
         private System.Windows.Forms.ComboBox comboBox1;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Button button8;
         private System.Windows.Forms.Button button10;
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.DataVisualization.Charting.Chart chart1;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Button button6;
+        private System.Windows.Forms.Button button7;
+        private System.Windows.Forms.Button button8;
         private System.Windows.Forms.TabControl tabControl1;
-        private System.Windows.Forms.TabPage Filters;
-        private System.Windows.Forms.TabPage Graph;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.PictureBox pictureBox3;
     }
 }
 

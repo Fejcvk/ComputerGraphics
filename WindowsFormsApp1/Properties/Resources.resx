@@ -124,6 +124,9 @@
   <data name="falcon2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\falcon2.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="graphBG" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\graphBG.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="kaczuszka" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\kaczuszka.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>

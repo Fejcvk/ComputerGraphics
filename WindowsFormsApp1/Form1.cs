@@ -26,9 +26,9 @@ namespace WindowsFormsApp1
         private void button6_Click(object sender, EventArgs e)
         {
             Bitmap bitmap = (Bitmap)globalBitmap.Clone();
-            pictureBox2.Image = getInversionFilteredBitmap(bitmap);
+            pictureBox2.Image = InversionFilter(bitmap);
         }
-        private Bitmap getInversionFilteredBitmap(Bitmap bitmap)
+        private Bitmap InversionFilter(Bitmap bitmap)
         {
             var bmp = bitmap;
             for (int y = 0; y < bmp.Height; y++)
@@ -57,10 +57,10 @@ namespace WindowsFormsApp1
         {
             var bitmap = new Bitmap(globalBitmap);
             var brightnessCoefficient = 30;
-            pictureBox2.Image = brightnessConvertion(bitmap, brightnessCoefficient);
+            pictureBox2.Image = BrightnessConvertion(bitmap, brightnessCoefficient);
         }
 
-        private Bitmap brightnessConvertion(Bitmap bmp, int brightnessCoefficient)
+        private Bitmap BrightnessConvertion(Bitmap bmp, int brightnessCoefficient)
         {
             var temp = bmp;
             for (int y = 0; y < bmp.Height; y++)
@@ -92,18 +92,18 @@ namespace WindowsFormsApp1
                 for (int x = 0; x < bitmap.Width; x++)
                 {
                     var pixel = bitmap.GetPixel(x, y);
-                    var r = (contrastEnchancement((double)pixel.R, contrastCoefficient) < 0) ? 0 :
-                        (contrastEnchancement((double)pixel.R, contrastCoefficient) < 255.0) ? (int)contrastEnchancement((double)pixel.R, contrastCoefficient) : 255;
-                    var g = (contrastEnchancement((double)pixel.G, contrastCoefficient) < 0) ? 0 :
-                        (contrastEnchancement((double)pixel.G, contrastCoefficient) < 255.0) ? (int)contrastEnchancement((double)pixel.G, contrastCoefficient) : 255;
-                    var b = (contrastEnchancement((double)pixel.B, contrastCoefficient) < 0) ? 0 :
-                        (contrastEnchancement((double)pixel.B, contrastCoefficient) < 255.0) ? (int)contrastEnchancement((double)pixel.B, contrastCoefficient) : 255;
+                    var r = (ContrastEnchancement((double)pixel.R, contrastCoefficient) < 0) ? 0 :
+                        (ContrastEnchancement((double)pixel.R, contrastCoefficient) < 255.0) ? (int)ContrastEnchancement((double)pixel.R, contrastCoefficient) : 255;
+                    var g = (ContrastEnchancement((double)pixel.G, contrastCoefficient) < 0) ? 0 :
+                        (ContrastEnchancement((double)pixel.G, contrastCoefficient) < 255.0) ? (int)ContrastEnchancement((double)pixel.G, contrastCoefficient) : 255;
+                    var b = (ContrastEnchancement((double)pixel.B, contrastCoefficient) < 0) ? 0 :
+                        (ContrastEnchancement((double)pixel.B, contrastCoefficient) < 255.0) ? (int)ContrastEnchancement((double)pixel.B, contrastCoefficient) : 255;
                     bitmap.SetPixel(x, y, Color.FromArgb(pixel.A, r, g, b));
                 }
             }
             return bitmap;
         }
-        private double contrastEnchancement(double channelValue, double contrastCoefficient)
+        private double ContrastEnchancement(double channelValue, double contrastCoefficient)
         {
             return ((((channelValue / 255.0) - 0.5) * contrastCoefficient) + 0.5) * 255.0;
         }
@@ -112,9 +112,9 @@ namespace WindowsFormsApp1
         private void button1_Click(object sender, EventArgs e)
         {
             var bitmap = new Bitmap(globalBitmap);
-            pictureBox2.Image = grayScale(bitmap,true);
+            pictureBox2.Image = GrayScale(bitmap,true);
         }
-        private Bitmap grayScale(Bitmap bmp,bool needToSetPicture)
+        private Bitmap GrayScale(Bitmap bmp,bool needToSetPicture)
         {
             Bitmap bitmap = bmp;
             for (var y = 0; y < bitmap.Height; y++)
@@ -193,9 +193,9 @@ namespace WindowsFormsApp1
                         { 1,1,1}
                      };
             }
-            convolutionFilter(matrix, bitmap, divisor);
+            ConvolutionFilter(matrix, bitmap, divisor);
         }
-        private void convolutionFilter(int[,] matrix, Bitmap bmp, int divisor)
+        private void ConvolutionFilter(int[,] matrix, Bitmap bmp, int divisor)
         {
             Bitmap tempBitmap = new Bitmap(globalBitmap);
             double sumR = 0.0;
@@ -226,7 +226,7 @@ namespace WindowsFormsApp1
         #endregion
         //greyscale image, dla pixeli o wartosci x pokazuje jak wyglada ich wartosc 
 
-        private int[] createLookupTable(Bitmap modifiedBitmap)
+        private int[] CreateLookupTable(Bitmap modifiedBitmap)
         {
             int[] lookupTable = new int [256];
             for (var y = 0; y < globalBitmap.Height; y++)
@@ -241,38 +241,182 @@ namespace WindowsFormsApp1
                     return lookupTable;
         }
 
-        private void chartSetup()
+        private void ChartSetup()
         {
+            //TODO: implement to select given filter and then perform operation based on it
             Bitmap grayScaleBitmap = (Bitmap)globalBitmap.Clone();
             Bitmap processedBitmap = (Bitmap)globalBitmap.Clone();
-            processedBitmap = brightnessConvertion(processedBitmap,20);
-            int[] baseLookupTable = createLookupTable(grayScaleBitmap);
-            int[] processedLookupTable = createLookupTable(processedBitmap);
+            processedBitmap = BrightnessConvertion(processedBitmap,20);
+            int[] baseLookupTable = CreateLookupTable(grayScaleBitmap);
+            int[] processedLookupTable = CreateLookupTable(processedBitmap);
             this.chart1.Series.Add("Function");
-            chart1.Series.Add("Original");
-            var origianlSeries = this.chart1.Series["Original"];
             var processedSeries = this.chart1.Series["Function"];
             processedSeries.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line ;
-            origianlSeries.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            chart1.ChartAreas[0].AxisX.Minimum = 0;
-            chart1.ChartAreas[0].AxisX.Interval = 5;
+            processedSeries.MarkerStyle = MarkerStyle.Circle;
+            processedSeries.MarkerColor = Color.Red;
+            processedSeries.MarkerSize = 5;
+            processedSeries.BorderWidth = 5;
+            chart1.ChartAreas[0].AxisX.Minimum = -1;
+            chart1.ChartAreas[0].AxisY.Minimum = -1;
+            chart1.ChartAreas[0].AxisX.Interval = 32;
             chart1.ChartAreas[0].AxisY.Maximum = 255;
             chart1.ChartAreas[0].AxisX.Maximum = 255;
-            chart1.ChartAreas[0].AxisY.Interval = 5;
+            chart1.ChartAreas[0].AxisY.Interval = 32;
             processedSeries.ToolTip = "X =#VALX, Y =#VALY";
-            origianlSeries.ToolTip = "X =#VALX, Y =#VALY";
 
-            for (var i = 0; i < baseLookupTable.Length; i++)
-            {
-                processedSeries.Points.AddXY(i, processedLookupTable[i]);
-                origianlSeries.Points.AddXY(i, baseLookupTable[i]);
-            }
-
+            //for (var i = 0; i < baseLookupTable.Length; i++)
+            //{
+            //    processedSeries.Points.AddXY(i, processedLookupTable[i]);
+            //}
+            processedSeries.Points.AddXY(0, 0);
+            processedSeries.Points.AddXY(255, 255);
         }
+        //Class level variables holding moveable parts
+        DataPoint currentPoint = null;
 
         private void button2_Click(object sender, EventArgs e)
         {
-            chartSetup();
+            ChartSetup();
+            button5.Enabled = true;
+            button2.Enabled = false;
+            button4.Enabled = true;
+            var processedSeries = this.chart1.Series["Function"];
+            processedSeries.Sort(PointSortOrder.Ascending, "X");
+            foreach (var p in processedSeries.Points)
+                Console.WriteLine(p.ToString());
+        }
+
+        bool editEnabled = false;
+
+        private void chart1_MouseMove(object sender, MouseEventArgs e)
+        {
+            if(e.Button.HasFlag(MouseButtons.Left) && editEnabled)
+            {
+                ChartArea chartArea = chart1.ChartAreas[0];
+                Axis xAxis = chartArea.AxisX;
+                Axis yAxis = chartArea.AxisY;
+                HitTestResult hit = chart1.HitTest(e.X, e.Y);
+                if (hit.PointIndex >= 0)
+                {
+                    currentPoint = hit.Series.Points[hit.PointIndex];
+
+                }
+                if(currentPoint != null)
+                {
+                    Series series = hit.Series;
+                     int dx = (int)xAxis.PixelPositionToValue(e.X);
+                     int dy = (int)yAxis.PixelPositionToValue(e.Y);
+                    currentPoint.XValue = dx;
+                    currentPoint.YValues[0] = dy;
+                }
+            }
+        }
+
+        private void chart1_MouseUp(object sender, MouseEventArgs e)
+        {
+            currentPoint = null;
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            Bitmap processedBitmap = (Bitmap)globalBitmap.Clone();
+            pictureBox3.Image = processedBitmap;
+            chart1.Series.Clear();
+            this.chart1.Series.Add("Function");
+            var processedSeries = this.chart1.Series["Function"];
+            processedSeries.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            processedSeries.MarkerStyle = MarkerStyle.Circle;
+            processedSeries.MarkerColor = Color.Red;
+            processedSeries.MarkerSize = 5;
+            processedSeries.BorderWidth = 5;
+            chart1.ChartAreas[0].AxisX.Minimum = -1;
+            chart1.ChartAreas[0].AxisY.Minimum = -1;
+            chart1.ChartAreas[0].AxisX.Interval = 32;
+            chart1.ChartAreas[0].AxisY.Maximum = 255;
+            chart1.ChartAreas[0].AxisX.Maximum = 255;
+            chart1.ChartAreas[0].AxisY.Interval = 32;
+            processedSeries.Points.AddXY(0, 0);
+            processedSeries.Points.AddXY(255, 255);
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            var processedSeries = this.chart1.Series["Function"];
+            processedSeries.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            button12.Enabled = true;
+            button11.Enabled = true;
+            editEnabled = true;
+        }
+
+        private void button11_Click(object sender, EventArgs e)
+        {
+            var processedSeries = this.chart1.Series["Function"];
+            processedSeries.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            processedSeries.Sort(PointSortOrder.Ascending, "X");
+            foreach (var p in processedSeries.Points)
+                Console.WriteLine(p.ToString());
+            button12.Enabled = false;
+            button11.Enabled = false;
+            editEnabled = false;
+        }
+
+        private void button12_Click(object sender, EventArgs e)
+        {
+            var processedSeries = this.chart1.Series["Function"];
+            var x = (textBox1.Text != "" ) ? Int16.Parse(textBox1.Text) : -1;
+            var y = (textBox2.Text != "" ) ? Int16.Parse(textBox2.Text) : -1;
+            if (x == -1 || y == -1) MessageBox.Show("Cannot add point without values", "Error");
+            else if (x >= 0 && x < 256 && y >= 0 && y < 256)
+            {
+                foreach(var point in processedSeries.Points)
+                    if(point.XValue == x)
+                        MessageBox.Show("Two points cannot have the same X value", "Error");
+                processedSeries.Points.AddXY(x, y);
+            }
+            else
+            {
+                MessageBox.Show("Point coordinates have to be between 0 and 255", "Error");
+            }
+            processedSeries.Sort(PointSortOrder.Ascending,"X");
+            foreach (var p in processedSeries.Points)
+                Console.WriteLine(p.ToString());
+        }
+
+        private void createLookupTableFromFunction(DataPoint startPoint, DataPoint endPoint)
+        {
+            double coeff = (endPoint.YValues[0] - startPoint.YValues[0])/(endPoint.XValue - startPoint.XValue);
+            double b = startPoint.YValues[0] - coeff*startPoint.XValue;
+            int range = (int)endPoint.XValue - (int)startPoint.XValue;
+            var x = startPoint.XValue;
+            for (var i = 0; i < range+1; i++)
+            {
+                double ax = coeff * x;
+
+                lookupTable[(int)x] = Math.Round(Math.Ceiling((ax + b) * 100) / 100);
+                x++;
+            }
+        }
+        double[] lookupTable = new double[256];
+        private void button4_Click(object sender, EventArgs e)
+        {
+            int numberOfPoints = chart1.Series["Function"].Points.Count;
+            double[] tempTab;
+            for (int i = 0; i < numberOfPoints - 1; i++)
+            {
+                createLookupTableFromFunction(chart1.Series["Function"].Points[i], chart1.Series["Function"].Points[i + 1]);
+            }
+            var bitmap = GrayScale((Bitmap)globalBitmap.Clone(),false);
+            
+            for (var y = 0; y < bitmap.Height; y++)
+            {
+                for(var x = 0; x < bitmap.Width; x++)
+                {
+                    var pixel = bitmap.GetPixel(x, y);
+                    var colorValue = lookupTable[pixel.R];
+                    bitmap.SetPixel(x, y, Color.FromArgb((int)colorValue,(int)colorValue,(int)colorValue));
+                }
+            }
+            pictureBox3.Image = bitmap;
         }
     }
 }

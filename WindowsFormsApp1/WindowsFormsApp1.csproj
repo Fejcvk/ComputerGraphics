@@ -104,5 +104,8 @@
   <ItemGroup>
     <None Include="Resources\widok.PNG" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\graphBG.bmp" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
