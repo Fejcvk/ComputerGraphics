@@ -224,22 +224,7 @@ namespace WindowsFormsApp1
             pictureBox2.Image = tempBitmap;
         }
         #endregion
-        //greyscale image, dla pixeli o wartosci x pokazuje jak wyglada ich wartosc 
 
-        private int[] CreateLookupTable(Bitmap modifiedBitmap)
-        {
-            int[] lookupTable = new int [256];
-            for (var y = 0; y < globalBitmap.Height; y++)
-            {
-                for (var x = 0; x < globalBitmap.Width; x++)
-                {
-                    var pixel = modifiedBitmap.GetPixel(x, y);
-                    var basePixel = globalBitmap.GetPixel(x, y);
-                    lookupTable[basePixel.R] = pixel.R;
-                }
-            }
-                    return lookupTable;
-        }
 
         private void ChartSetup()
         {
@@ -247,8 +232,6 @@ namespace WindowsFormsApp1
             Bitmap grayScaleBitmap = (Bitmap)globalBitmap.Clone();
             Bitmap processedBitmap = (Bitmap)globalBitmap.Clone();
             processedBitmap = BrightnessConvertion(processedBitmap,20);
-            int[] baseLookupTable = CreateLookupTable(grayScaleBitmap);
-            int[] processedLookupTable = CreateLookupTable(processedBitmap);
             this.chart1.Series.Add("Function");
             var processedSeries = this.chart1.Series["Function"];
             processedSeries.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line ;
@@ -273,7 +256,7 @@ namespace WindowsFormsApp1
         }
         //Class level variables holding moveable parts
         DataPoint currentPoint = null;
-
+        //Generate graph button
         private void button2_Click(object sender, EventArgs e)
         {
             ChartSetup();
@@ -287,10 +270,10 @@ namespace WindowsFormsApp1
         }
 
         bool editEnabled = false;
-
+        #region drag and drop on chart
         private void chart1_MouseMove(object sender, MouseEventArgs e)
         {
-            if(e.Button.HasFlag(MouseButtons.Left) && editEnabled)
+            if (e.Button.HasFlag(MouseButtons.Left) && editEnabled)
             {
                 ChartArea chartArea = chart1.ChartAreas[0];
                 Axis xAxis = chartArea.AxisX;
@@ -298,15 +281,37 @@ namespace WindowsFormsApp1
                 HitTestResult hit = chart1.HitTest(e.X, e.Y);
                 if (hit.PointIndex >= 0)
                 {
-                    currentPoint = hit.Series.Points[hit.PointIndex];
-
+                    if (hit.PointIndex > 255 || hit.PointIndex < 0)
+                    {
+                        MessageBox.Show("Value on x and y axis have to be between 0 and 255");
+                    }
+                    else
+                    {
+                        currentPoint = hit.Series.Points[hit.PointIndex];
+                    }
                 }
-                if(currentPoint != null)
+                if (currentPoint != null && currentPoint.XValue != 0 && currentPoint.XValue != 255)
                 {
                     Series series = hit.Series;
-                     int dx = (int)xAxis.PixelPositionToValue(e.X);
-                     int dy = (int)yAxis.PixelPositionToValue(e.Y);
+                    int dx = (int)xAxis.PixelPositionToValue(e.X);
+                    int dy = (int)yAxis.PixelPositionToValue(e.Y);
                     currentPoint.XValue = dx;
+                    currentPoint.YValues[0] = dy;
+                }
+                else if (currentPoint != null && currentPoint.XValue != 0 && currentPoint.XValue == 255)
+                {
+                    Series series = hit.Series;
+                    int dx = (int)xAxis.PixelPositionToValue(e.X);
+                    int dy = (int)yAxis.PixelPositionToValue(e.Y);
+                    currentPoint.XValue = 255;
+                    currentPoint.YValues[0] = dy;
+                }
+                else if (currentPoint != null && currentPoint.XValue == 0 && currentPoint.XValue != 255)
+                {
+                    Series series = hit.Series;
+                    int dx = (int)xAxis.PixelPositionToValue(e.X);
+                    int dy = (int)yAxis.PixelPositionToValue(e.Y);
+                    currentPoint.XValue = 0;
                     currentPoint.YValues[0] = dy;
                 }
             }
@@ -316,7 +321,8 @@ namespace WindowsFormsApp1
         {
             currentPoint = null;
         }
-
+        #endregion
+        //Clean chart button
         private void button3_Click(object sender, EventArgs e)
         {
             Bitmap processedBitmap = (Bitmap)globalBitmap.Clone();
@@ -338,7 +344,7 @@ namespace WindowsFormsApp1
             processedSeries.Points.AddXY(0, 0);
             processedSeries.Points.AddXY(255, 255);
         }
-
+        //Edit chart button
         private void button5_Click(object sender, EventArgs e)
         {
             var processedSeries = this.chart1.Series["Function"];
@@ -346,8 +352,9 @@ namespace WindowsFormsApp1
             button12.Enabled = true;
             button11.Enabled = true;
             editEnabled = true;
+            button4.Enabled = false;
         }
-
+        //Apply changes button
         private void button11_Click(object sender, EventArgs e)
         {
             var processedSeries = this.chart1.Series["Function"];
@@ -358,8 +365,9 @@ namespace WindowsFormsApp1
             button12.Enabled = false;
             button11.Enabled = false;
             editEnabled = false;
+            button4.Enabled = true;
         }
-
+        //Add point button
         private void button12_Click(object sender, EventArgs e)
         {
             var processedSeries = this.chart1.Series["Function"];
@@ -381,7 +389,7 @@ namespace WindowsFormsApp1
             foreach (var p in processedSeries.Points)
                 Console.WriteLine(p.ToString());
         }
-
+        //create lookup function
         private void createLookupTableFromFunction(DataPoint startPoint, DataPoint endPoint)
         {
             double coeff = (endPoint.YValues[0] - startPoint.YValues[0])/(endPoint.XValue - startPoint.XValue);
@@ -397,6 +405,7 @@ namespace WindowsFormsApp1
             }
         }
         double[] lookupTable = new double[256];
+        //apply filter button
         private void button4_Click(object sender, EventArgs e)
         {
             int numberOfPoints = chart1.Series["Function"].Points.Count;
