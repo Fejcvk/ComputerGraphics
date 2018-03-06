@@ -224,6 +224,7 @@ namespace WindowsFormsApp1
             pictureBox2.Image = tempBitmap;
         }
         #endregion
+        #region chart
         private void ChartSetup()
         {
             //TODO: implement to select given filter and then perform operation based on it
@@ -373,13 +374,19 @@ namespace WindowsFormsApp1
             var processedSeries = this.chart1.Series["Function"];
             var x = (textBox1.Text != "" ) ? Int16.Parse(textBox1.Text) : -1;
             var y = (textBox2.Text != "" ) ? Int16.Parse(textBox2.Text) : -1;
+            bool canAdd = true;
             if (x == -1 || y == -1) MessageBox.Show("Cannot add point without values", "Error");
             else if (x >= 0 && x < 256 && y >= 0 && y < 256)
             {
-                foreach(var point in processedSeries.Points)
-                    if(point.XValue == x)
+                foreach (var point in processedSeries.Points)
+                {
+                    if (point.XValue == x)
+                    {
                         MessageBox.Show("Two points cannot have the same X value", "Error");
-                processedSeries.Points.AddXY(x, y);
+                        canAdd = false;
+                    }
+                }
+                if(canAdd)processedSeries.Points.AddXY(x, y);
             }
             else
             {
@@ -460,5 +467,6 @@ namespace WindowsFormsApp1
             foreach (var p in processedSeries.Points)
                 Console.WriteLine(p.ToString());
         }
+        #endregion
     }
 }
