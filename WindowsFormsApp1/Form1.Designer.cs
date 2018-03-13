@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
             this.Graph = new System.Windows.Forms.TabPage();
             this.button13 = new System.Windows.Forms.Button();
             this.pictureBox3 = new System.Windows.Forms.PictureBox();
@@ -45,6 +45,10 @@
             this.button2 = new System.Windows.Forms.Button();
             this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.Filters = new System.Windows.Forms.TabPage();
+            this.button15 = new System.Windows.Forms.Button();
+            this.label5 = new System.Windows.Forms.Label();
+            this.textBox3 = new System.Windows.Forms.TextBox();
+            this.button14 = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.label1 = new System.Windows.Forms.Label();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
@@ -57,6 +61,7 @@
             this.button7 = new System.Windows.Forms.Button();
             this.button8 = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.button16 = new System.Windows.Forms.Button();
             this.Graph.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
@@ -215,10 +220,10 @@
             // 
             // chart1
             // 
-            chartArea1.Name = "ChartArea1";
-            this.chart1.ChartAreas.Add(chartArea1);
-            legend1.Name = "Legend1";
-            this.chart1.Legends.Add(legend1);
+            chartArea2.Name = "ChartArea1";
+            this.chart1.ChartAreas.Add(chartArea2);
+            legend2.Name = "Legend1";
+            this.chart1.Legends.Add(legend2);
             this.chart1.Location = new System.Drawing.Point(7, 6);
             this.chart1.Name = "chart1";
             this.chart1.Size = new System.Drawing.Size(1769, 777);
@@ -229,6 +234,11 @@
             // 
             // Filters
             // 
+            this.Filters.Controls.Add(this.button16);
+            this.Filters.Controls.Add(this.button15);
+            this.Filters.Controls.Add(this.label5);
+            this.Filters.Controls.Add(this.textBox3);
+            this.Filters.Controls.Add(this.button14);
             this.Filters.Controls.Add(this.pictureBox1);
             this.Filters.Controls.Add(this.label1);
             this.Filters.Controls.Add(this.pictureBox2);
@@ -247,6 +257,42 @@
             this.Filters.TabIndex = 0;
             this.Filters.Text = "Filters";
             this.Filters.UseVisualStyleBackColor = true;
+            // 
+            // button15
+            // 
+            this.button15.Location = new System.Drawing.Point(221, 734);
+            this.button15.Name = "button15";
+            this.button15.Size = new System.Drawing.Size(165, 33);
+            this.button15.TabIndex = 19;
+            this.button15.Text = "Set new picture";
+            this.button15.UseVisualStyleBackColor = true;
+            this.button15.Click += new System.EventHandler(this.button15_Click);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(831, 647);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(133, 17);
+            this.label5.TabIndex = 18;
+            this.label5.Text = "Set value of gamma";
+            // 
+            // textBox3
+            // 
+            this.textBox3.Location = new System.Drawing.Point(834, 677);
+            this.textBox3.Name = "textBox3";
+            this.textBox3.Size = new System.Drawing.Size(130, 22);
+            this.textBox3.TabIndex = 17;
+            // 
+            // button14
+            // 
+            this.button14.Location = new System.Drawing.Point(982, 657);
+            this.button14.Name = "button14";
+            this.button14.Size = new System.Drawing.Size(184, 42);
+            this.button14.TabIndex = 16;
+            this.button14.Text = "Gamma corecction";
+            this.button14.UseVisualStyleBackColor = true;
+            this.button14.Click += new System.EventHandler(this.button14_Click);
             // 
             // pictureBox1
             // 
@@ -379,6 +425,16 @@
             this.tabControl1.Size = new System.Drawing.Size(1784, 1044);
             this.tabControl1.TabIndex = 18;
             // 
+            // button16
+            // 
+            this.button16.Location = new System.Drawing.Point(17, 773);
+            this.button16.Name = "button16";
+            this.button16.Size = new System.Drawing.Size(96, 35);
+            this.button16.TabIndex = 20;
+            this.button16.Text = "Average";
+            this.button16.UseVisualStyleBackColor = true;
+            this.button16.Click += new System.EventHandler(this.button16_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -430,6 +486,11 @@
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.PictureBox pictureBox3;
         private System.Windows.Forms.Button button13;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.TextBox textBox3;
+        private System.Windows.Forms.Button button14;
+        private System.Windows.Forms.Button button15;
+        private System.Windows.Forms.Button button16;
     }
 }
 

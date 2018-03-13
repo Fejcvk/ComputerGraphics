@@ -122,9 +122,9 @@ namespace WindowsFormsApp1
                 for (var x = 0; x < bitmap.Width; x++)
                 {
                     var pixel = bmp.GetPixel(x, y);
-                    var sumOfChannelValues = (pixel.R + pixel.G + pixel.B) / 3;
+                    var sumOfChannelValues = 0.3 * pixel.R + 0.6 * pixel.G + 0.1 * pixel.B;
                     var grayScaleValueOfThePixel = (sumOfChannelValues < 255) ? sumOfChannelValues : 255;
-                    bitmap.SetPixel(x, y, Color.FromArgb(pixel.A, grayScaleValueOfThePixel, grayScaleValueOfThePixel, grayScaleValueOfThePixel));
+                    bitmap.SetPixel(x, y, Color.FromArgb(pixel.A, (int)grayScaleValueOfThePixel, (int)grayScaleValueOfThePixel, (int)grayScaleValueOfThePixel));
                 }
             }
             return bitmap;
@@ -135,6 +135,7 @@ namespace WindowsFormsApp1
         {
             //default value for divisor
             int divisor = 1;
+            int offset = 0;
             //indentify filter
             int[,] matrix = { { 0, 0, 0 }, { 0, 1, 0 }, { 0, 0, 0 } };
             Bitmap bitmap = new Bitmap(globalBitmap);
@@ -179,6 +180,7 @@ namespace WindowsFormsApp1
             //edge detection vertical
             else if (comboBox1.SelectedIndex == 4)
             {
+                offset = 127;
                 matrix = new int[,]{
                         { 0,0,0},
                         { -1,1,0},
@@ -194,30 +196,42 @@ namespace WindowsFormsApp1
                         { 1,1,1}
                      };
             }
-            ConvolutionFilter(matrix, bitmap, divisor);
+            ConvolutionFilter(matrix, bitmap, divisor,offset);
         }
-        private void ConvolutionFilter(int[,] matrix, Bitmap bmp, int divisor)
+        private void ConvolutionFilter(int[,] matrix, Bitmap bmp, int divisor,int offset)
         {
+            //uwzglednic border pixele
             Bitmap tempBitmap = new Bitmap(globalBitmap);
             double sumR = 0.0;
             double sumG = 0.0;
             double sumB = 0.0;
-            for (int y = 0; y < bmp.Height - 2; y++) {
-                for (int x = 0; x < bmp.Width - 2; x++) {
+            var startX = 1;
+            var startY = 1;
+            for (int y = 0; y < bmp.Height; y++) {
+                for (int x = 0; x < bmp.Width; x++) {
                     sumR = 0; sumG = 0; sumB = 0;
                     for (int j = 0; j < 3; j++) {
                         for (int i = 0; i < 3; i++) {
-                            var pixel = globalBitmap.GetPixel(x + i, y + j);
+
+                            var mx = x + i - startX;
+                            var my = y + j - startY;
+
+                            mx = (mx < 0) ? 0 : (mx >= bmp.Width) ? bmp.Width - 1 : mx;
+                            my = (my < 0) ? 0 : (my >= bmp.Height) ? bmp.Height - 1 : my;
+
+                            var pixel = globalBitmap.GetPixel(mx, my);
+                            
                             sumR += pixel.R * matrix[j, i];
                             sumG += pixel.G * matrix[j, i];
                             sumB += pixel.B * matrix[j, i];
                         }
                     }
                     sumR /= divisor; sumG /= divisor; sumB /= divisor;
+                    sumR += offset; sumG += offset; sumB += offset;
                     sumR = (sumR < 0.0) ? 0.0 : (sumR < 255.0) ? sumR : 255.0;
                     sumG = (sumG < 0.0) ? 0.0 : (sumG < 255.0) ? sumG : 255.0;
                     sumB = (sumB < 0.0) ? 0.0 : (sumB < 255.0) ? sumB : 255.0;
-                    tempBitmap.SetPixel(x + 1, y + 1, Color.FromArgb((int)sumR, (int)sumG, (int)sumB));
+                    tempBitmap.SetPixel(x, y, Color.FromArgb((int)sumR, (int)sumG, (int)sumB));
                     sumR = 0; sumG = 0; sumB = 0;
                 }
             }
@@ -246,10 +260,7 @@ namespace WindowsFormsApp1
             chart1.ChartAreas[0].AxisY.Interval = 32;
             processedSeries.ToolTip = "X =#VALX, Y =#VALY";
 
-            //for (var i = 0; i < baseLookupTable.Length; i++)
-            //{
-            //    processedSeries.Points.AddXY(i, processedLookupTable[i]);
-            //}
+ 
             processedSeries.Points.AddXY(0, 0);
             processedSeries.Points.AddXY(255, 255);
         }
@@ -456,7 +467,6 @@ namespace WindowsFormsApp1
                             {
                                 MessageBox.Show("Cannot remove end points ", "Error");
                             }
-                    //processedSeries.Points.Remove(new)
                 }
             }
             else
@@ -468,5 +478,64 @@ namespace WindowsFormsApp1
                 Console.WriteLine(p.ToString());
         }
         #endregion
+        #region labPart
+        private void button14_Click(object sender, EventArgs e)
+        {
+            double coeff = Double.Parse(textBox3.Text);
+            gammaCorrection(coeff);
+        }
+        private void gammaCorrection(double coeff)
+        {
+            var gamma = coeff;
+            Bitmap bitmap = (Bitmap)globalBitmap.Clone();
+            for(int y = 0; y < bitmap.Height; y++)
+            {
+                for(int x = 0; x < bitmap.Width; x++)
+                {
+                    var pixel = globalBitmap.GetPixel(x, y);
+                    double r = pixel.R;
+                    var g = pixel.G;
+                    var b = pixel.B;
+
+                    var newR = 255.0 * Math.Pow((r/255.0),gamma);
+                    var newG = 255.0 * Math.Pow((g / 255.0), gamma);
+                    var newB = 255.0 * Math.Pow((b / 255.0), gamma);
+
+                    newR = (newR > 255.0) ? 255.0 : newR;
+                    newG = (newG > 255.0) ? 255.0 : newG;
+                    newB = (newB > 255.0) ? 255.0 : newB;
+
+                    bitmap.SetPixel(x, y, Color.FromArgb(pixel.A, (int)newR, (int)newG, (int)newB));
+                }
+            }
+            pictureBox2.Image = bitmap;
+        }
+        #endregion
+
+        private void button15_Click(object sender, EventArgs e)
+        {
+            using (OpenFileDialog dlg = new OpenFileDialog())
+            {
+                dlg.Title = "Open Image";
+                dlg.Filter = "All files |*.*";
+
+                if (dlg.ShowDialog() == DialogResult.OK)
+                {
+
+                    pictureBox1.Image = new Bitmap(dlg.FileName);
+                    pictureBox2.Image = new Bitmap(dlg.FileName);
+                    globalBitmap = new Bitmap(dlg.FileName);
+                }
+            }
+        }
+
+        private void button16_Click(object sender, EventArgs e)
+        {
+            AvarageDilthering();
+        }
+        private void AvarageDilthering()
+        {
+
+        }
     }
 }
