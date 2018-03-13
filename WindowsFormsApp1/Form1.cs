@@ -531,11 +531,39 @@ namespace WindowsFormsApp1
 
         private void button16_Click(object sender, EventArgs e)
         {
-            AvarageDilthering();
+            AvarageDithering();
         }
-        private void AvarageDilthering()
+        private void AvarageDithering()
         {
+            Bitmap bitmap =  GrayScale((Bitmap)globalBitmap.Clone(),false);
+            int treshold = CalcualteTreshold(bitmap);
+            for (int y =0; y < bitmap.Height; y++)
+            {
+                for(int x = 0; x < bitmap.Width; x++)
+                {
+                    var pixel = bitmap.GetPixel(x, y);
+                    var avgValue = (pixel.R < treshold) ? 0 : 255;
+                    bitmap.SetPixel(x, y, Color.FromArgb(pixel.A, avgValue, avgValue, avgValue));
+                }
+            }
+            pictureBox2.Image = bitmap;
+            pictureBox1.Image = GrayScale((Bitmap)globalBitmap.Clone(), false);
 
+        }
+        private int CalcualteTreshold(Bitmap bitmap)
+        {
+            int treshold = 0;
+            int sumOfIntensities = 0;
+            for (int y = 0; y < bitmap.Height; y++)
+            {
+                for (int x = 0; x < bitmap.Width; x++)
+                {
+                    var pixel = bitmap.GetPixel(x, y);
+                    sumOfIntensities += pixel.R;
+                }
+            }
+            treshold = sumOfIntensities / (bitmap.Width * bitmap.Height);
+            return treshold;
         }
     }
 }
