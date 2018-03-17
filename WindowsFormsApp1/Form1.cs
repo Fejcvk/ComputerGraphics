@@ -11,6 +11,7 @@ using System.Windows.Forms.DataVisualization.Charting;
 
 namespace WindowsFormsApp1
 {
+    //TODO: random dildering ordered dildering uniform color quantization median cut color quantization
     public partial class Form1 : Form
     {
         Bitmap globalBitmap;
@@ -21,6 +22,7 @@ namespace WindowsFormsApp1
             pictureBox1.Image = globalBitmap;
             pictureBox2.Image = pictureBox1.Image;
             comboBox1.SelectedIndex = 0;
+            comboBox2.SelectedIndex = 0;
         }
         #region inverse filter
         private void button6_Click(object sender, EventArgs e)
@@ -427,7 +429,6 @@ namespace WindowsFormsApp1
         private void button4_Click(object sender, EventArgs e)
         {
             int numberOfPoints = chart1.Series["Function"].Points.Count;
-            double[] tempTab;
             for (int i = 0; i < numberOfPoints - 1; i++)
             {
                 createLookupTableFromFunction(chart1.Series["Function"].Points[i], chart1.Series["Function"].Points[i + 1]);
@@ -478,7 +479,7 @@ namespace WindowsFormsApp1
                 Console.WriteLine(p.ToString());
         }
         #endregion
-        #region labPart
+        #region labPartL1
         private void button14_Click(object sender, EventArgs e)
         {
             double coeff = Double.Parse(textBox3.Text);
@@ -511,7 +512,7 @@ namespace WindowsFormsApp1
             pictureBox2.Image = bitmap;
         }
         #endregion
-
+        #region opend dialog file
         private void button15_Click(object sender, EventArgs e)
         {
             using (OpenFileDialog dlg = new OpenFileDialog())
@@ -528,7 +529,8 @@ namespace WindowsFormsApp1
                 }
             }
         }
-
+        #endregion
+        #region labPartL2
         private void button16_Click(object sender, EventArgs e)
         {
             AvarageDithering();
@@ -564,6 +566,112 @@ namespace WindowsFormsApp1
             }
             treshold = sumOfIntensities / (bitmap.Width * bitmap.Height);
             return treshold;
+        }
+        #endregion
+
+        private void button17_Click(object sender, EventArgs e)
+        {
+            int grayLevel = 2;
+            switch(comboBox2.SelectedIndex)
+            {
+                case 0:
+                    break;
+                case 1:
+                    grayLevel = 4;
+                    break;
+                case 2:
+                    grayLevel = 8;
+                    break;
+                case 3:
+                    grayLevel = 16;
+                    break;
+            }
+            RandomDithering(grayLevel);
+        }
+        private void RandomDithering(int grayLevel)
+        {
+            Bitmap bitmap = GrayScale((Bitmap)globalBitmap.Clone(), false);
+            Random random = new Random();
+            for (var y = 0; y < bitmap.Height; y++)
+            {
+                for(var x = 0; x < bitmap.Width; x++)
+                {
+                    var pixel = bitmap.GetPixel(x, y);
+                    double value = 0;
+                    switch (grayLevel)
+                    {
+                        case 2:
+                            value = (pixel.R < random.Next(0,256)) ? 0 : 255;
+                            break;
+                        case 4:
+                            var treshold1_4 = random.Next(0, 256);
+                            var treshold2_4 = random.Next(0, treshold1_4);
+                            var treshold3_4 = random.Next(treshold1_4, 256);
+                            var r_4 = pixel.R;
+                            if (r_4 < treshold2_4) value = 0.0;
+                            else if (treshold2_4 < r_4 && r_4 <= treshold1_4) value = (1.0 / 3.0) * 255.0;
+                            else if (treshold1_4 < r_4 && r_4 <= treshold3_4) value = (2.0 / 3.0) * 255.0;
+                            else value = 255.0;
+                            break;
+                        case 8:
+                            var treshold1_8 = random.Next(0, 256);
+                            var treshold2_8 = random.Next(0, treshold1_8);
+                            var treshold3_8 = random.Next(treshold1_8, 256);
+                            var treshold4_8 = random.Next(treshold2_8, treshold1_8);
+                            var treshold5_8 = random.Next(treshold1_8, treshold3_8);
+                            var treshold6_8 = random.Next(0, treshold2_8);
+                            var treshold7_8 = random.Next(treshold3_8, 256);
+                            var r_8 = pixel.R;
+                            if (r_8 < treshold6_8) value = 0.0;
+                            else if (treshold6_8 < r_8 && r_8 <= treshold2_8) value = (1.0 / 7.0) * 255.0;
+                            else if (treshold2_8 < r_8 && r_8 <= treshold4_8) value = (2.0 / 7.0) * 255.0;
+                            else if (treshold4_8 < r_8 && r_8 <= treshold1_8) value = (3.0 / 7.0) * 255.0;
+                            else if (treshold1_8 < r_8 && r_8 <= treshold5_8) value = (4.0 / 7.0) * 255.0;
+                            else if (treshold5_8 < r_8 && r_8 <= treshold3_8) value = (5.0 / 7.0) * 255.0;
+                            else if (treshold3_8 < r_8 && r_8 <= treshold7_8) value = (6.0 / 7.0) * 255.0;
+                            else value = 255.0;
+                            break;
+                        case 16:
+                            var treshold1_16 = random.Next(0, 256);
+                            var treshold2_16 = random.Next(0, treshold1_16);
+                            var treshold3_16 = random.Next(treshold1_16, 256);
+                            var treshold4_16 = random.Next(0, treshold2_16);
+                            var treshold5_16 = random.Next(treshold3_16, 256);
+                            var treshold6_16 = random.Next(treshold2_16, treshold1_16);
+                            var treshold7_16 = random.Next(treshold1_16, treshold3_16);
+                            var treshold8_16 = random.Next(0, treshold4_16);
+                            var treshold9_16 = random.Next(treshold5_16, 256);
+                            var treshold10_16 = random.Next(treshold4_16, treshold2_16);
+                            var treshold11_16 = random.Next(treshold3_16, treshold5_16);
+                            var treshold12_16 = random.Next(treshold2_16, treshold6_16);
+                            var treshold13_16 = random.Next(treshold7_16, treshold3_16);
+                            var treshold14_16 = random.Next(treshold6_16, treshold1_16);
+                            var treshold15_16 = random.Next(treshold1_16, treshold7_16);
+
+                            var r_16 = pixel.R;
+                            if (r_16 < treshold8_16) value = 0.0;
+                            else if (treshold8_16 < r_16 && r_16 <= treshold4_16) value = (1.0 / 15.0) * 255.0;
+                            else if (treshold4_16 < r_16 && r_16 <= treshold10_16) value = (2.0 / 15.0) * 255.0;
+                            else if (treshold10_16 < r_16 && r_16 <= treshold2_16) value = (3.0 / 15.0) * 255.0;
+                            else if (treshold2_16 < r_16 && r_16 <= treshold12_16) value = (4.0 / 15.0) * 255.0;
+                            else if (treshold12_16 < r_16 && r_16 <= treshold6_16) value = (5.0 / 15.0) * 255.0;
+                            else if (treshold6_16 < r_16 && r_16 <= treshold14_16) value = (6.0 / 15.0) * 255.0;
+                            else if (treshold14_16 < r_16 && r_16 <= treshold1_16) value = (7.0 / 15.0) * 255.0;
+                            else if (treshold1_16 < r_16 && r_16 <= treshold15_16) value = (8.0 / 15.0) * 255.0;
+                            else if (treshold15_16 < r_16 && r_16 <= treshold7_16) value = (9.0 / 15.0) * 255.0;
+                            else if (treshold7_16 < r_16 && r_16 <= treshold13_16) value = (10.0 / 15.0) * 255.0;
+                            else if (treshold13_16 < r_16 && r_16 <= treshold3_16) value = (11.0 / 15.0) * 255.0;
+                            else if (treshold3_16 < r_16 && r_16 <= treshold11_16) value = (12.0 / 15.0) * 255.0;
+                            else if (treshold11_16 < r_16 && r_16 <= treshold5_16) value = (13.0 / 15.0) * 255.0;
+                            else if (treshold5_16 < r_16 && r_16 <= treshold9_16) value = (14.0 / 15.0) * 255.0;
+                            else value = 255.0;
+                            break;
+                    }
+                    bitmap.SetPixel(x, y, Color.FromArgb(pixel.A, (int)value, (int)value, (int)value));
+                }
+            }
+            pictureBox1.Image = GrayScale(globalBitmap, false);
+            pictureBox2.Image = bitmap;
         }
     }
 }

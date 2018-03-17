@@ -45,6 +45,7 @@
             this.button2 = new System.Windows.Forms.Button();
             this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.Filters = new System.Windows.Forms.TabPage();
+            this.button16 = new System.Windows.Forms.Button();
             this.button15 = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
             this.textBox3 = new System.Windows.Forms.TextBox();
@@ -61,7 +62,9 @@
             this.button7 = new System.Windows.Forms.Button();
             this.button8 = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.button16 = new System.Windows.Forms.Button();
+            this.button17 = new System.Windows.Forms.Button();
+            this.comboBox2 = new System.Windows.Forms.ComboBox();
+            this.label6 = new System.Windows.Forms.Label();
             this.Graph.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
@@ -234,6 +237,9 @@
             // 
             // Filters
             // 
+            this.Filters.Controls.Add(this.label6);
+            this.Filters.Controls.Add(this.comboBox2);
+            this.Filters.Controls.Add(this.button17);
             this.Filters.Controls.Add(this.button16);
             this.Filters.Controls.Add(this.button15);
             this.Filters.Controls.Add(this.label5);
@@ -258,11 +264,21 @@
             this.Filters.Text = "Filters";
             this.Filters.UseVisualStyleBackColor = true;
             // 
+            // button16
+            // 
+            this.button16.Location = new System.Drawing.Point(17, 773);
+            this.button16.Name = "button16";
+            this.button16.Size = new System.Drawing.Size(192, 35);
+            this.button16.TabIndex = 20;
+            this.button16.Text = "Average dithering";
+            this.button16.UseVisualStyleBackColor = true;
+            this.button16.Click += new System.EventHandler(this.button16_Click);
+            // 
             // button15
             // 
-            this.button15.Location = new System.Drawing.Point(221, 734);
+            this.button15.Location = new System.Drawing.Point(215, 733);
             this.button15.Name = "button15";
-            this.button15.Size = new System.Drawing.Size(165, 33);
+            this.button15.Size = new System.Drawing.Size(192, 33);
             this.button15.TabIndex = 19;
             this.button15.Text = "Set new picture";
             this.button15.UseVisualStyleBackColor = true;
@@ -271,7 +287,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(831, 647);
+            this.label5.Location = new System.Drawing.Point(419, 619);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(133, 17);
             this.label5.TabIndex = 18;
@@ -279,14 +295,14 @@
             // 
             // textBox3
             // 
-            this.textBox3.Location = new System.Drawing.Point(834, 677);
+            this.textBox3.Location = new System.Drawing.Point(422, 639);
             this.textBox3.Name = "textBox3";
             this.textBox3.Size = new System.Drawing.Size(130, 22);
             this.textBox3.TabIndex = 17;
             // 
             // button14
             // 
-            this.button14.Location = new System.Drawing.Point(982, 657);
+            this.button14.Location = new System.Drawing.Point(571, 619);
             this.button14.Name = "button14";
             this.button14.Size = new System.Drawing.Size(184, 42);
             this.button14.TabIndex = 16;
@@ -328,7 +344,7 @@
             this.button9.Location = new System.Drawing.Point(215, 680);
             this.button9.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button9.Name = "button9";
-            this.button9.Size = new System.Drawing.Size(171, 33);
+            this.button9.Size = new System.Drawing.Size(192, 33);
             this.button9.TabIndex = 1;
             this.button9.Text = "Apply convolution filter";
             this.button9.UseVisualStyleBackColor = true;
@@ -364,7 +380,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(119, 734);
+            this.button1.Location = new System.Drawing.Point(113, 734);
             this.button1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(96, 33);
@@ -398,7 +414,7 @@
             this.button7.Location = new System.Drawing.Point(119, 619);
             this.button7.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(197, 33);
+            this.button7.Size = new System.Drawing.Size(186, 33);
             this.button7.TabIndex = 8;
             this.button7.Text = "brightness correction";
             this.button7.UseVisualStyleBackColor = true;
@@ -406,7 +422,7 @@
             // 
             // button8
             // 
-            this.button8.Location = new System.Drawing.Point(322, 619);
+            this.button8.Location = new System.Drawing.Point(311, 619);
             this.button8.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button8.Name = "button8";
             this.button8.Size = new System.Drawing.Size(96, 33);
@@ -425,15 +441,39 @@
             this.tabControl1.Size = new System.Drawing.Size(1784, 1044);
             this.tabControl1.TabIndex = 18;
             // 
-            // button16
+            // button17
             // 
-            this.button16.Location = new System.Drawing.Point(17, 773);
-            this.button16.Name = "button16";
-            this.button16.Size = new System.Drawing.Size(96, 35);
-            this.button16.TabIndex = 20;
-            this.button16.Text = "Dithering";
-            this.button16.UseVisualStyleBackColor = true;
-            this.button16.Click += new System.EventHandler(this.button16_Click);
+            this.button17.Location = new System.Drawing.Point(571, 678);
+            this.button17.Name = "button17";
+            this.button17.Size = new System.Drawing.Size(192, 35);
+            this.button17.TabIndex = 21;
+            this.button17.Text = "Random dithering";
+            this.button17.UseVisualStyleBackColor = true;
+            this.button17.Click += new System.EventHandler(this.button17_Click);
+            // 
+            // comboBox2
+            // 
+            this.comboBox2.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.comboBox2.ImeMode = System.Windows.Forms.ImeMode.Off;
+            this.comboBox2.Items.AddRange(new object[] {
+            "2",
+            "4",
+            "8",
+            "16"});
+            this.comboBox2.Location = new System.Drawing.Point(422, 689);
+            this.comboBox2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.comboBox2.Name = "comboBox2";
+            this.comboBox2.Size = new System.Drawing.Size(130, 24);
+            this.comboBox2.TabIndex = 22;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(419, 670);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(146, 17);
+            this.label6.TabIndex = 23;
+            this.label6.Text = "Number of gray levels";
             // 
             // Form1
             // 
@@ -491,6 +531,9 @@
         private System.Windows.Forms.Button button14;
         private System.Windows.Forms.Button button15;
         private System.Windows.Forms.Button button16;
+        private System.Windows.Forms.Button button17;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.ComboBox comboBox2;
     }
 }
 
