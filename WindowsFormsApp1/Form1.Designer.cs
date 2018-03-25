@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend4 = new System.Windows.Forms.DataVisualization.Charting.Legend();
             this.Graph = new System.Windows.Forms.TabPage();
             this.button13 = new System.Windows.Forms.Button();
             this.pictureBox3 = new System.Windows.Forms.PictureBox();
@@ -65,6 +65,7 @@
             this.button17 = new System.Windows.Forms.Button();
             this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.label6 = new System.Windows.Forms.Label();
+            this.button18 = new System.Windows.Forms.Button();
             this.Graph.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
@@ -223,10 +224,10 @@
             // 
             // chart1
             // 
-            chartArea3.Name = "ChartArea1";
-            this.chart1.ChartAreas.Add(chartArea3);
-            legend3.Name = "Legend1";
-            this.chart1.Legends.Add(legend3);
+            chartArea4.Name = "ChartArea1";
+            this.chart1.ChartAreas.Add(chartArea4);
+            legend4.Name = "Legend1";
+            this.chart1.Legends.Add(legend4);
             this.chart1.Location = new System.Drawing.Point(7, 6);
             this.chart1.Name = "chart1";
             this.chart1.Size = new System.Drawing.Size(1769, 777);
@@ -237,6 +238,7 @@
             // 
             // Filters
             // 
+            this.Filters.Controls.Add(this.button18);
             this.Filters.Controls.Add(this.label6);
             this.Filters.Controls.Add(this.comboBox2);
             this.Filters.Controls.Add(this.button17);
@@ -475,6 +477,16 @@
             this.label6.TabIndex = 23;
             this.label6.Text = "Number of gray levels";
             // 
+            // button18
+            // 
+            this.button18.Location = new System.Drawing.Point(215, 773);
+            this.button18.Name = "button18";
+            this.button18.Size = new System.Drawing.Size(192, 35);
+            this.button18.TabIndex = 24;
+            this.button18.Text = "Ordered dithering";
+            this.button18.UseVisualStyleBackColor = true;
+            this.button18.Click += new System.EventHandler(this.button18_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -534,6 +546,7 @@
         private System.Windows.Forms.Button button17;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.ComboBox comboBox2;
+        private System.Windows.Forms.Button button18;
     }
 }
 
