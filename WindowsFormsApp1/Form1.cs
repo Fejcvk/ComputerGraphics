@@ -24,6 +24,7 @@ namespace WindowsFormsApp1
             comboBox1.SelectedIndex = 0;
             comboBox2.SelectedIndex = 0;
         }
+        #region lab1Home
         #region inverse filter
         private void button6_Click(object sender, EventArgs e)
         {
@@ -479,6 +480,25 @@ namespace WindowsFormsApp1
                 Console.WriteLine(p.ToString());
         }
         #endregion
+        #region opend dialog file
+        private void button15_Click(object sender, EventArgs e)
+        {
+            using (OpenFileDialog dlg = new OpenFileDialog())
+            {
+                dlg.Title = "Open Image";
+                dlg.Filter = "All files |*.*";
+
+                if (dlg.ShowDialog() == DialogResult.OK)
+                {
+
+                    pictureBox1.Image = new Bitmap(dlg.FileName);
+                    pictureBox2.Image = new Bitmap(dlg.FileName);
+                    globalBitmap = new Bitmap(dlg.FileName);
+                }
+            }
+        }
+        #endregion
+        #endregion
         #region labPartL1
         private void button14_Click(object sender, EventArgs e)
         {
@@ -510,24 +530,6 @@ namespace WindowsFormsApp1
                 }
             }
             pictureBox2.Image = bitmap;
-        }
-        #endregion
-        #region opend dialog file
-        private void button15_Click(object sender, EventArgs e)
-        {
-            using (OpenFileDialog dlg = new OpenFileDialog())
-            {
-                dlg.Title = "Open Image";
-                dlg.Filter = "All files |*.*";
-
-                if (dlg.ShowDialog() == DialogResult.OK)
-                {
-
-                    pictureBox1.Image = new Bitmap(dlg.FileName);
-                    pictureBox2.Image = new Bitmap(dlg.FileName);
-                    globalBitmap = new Bitmap(dlg.FileName);
-                }
-            }
         }
         #endregion
         #region labPartL2
@@ -568,6 +570,7 @@ namespace WindowsFormsApp1
             return treshold;
         }
         #endregion
+        #region lab2Home
         #region random dithering
         private void button17_Click(object sender, EventArgs e)
         {
@@ -682,6 +685,86 @@ namespace WindowsFormsApp1
         int[,] dither4Matrix = { { 1, 3, 9, 11 }, { 4, 2, 12, 10 }, { 13, 15, 5, 7 }, {16,14,8,6} };
         int[,] dither6Matrix = { {9,11,25,27,13,15}, {12,10,28,26,16,14}, { 21,23,1,3,33,35}, { 24,22,4,2,36,34}, {5,7,29,31,17,19}, {8,6,31,30,20,18}};
         int[,] ditherDotMatrix = { { 12, 5, 6, 13 }, { 4, 0, 1, 7 }, { 11, 3, 2, 8 }, { 15, 10, 9, 14 } };
+        #endregion
+        #region uniform color quantization
+        private void button19_Click(object sender, EventArgs e)
+        {
+            int rDivisor = 1;
+            int gDivisor = 1;
+            int bDivisor = 1;
+            if(rDivisorTb.Text != null)
+            {
+                int value;
+                rDivisor = Int32.TryParse(rDivisorTb.Text, out value) ? value : 1;
+            }
+            if (gDivisorTb.Text != null)
+            {
+                int value;
+                gDivisor = Int32.TryParse(gDivisorTb.Text, out value) ? value : 1;
+            }
+            if (bDivisorTb.Text != null)
+            {
+                int value;
+                bDivisor = Int32.TryParse(bDivisorTb.Text, out value) ? value : 1;
+            }
+            UniformColorQuantization(rDivisor, gDivisor, bDivisor);
+        }
+        private void UniformColorQuantization(int rDivisor, int gDivisor, int bDivisor)
+        {
+            Bitmap bitmap = (Bitmap)globalBitmap.Clone();
+            var listOfRIntervals = CreateListWithInervals(rDivisor);
+            var listOfGIntervals = CreateListWithInervals(gDivisor);
+            var listOfBIntervals = CreateListWithInervals(bDivisor);
+
+            for(var y = 0; y < bitmap.Height; y++)
+            {
+                for(var x = 0; x < bitmap.Width; x++)
+                {
+                    var pixel = bitmap.GetPixel(x, y);
+                    int r, g, b = 0;
+                    r = GetChannelValue(listOfRIntervals, pixel.R);
+                    g = GetChannelValue(listOfGIntervals, pixel.G);
+                    b = GetChannelValue(listOfBIntervals, pixel.B);
+                    bitmap.SetPixel(x, y, Color.FromArgb(pixel.A, r, g, b));
+                }
+            }
+            pictureBox2.Image = bitmap;
+        }
+
+        private int GetChannelValue(List<int> listOfChannelIntervals, int pixelRValue)
+        {
+            int r = 0;
+            foreach (var el in listOfChannelIntervals)
+            {
+                if (pixelRValue > listOfChannelIntervals.ElementAt(listOfChannelIntervals.Count-1))
+                {
+                    r = (listOfChannelIntervals.ElementAt(listOfChannelIntervals.Count-1) + listOfChannelIntervals.ElementAt(listOfChannelIntervals.Count - 2)) / 2;
+                    break;
+                }
+                else if (pixelRValue < el)
+                {
+                    var it = listOfChannelIntervals.IndexOf(el);
+                    r = (listOfChannelIntervals[it] + listOfChannelIntervals[it - 1]) / 2;
+                    break;
+                }
+            }
+
+            return r;
+        }
+
+        private List<int> CreateListWithInervals(int divisor)
+        {
+            List<int> list = new List<int>();
+            for(int i = 0; i <= divisor; i++)
+            {
+                list.Add(((255 * i) / divisor));
+            }
+            return list;
+        }
+        #endregion
+        #region Median-Cut algorithm
+        //TODO: Median-Cut algorithm
+        #endregion
         #endregion
     }
 }

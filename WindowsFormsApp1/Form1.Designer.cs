@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend4 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
             this.Graph = new System.Windows.Forms.TabPage();
             this.button13 = new System.Windows.Forms.Button();
             this.pictureBox3 = new System.Windows.Forms.PictureBox();
@@ -45,6 +45,10 @@
             this.button2 = new System.Windows.Forms.Button();
             this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.Filters = new System.Windows.Forms.TabPage();
+            this.button18 = new System.Windows.Forms.Button();
+            this.label6 = new System.Windows.Forms.Label();
+            this.comboBox2 = new System.Windows.Forms.ComboBox();
+            this.button17 = new System.Windows.Forms.Button();
             this.button16 = new System.Windows.Forms.Button();
             this.button15 = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
@@ -62,10 +66,13 @@
             this.button7 = new System.Windows.Forms.Button();
             this.button8 = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.button17 = new System.Windows.Forms.Button();
-            this.comboBox2 = new System.Windows.Forms.ComboBox();
-            this.label6 = new System.Windows.Forms.Label();
-            this.button18 = new System.Windows.Forms.Button();
+            this.button19 = new System.Windows.Forms.Button();
+            this.gDivisorTb = new System.Windows.Forms.TextBox();
+            this.bDivisorTb = new System.Windows.Forms.TextBox();
+            this.rDivisorTb = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
             this.Graph.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
@@ -224,10 +231,10 @@
             // 
             // chart1
             // 
-            chartArea4.Name = "ChartArea1";
-            this.chart1.ChartAreas.Add(chartArea4);
-            legend4.Name = "Legend1";
-            this.chart1.Legends.Add(legend4);
+            chartArea2.Name = "ChartArea1";
+            this.chart1.ChartAreas.Add(chartArea2);
+            legend2.Name = "Legend1";
+            this.chart1.Legends.Add(legend2);
             this.chart1.Location = new System.Drawing.Point(7, 6);
             this.chart1.Name = "chart1";
             this.chart1.Size = new System.Drawing.Size(1769, 777);
@@ -238,6 +245,13 @@
             // 
             // Filters
             // 
+            this.Filters.Controls.Add(this.label9);
+            this.Filters.Controls.Add(this.label8);
+            this.Filters.Controls.Add(this.label7);
+            this.Filters.Controls.Add(this.rDivisorTb);
+            this.Filters.Controls.Add(this.bDivisorTb);
+            this.Filters.Controls.Add(this.gDivisorTb);
+            this.Filters.Controls.Add(this.button19);
             this.Filters.Controls.Add(this.button18);
             this.Filters.Controls.Add(this.label6);
             this.Filters.Controls.Add(this.comboBox2);
@@ -265,6 +279,50 @@
             this.Filters.TabIndex = 0;
             this.Filters.Text = "Filters";
             this.Filters.UseVisualStyleBackColor = true;
+            // 
+            // button18
+            // 
+            this.button18.Location = new System.Drawing.Point(215, 773);
+            this.button18.Name = "button18";
+            this.button18.Size = new System.Drawing.Size(192, 35);
+            this.button18.TabIndex = 24;
+            this.button18.Text = "Ordered dithering";
+            this.button18.UseVisualStyleBackColor = true;
+            this.button18.Click += new System.EventHandler(this.button18_Click);
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(419, 670);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(146, 17);
+            this.label6.TabIndex = 23;
+            this.label6.Text = "Number of gray levels";
+            // 
+            // comboBox2
+            // 
+            this.comboBox2.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.comboBox2.ImeMode = System.Windows.Forms.ImeMode.Off;
+            this.comboBox2.Items.AddRange(new object[] {
+            "2",
+            "4",
+            "8",
+            "16"});
+            this.comboBox2.Location = new System.Drawing.Point(422, 689);
+            this.comboBox2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.comboBox2.Name = "comboBox2";
+            this.comboBox2.Size = new System.Drawing.Size(130, 24);
+            this.comboBox2.TabIndex = 22;
+            // 
+            // button17
+            // 
+            this.button17.Location = new System.Drawing.Point(571, 678);
+            this.button17.Name = "button17";
+            this.button17.Size = new System.Drawing.Size(192, 35);
+            this.button17.TabIndex = 21;
+            this.button17.Text = "Random dithering";
+            this.button17.UseVisualStyleBackColor = true;
+            this.button17.Click += new System.EventHandler(this.button17_Click);
             // 
             // button16
             // 
@@ -443,49 +501,63 @@
             this.tabControl1.Size = new System.Drawing.Size(1784, 1044);
             this.tabControl1.TabIndex = 18;
             // 
-            // button17
+            // button19
             // 
-            this.button17.Location = new System.Drawing.Point(571, 678);
-            this.button17.Name = "button17";
-            this.button17.Size = new System.Drawing.Size(192, 35);
-            this.button17.TabIndex = 21;
-            this.button17.Text = "Random dithering";
-            this.button17.UseVisualStyleBackColor = true;
-            this.button17.Click += new System.EventHandler(this.button17_Click);
+            this.button19.Location = new System.Drawing.Point(571, 734);
+            this.button19.Name = "button19";
+            this.button19.Size = new System.Drawing.Size(192, 35);
+            this.button19.TabIndex = 25;
+            this.button19.Text = "Uniform Color Quantization";
+            this.button19.UseVisualStyleBackColor = true;
+            this.button19.Click += new System.EventHandler(this.button19_Click);
             // 
-            // comboBox2
+            // gDivisorTb
             // 
-            this.comboBox2.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.comboBox2.ImeMode = System.Windows.Forms.ImeMode.Off;
-            this.comboBox2.Items.AddRange(new object[] {
-            "2",
-            "4",
-            "8",
-            "16"});
-            this.comboBox2.Location = new System.Drawing.Point(422, 689);
-            this.comboBox2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(130, 24);
-            this.comboBox2.TabIndex = 22;
+            this.gDivisorTb.Location = new System.Drawing.Point(470, 740);
+            this.gDivisorTb.Name = "gDivisorTb";
+            this.gDivisorTb.Size = new System.Drawing.Size(39, 22);
+            this.gDivisorTb.TabIndex = 26;
             // 
-            // label6
+            // bDivisorTb
             // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(419, 670);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(146, 17);
-            this.label6.TabIndex = 23;
-            this.label6.Text = "Number of gray levels";
+            this.bDivisorTb.Location = new System.Drawing.Point(515, 740);
+            this.bDivisorTb.Name = "bDivisorTb";
+            this.bDivisorTb.Size = new System.Drawing.Size(37, 22);
+            this.bDivisorTb.TabIndex = 27;
             // 
-            // button18
+            // rDivisorTb
             // 
-            this.button18.Location = new System.Drawing.Point(215, 773);
-            this.button18.Name = "button18";
-            this.button18.Size = new System.Drawing.Size(192, 35);
-            this.button18.TabIndex = 24;
-            this.button18.Text = "Ordered dithering";
-            this.button18.UseVisualStyleBackColor = true;
-            this.button18.Click += new System.EventHandler(this.button18_Click);
+            this.rDivisorTb.Location = new System.Drawing.Point(422, 740);
+            this.rDivisorTb.Name = "rDivisorTb";
+            this.rDivisorTb.Size = new System.Drawing.Size(42, 22);
+            this.rDivisorTb.TabIndex = 28;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(422, 720);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(40, 17);
+            this.label7.TabIndex = 29;
+            this.label7.Text = "R div";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(468, 720);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(41, 17);
+            this.label8.TabIndex = 30;
+            this.label8.Text = "G div";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(515, 720);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(39, 17);
+            this.label9.TabIndex = 31;
+            this.label9.Text = "B div";
             // 
             // Form1
             // 
@@ -547,6 +619,13 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.ComboBox comboBox2;
         private System.Windows.Forms.Button button18;
+        private System.Windows.Forms.Button button19;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.TextBox rDivisorTb;
+        private System.Windows.Forms.TextBox bDivisorTb;
+        private System.Windows.Forms.TextBox gDivisorTb;
     }
 }
 
