@@ -712,7 +712,7 @@ namespace WindowsFormsApp1
             }
             if (rDivisorTb.Text == "" || gDivisorTb.Text == "" || bDivisorTb.Text == "")
             {
-                MessageBox.Show("Error", "Chuj");
+                MessageBox.Show("Cannot leave empty cells for r,g,b divisors", "Error");
             }
             else
                 UniformColorQuantization(rDivisor, gDivisor, bDivisor);
