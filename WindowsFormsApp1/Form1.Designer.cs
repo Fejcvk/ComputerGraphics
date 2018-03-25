@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend4 = new System.Windows.Forms.DataVisualization.Charting.Legend();
             this.Graph = new System.Windows.Forms.TabPage();
             this.button13 = new System.Windows.Forms.Button();
             this.pictureBox3 = new System.Windows.Forms.PictureBox();
@@ -73,6 +73,9 @@
             this.label7 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
+            this.button20 = new System.Windows.Forms.Button();
+            this.label10 = new System.Windows.Forms.Label();
+            this.textBox4 = new System.Windows.Forms.TextBox();
             this.Graph.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
@@ -231,10 +234,10 @@
             // 
             // chart1
             // 
-            chartArea2.Name = "ChartArea1";
-            this.chart1.ChartAreas.Add(chartArea2);
-            legend2.Name = "Legend1";
-            this.chart1.Legends.Add(legend2);
+            chartArea4.Name = "ChartArea1";
+            this.chart1.ChartAreas.Add(chartArea4);
+            legend4.Name = "Legend1";
+            this.chart1.Legends.Add(legend4);
             this.chart1.Location = new System.Drawing.Point(7, 6);
             this.chart1.Name = "chart1";
             this.chart1.Size = new System.Drawing.Size(1769, 777);
@@ -245,6 +248,9 @@
             // 
             // Filters
             // 
+            this.Filters.Controls.Add(this.textBox4);
+            this.Filters.Controls.Add(this.label10);
+            this.Filters.Controls.Add(this.button20);
             this.Filters.Controls.Add(this.label9);
             this.Filters.Controls.Add(this.label8);
             this.Filters.Controls.Add(this.label7);
@@ -364,7 +370,7 @@
             // 
             this.button14.Location = new System.Drawing.Point(571, 619);
             this.button14.Name = "button14";
-            this.button14.Size = new System.Drawing.Size(184, 42);
+            this.button14.Size = new System.Drawing.Size(192, 42);
             this.button14.TabIndex = 16;
             this.button14.Text = "Gamma corecction";
             this.button14.UseVisualStyleBackColor = true;
@@ -559,6 +565,32 @@
             this.label9.TabIndex = 31;
             this.label9.Text = "B div";
             // 
+            // button20
+            // 
+            this.button20.Location = new System.Drawing.Point(571, 790);
+            this.button20.Name = "button20";
+            this.button20.Size = new System.Drawing.Size(192, 35);
+            this.button20.TabIndex = 32;
+            this.button20.Text = "Median Cut Quantization";
+            this.button20.UseVisualStyleBackColor = true;
+            this.button20.Click += new System.EventHandler(this.button20_Click);
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(434, 782);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(118, 17);
+            this.label10.TabIndex = 34;
+            this.label10.Text = "Number of Colors";
+            // 
+            // textBox4
+            // 
+            this.textBox4.Location = new System.Drawing.Point(425, 803);
+            this.textBox4.Name = "textBox4";
+            this.textBox4.Size = new System.Drawing.Size(129, 22);
+            this.textBox4.TabIndex = 35;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -626,6 +658,9 @@
         private System.Windows.Forms.TextBox rDivisorTb;
         private System.Windows.Forms.TextBox bDivisorTb;
         private System.Windows.Forms.TextBox gDivisorTb;
+        private System.Windows.Forms.TextBox textBox4;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Button button20;
     }
 }
 

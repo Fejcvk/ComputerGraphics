@@ -11,7 +11,7 @@ using System.Windows.Forms.DataVisualization.Charting;
 
 namespace WindowsFormsApp1
 {
-    //TODO: ordered dildering uniform color quantization median cut color quantization
+    //TODO: median cut color quantization
     public partial class Form1 : Form
     {
         Bitmap globalBitmap;
@@ -24,6 +24,7 @@ namespace WindowsFormsApp1
             comboBox1.SelectedIndex = 0;
             comboBox2.SelectedIndex = 0;
         }
+        #region Lab1
         #region lab1Home
         #region inverse filter
         private void button6_Click(object sender, EventArgs e)
@@ -126,7 +127,7 @@ namespace WindowsFormsApp1
                 {
                     var pixel = bmp.GetPixel(x, y);
                     var sumOfChannelValues = 0.3 * pixel.R + 0.6 * pixel.G + 0.1 * pixel.B;
-                    var grayScaleValueOfThePixel = (sumOfChannelValues < 255) ? sumOfChannelValues : 255;
+                    var grayScaleValueOfThePixel = (sumOfChannelValues < 255.0) ? sumOfChannelValues : 255.0;
                     bitmap.SetPixel(x, y, Color.FromArgb(pixel.A, (int)grayScaleValueOfThePixel, (int)grayScaleValueOfThePixel, (int)grayScaleValueOfThePixel));
                 }
             }
@@ -532,6 +533,8 @@ namespace WindowsFormsApp1
             pictureBox2.Image = bitmap;
         }
         #endregion
+        #endregion
+        #region Lab2
         #region labPartL2
         private void button16_Click(object sender, EventArgs e)
         {
@@ -707,7 +710,12 @@ namespace WindowsFormsApp1
                 int value;
                 bDivisor = Int32.TryParse(bDivisorTb.Text, out value) ? value : 1;
             }
-            UniformColorQuantization(rDivisor, gDivisor, bDivisor);
+            if (rDivisorTb.Text == "" || gDivisorTb.Text == "" || bDivisorTb.Text == "")
+            {
+                MessageBox.Show("Error", "Chuj");
+            }
+            else
+                UniformColorQuantization(rDivisor, gDivisor, bDivisor);
         }
         private void UniformColorQuantization(int rDivisor, int gDivisor, int bDivisor)
         {
@@ -762,9 +770,132 @@ namespace WindowsFormsApp1
             return list;
         }
         #endregion
+
         #region Median-Cut algorithm
         //TODO: Median-Cut algorithm
+        private void button20_Click(object sender, EventArgs e)
+        {
+            var value = 0 ;
+            int numberOfColors = Int32.TryParse(textBox4.Text, out value) ? value%2 == 0 ? value : 2 : 2;
+            MedianCutQuantization(2);
+        }
+        private void MedianCutQuantization(int numberOfColors)
+        {
+            Bitmap bitmap = globalBitmap;
+            List<List<Color>> list = new List<List<Color>>();
+            var channelWithBiggestRange = GetChannelWithBiggestRange(bitmap);
+            var listOfPixels = GetListOfPixels(bitmap);
+            var sortedListOfPixels = SortWithChannelPriority(listOfPixels, channelWithBiggestRange);
+            var leftHalfList = sortedListOfPixels.Take(listOfPixels.Count / 2).ToList();
+            var rightHalfList = sortedListOfPixels.Skip(listOfPixels.Count / 2).ToList();
+            var c1 = rightHalfList.ElementAt(rightHalfList.Count / 2);
+            var c2 = leftHalfList.ElementAt(leftHalfList.Count / 2);
+            var rValueOfLastElemFromLeftList = leftHalfList.Last().R;
+            for (var y = 0; y < bitmap.Height; y++)
+            {
+                for (var x = 0; x < bitmap.Width; x++)
+                {
+                    var pixel = bitmap.GetPixel(x, y);
+                    if (pixel.R < rValueOfLastElemFromLeftList)
+                        bitmap.SetPixel(x, y, c2);
+                    else
+                        bitmap.SetPixel(x, y, c1);
+                }
+            }
+            pictureBox2.Image = bitmap;
+        }
+
+
+        private List<Color> SortWithChannelPriority(List<Color> listOfPixels, int priority)
+        {
+            //0->R | 1->G| 2->B
+            switch (priority) {
+                case 0:
+                    var sortedByR = listOfPixels.OrderBy(pixel => pixel.R).ToList();
+                    return sortedByR;
+                case 1:
+                    var sortedByG = listOfPixels.OrderBy(pixel => pixel.G).ToList();
+                    return sortedByG;
+                case 2:
+                    var sortedByB = listOfPixels.OrderBy(pixel => pixel.B).ToList();
+                    return sortedByB;
+            }
+            return null;
+        }
+
+        private List<Color> GetListOfPixels(Bitmap bitmap)
+        {
+            List<Color> list = new List<Color>();
+            for(var y = 0; y < bitmap.Height; y++)
+            {
+                for(var x = 0; x < bitmap.Width; x++)
+                {
+                    list.Add(bitmap.GetPixel(x, y));
+                }
+            }
+            return list;
+        }
+
+        private int GetChannelWithBiggestRange(Bitmap bitmap)
+        {
+            int channelCode = -1;
+            int minR = 255;
+            int minG = 255;
+            int minB = 255;
+            int maxR = 0;
+            int maxG = 0;
+            int maxB = 0;
+            for (var y = 0; y < bitmap.Height; y++)
+            {
+                for (var x = 0; x < bitmap.Width; x++)
+                {
+                    var pixel = bitmap.GetPixel(x, y);
+                    if (pixel.R < minR) minR = pixel.R;
+                    if (pixel.R > maxR) maxR = pixel.R;
+                    if (pixel.G < minG) minG = pixel.G;
+                    if (pixel.G > maxG) maxG = pixel.G;
+                    if (pixel.B > maxB) maxB = pixel.B;
+                    if (pixel.B < minB) minB = pixel.B;
+                }
+            }
+            channelCode = CompareChannels(maxR, maxG, maxB, minR, minG, minB);
+            // 0-R | 1-G| 2-B
+            return channelCode;
+        }
+
+        private int CompareChannels(int maxR, int maxG, int maxB, int minR, int minG, int minB)
+        {
+            int code = -1;
+            if(maxR >= maxG && maxR >= maxB)
+            {
+                if (minR <= minG && minR <= minB)
+                {
+                    code = 0;
+                    return code;
+                }
+            }
+            if (maxG > maxR && maxG > maxB)
+            {
+                if (minG < minR && minG < minB)
+                {
+                    code = 1;
+                    return code;
+                }
+            }
+            if (maxB > maxG && maxR < maxB)
+            {
+                if (minB < minG && minR > minB)
+                {
+                    code = 2;
+                    return code;
+                }
+            }
+            return -1;
+        }
         #endregion
+
+        #endregion
+
         #endregion
     }
 }
