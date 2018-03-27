@@ -23,6 +23,7 @@ namespace WindowsFormsApp1
             pictureBox2.Image = pictureBox1.Image;
             comboBox1.SelectedIndex = 0;
             comboBox2.SelectedIndex = 0;
+            comboBox3.SelectedIndex = 0;
         }
         #region Lab1
         #region lab1Home
@@ -651,7 +652,28 @@ namespace WindowsFormsApp1
                     grayLevel = 16;
                     break;
             }
-            OrderedDithering(ditherDotMatrix, 4, grayLevel);
+            int sizeOfMatrix = 2;
+            var matrix = dither2Matrix;
+            switch (comboBox3.SelectedIndex)
+            {
+                case 0:
+                    sizeOfMatrix = 2;
+                    matrix = dither2Matrix;
+                    break;
+                case 1:
+                    sizeOfMatrix = 3;
+                    matrix = dither3Matrix;
+                    break;
+                case 2:
+                    sizeOfMatrix = 4;
+                    matrix = dither4Matrix;
+                    break;
+                case 3:
+                    sizeOfMatrix = 6;
+                    matrix = dither6Matrix;
+                    break;
+            }
+            OrderedDithering(matrix, sizeOfMatrix, grayLevel);
         }
         private void OrderedDithering(int[,] ditherMatix, int ditherMatrixSize, int grayLevel)
         {
@@ -719,7 +741,7 @@ namespace WindowsFormsApp1
         }
         private void UniformColorQuantization(int rDivisor, int gDivisor, int bDivisor)
         {
-            Bitmap bitmap = (Bitmap)globalBitmap.Clone();
+            Bitmap bitmap = WindowsFormsApp1.Properties.Resources.singapur2;
             var listOfRIntervals = CreateListWithInervals(rDivisor);
             var listOfGIntervals = CreateListWithInervals(gDivisor);
             var listOfBIntervals = CreateListWithInervals(bDivisor);
@@ -806,7 +828,7 @@ namespace WindowsFormsApp1
         }
         private void MedianCutQuantization(int numberOfColors)
         {
-            Bitmap bitmap = (Bitmap)globalBitmap.Clone();
+            Bitmap bitmap = WindowsFormsApp1.Properties.Resources.singapur2;
             var listOfPixels = GetListOfPixels(bitmap);
             int depth = (int)Math.Sqrt(numberOfColors);
             var pixels = RecursivelyDivideListintoParts(0, depth, listOfPixels);
