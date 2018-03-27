@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend4 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
             this.Graph = new System.Windows.Forms.TabPage();
             this.button13 = new System.Windows.Forms.Button();
             this.pictureBox3 = new System.Windows.Forms.PictureBox();
@@ -45,6 +45,16 @@
             this.button2 = new System.Windows.Forms.Button();
             this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.Filters = new System.Windows.Forms.TabPage();
+            this.textBox4 = new System.Windows.Forms.TextBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.button20 = new System.Windows.Forms.Button();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.rDivisorTb = new System.Windows.Forms.TextBox();
+            this.bDivisorTb = new System.Windows.Forms.TextBox();
+            this.gDivisorTb = new System.Windows.Forms.TextBox();
+            this.button19 = new System.Windows.Forms.Button();
             this.button18 = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
             this.comboBox2 = new System.Windows.Forms.ComboBox();
@@ -66,16 +76,6 @@
             this.button7 = new System.Windows.Forms.Button();
             this.button8 = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.button19 = new System.Windows.Forms.Button();
-            this.gDivisorTb = new System.Windows.Forms.TextBox();
-            this.bDivisorTb = new System.Windows.Forms.TextBox();
-            this.rDivisorTb = new System.Windows.Forms.TextBox();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
-            this.button20 = new System.Windows.Forms.Button();
-            this.label10 = new System.Windows.Forms.Label();
-            this.textBox4 = new System.Windows.Forms.TextBox();
             this.Graph.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
@@ -234,10 +234,10 @@
             // 
             // chart1
             // 
-            chartArea4.Name = "ChartArea1";
-            this.chart1.ChartAreas.Add(chartArea4);
-            legend4.Name = "Legend1";
-            this.chart1.Legends.Add(legend4);
+            chartArea1.Name = "ChartArea1";
+            this.chart1.ChartAreas.Add(chartArea1);
+            legend1.Name = "Legend1";
+            this.chart1.Legends.Add(legend1);
             this.chart1.Location = new System.Drawing.Point(7, 6);
             this.chart1.Name = "chart1";
             this.chart1.Size = new System.Drawing.Size(1769, 777);
@@ -286,9 +286,93 @@
             this.Filters.Text = "Filters";
             this.Filters.UseVisualStyleBackColor = true;
             // 
+            // textBox4
+            // 
+            this.textBox4.Location = new System.Drawing.Point(425, 803);
+            this.textBox4.Name = "textBox4";
+            this.textBox4.Size = new System.Drawing.Size(129, 22);
+            this.textBox4.TabIndex = 35;
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(434, 782);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(118, 17);
+            this.label10.TabIndex = 34;
+            this.label10.Text = "Number of Colors";
+            // 
+            // button20
+            // 
+            this.button20.Location = new System.Drawing.Point(571, 790);
+            this.button20.Name = "button20";
+            this.button20.Size = new System.Drawing.Size(192, 35);
+            this.button20.TabIndex = 32;
+            this.button20.Text = "Median Cut Quantization";
+            this.button20.UseVisualStyleBackColor = true;
+            this.button20.Click += new System.EventHandler(this.button20_Click);
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(515, 720);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(39, 17);
+            this.label9.TabIndex = 31;
+            this.label9.Text = "B div";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(468, 720);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(41, 17);
+            this.label8.TabIndex = 30;
+            this.label8.Text = "G div";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(422, 720);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(40, 17);
+            this.label7.TabIndex = 29;
+            this.label7.Text = "R div";
+            // 
+            // rDivisorTb
+            // 
+            this.rDivisorTb.Location = new System.Drawing.Point(422, 740);
+            this.rDivisorTb.Name = "rDivisorTb";
+            this.rDivisorTb.Size = new System.Drawing.Size(42, 22);
+            this.rDivisorTb.TabIndex = 28;
+            // 
+            // bDivisorTb
+            // 
+            this.bDivisorTb.Location = new System.Drawing.Point(515, 740);
+            this.bDivisorTb.Name = "bDivisorTb";
+            this.bDivisorTb.Size = new System.Drawing.Size(37, 22);
+            this.bDivisorTb.TabIndex = 27;
+            // 
+            // gDivisorTb
+            // 
+            this.gDivisorTb.Location = new System.Drawing.Point(470, 740);
+            this.gDivisorTb.Name = "gDivisorTb";
+            this.gDivisorTb.Size = new System.Drawing.Size(39, 22);
+            this.gDivisorTb.TabIndex = 26;
+            // 
+            // button19
+            // 
+            this.button19.Location = new System.Drawing.Point(571, 734);
+            this.button19.Name = "button19";
+            this.button19.Size = new System.Drawing.Size(192, 35);
+            this.button19.TabIndex = 25;
+            this.button19.Text = "Uniform Color Quantization";
+            this.button19.UseVisualStyleBackColor = true;
+            this.button19.Click += new System.EventHandler(this.button19_Click);
+            // 
             // button18
             // 
-            this.button18.Location = new System.Drawing.Point(215, 773);
+            this.button18.Location = new System.Drawing.Point(571, 633);
             this.button18.Name = "button18";
             this.button18.Size = new System.Drawing.Size(192, 35);
             this.button18.TabIndex = 24;
@@ -322,7 +406,7 @@
             // 
             // button17
             // 
-            this.button17.Location = new System.Drawing.Point(571, 678);
+            this.button17.Location = new System.Drawing.Point(571, 683);
             this.button17.Name = "button17";
             this.button17.Size = new System.Drawing.Size(192, 35);
             this.button17.TabIndex = 21;
@@ -368,9 +452,9 @@
             // 
             // button14
             // 
-            this.button14.Location = new System.Drawing.Point(571, 619);
+            this.button14.Location = new System.Drawing.Point(215, 773);
             this.button14.Name = "button14";
-            this.button14.Size = new System.Drawing.Size(192, 42);
+            this.button14.Size = new System.Drawing.Size(192, 35);
             this.button14.TabIndex = 16;
             this.button14.Text = "Gamma corecction";
             this.button14.UseVisualStyleBackColor = true;
@@ -466,7 +550,7 @@
             // 
             // button6
             // 
-            this.button6.Location = new System.Drawing.Point(17, 619);
+            this.button6.Location = new System.Drawing.Point(17, 635);
             this.button6.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(96, 33);
@@ -477,7 +561,7 @@
             // 
             // button7
             // 
-            this.button7.Location = new System.Drawing.Point(119, 619);
+            this.button7.Location = new System.Drawing.Point(119, 635);
             this.button7.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button7.Name = "button7";
             this.button7.Size = new System.Drawing.Size(186, 33);
@@ -488,7 +572,7 @@
             // 
             // button8
             // 
-            this.button8.Location = new System.Drawing.Point(311, 619);
+            this.button8.Location = new System.Drawing.Point(311, 635);
             this.button8.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button8.Name = "button8";
             this.button8.Size = new System.Drawing.Size(96, 33);
@@ -506,90 +590,6 @@
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(1784, 1044);
             this.tabControl1.TabIndex = 18;
-            // 
-            // button19
-            // 
-            this.button19.Location = new System.Drawing.Point(571, 734);
-            this.button19.Name = "button19";
-            this.button19.Size = new System.Drawing.Size(192, 35);
-            this.button19.TabIndex = 25;
-            this.button19.Text = "Uniform Color Quantization";
-            this.button19.UseVisualStyleBackColor = true;
-            this.button19.Click += new System.EventHandler(this.button19_Click);
-            // 
-            // gDivisorTb
-            // 
-            this.gDivisorTb.Location = new System.Drawing.Point(470, 740);
-            this.gDivisorTb.Name = "gDivisorTb";
-            this.gDivisorTb.Size = new System.Drawing.Size(39, 22);
-            this.gDivisorTb.TabIndex = 26;
-            // 
-            // bDivisorTb
-            // 
-            this.bDivisorTb.Location = new System.Drawing.Point(515, 740);
-            this.bDivisorTb.Name = "bDivisorTb";
-            this.bDivisorTb.Size = new System.Drawing.Size(37, 22);
-            this.bDivisorTb.TabIndex = 27;
-            // 
-            // rDivisorTb
-            // 
-            this.rDivisorTb.Location = new System.Drawing.Point(422, 740);
-            this.rDivisorTb.Name = "rDivisorTb";
-            this.rDivisorTb.Size = new System.Drawing.Size(42, 22);
-            this.rDivisorTb.TabIndex = 28;
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(422, 720);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(40, 17);
-            this.label7.TabIndex = 29;
-            this.label7.Text = "R div";
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(468, 720);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(41, 17);
-            this.label8.TabIndex = 30;
-            this.label8.Text = "G div";
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(515, 720);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(39, 17);
-            this.label9.TabIndex = 31;
-            this.label9.Text = "B div";
-            // 
-            // button20
-            // 
-            this.button20.Location = new System.Drawing.Point(571, 790);
-            this.button20.Name = "button20";
-            this.button20.Size = new System.Drawing.Size(192, 35);
-            this.button20.TabIndex = 32;
-            this.button20.Text = "Median Cut Quantization";
-            this.button20.UseVisualStyleBackColor = true;
-            this.button20.Click += new System.EventHandler(this.button20_Click);
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(434, 782);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(118, 17);
-            this.label10.TabIndex = 34;
-            this.label10.Text = "Number of Colors";
-            // 
-            // textBox4
-            // 
-            this.textBox4.Location = new System.Drawing.Point(425, 803);
-            this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(129, 22);
-            this.textBox4.TabIndex = 35;
             // 
             // Form1
             // 

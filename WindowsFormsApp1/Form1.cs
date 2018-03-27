@@ -116,9 +116,9 @@ namespace WindowsFormsApp1
         private void button1_Click(object sender, EventArgs e)
         {
             var bitmap = new Bitmap(globalBitmap);
-            pictureBox2.Image = GrayScale(bitmap,true);
+            pictureBox2.Image = GrayScale(bitmap, true);
         }
-        private Bitmap GrayScale(Bitmap bmp,bool needToSetPicture)
+        private Bitmap GrayScale(Bitmap bmp, bool needToSetPicture)
         {
             Bitmap bitmap = bmp;
             for (var y = 0; y < bitmap.Height; y++)
@@ -200,9 +200,9 @@ namespace WindowsFormsApp1
                         { 1,1,1}
                      };
             }
-            ConvolutionFilter(matrix, bitmap, divisor,offset);
+            ConvolutionFilter(matrix, bitmap, divisor, offset);
         }
-        private void ConvolutionFilter(int[,] matrix, Bitmap bmp, int divisor,int offset)
+        private void ConvolutionFilter(int[,] matrix, Bitmap bmp, int divisor, int offset)
         {
             //uwzglednic border pixele
             Bitmap tempBitmap = new Bitmap(globalBitmap);
@@ -224,7 +224,7 @@ namespace WindowsFormsApp1
                             my = (my < 0) ? 0 : (my >= bmp.Height) ? bmp.Height - 1 : my;
 
                             var pixel = globalBitmap.GetPixel(mx, my);
-                            
+
                             sumR += pixel.R * matrix[j, i];
                             sumG += pixel.G * matrix[j, i];
                             sumB += pixel.B * matrix[j, i];
@@ -248,10 +248,10 @@ namespace WindowsFormsApp1
             //TODO: implement to select given filter and then perform operation based on it
             Bitmap grayScaleBitmap = (Bitmap)globalBitmap.Clone();
             Bitmap processedBitmap = (Bitmap)globalBitmap.Clone();
-            processedBitmap = BrightnessConvertion(processedBitmap,20);
+            processedBitmap = BrightnessConvertion(processedBitmap, 20);
             this.chart1.Series.Add("Function");
             var processedSeries = this.chart1.Series["Function"];
-            processedSeries.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line ;
+            processedSeries.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
             processedSeries.MarkerStyle = MarkerStyle.Circle;
             processedSeries.MarkerColor = Color.Red;
             processedSeries.MarkerSize = 5;
@@ -264,7 +264,7 @@ namespace WindowsFormsApp1
             chart1.ChartAreas[0].AxisY.Interval = 32;
             processedSeries.ToolTip = "X =#VALX, Y =#VALY";
 
- 
+
             processedSeries.Points.AddXY(0, 0);
             processedSeries.Points.AddXY(255, 255);
         }
@@ -387,8 +387,8 @@ namespace WindowsFormsApp1
         private void button12_Click(object sender, EventArgs e)
         {
             var processedSeries = this.chart1.Series["Function"];
-            var x = (textBox1.Text != "" ) ? Int16.Parse(textBox1.Text) : -1;
-            var y = (textBox2.Text != "" ) ? Int16.Parse(textBox2.Text) : -1;
+            var x = (textBox1.Text != "") ? Int16.Parse(textBox1.Text) : -1;
+            var y = (textBox2.Text != "") ? Int16.Parse(textBox2.Text) : -1;
             bool canAdd = true;
             if (x == -1 || y == -1) MessageBox.Show("Cannot add point without values", "Error");
             else if (x >= 0 && x < 256 && y >= 0 && y < 256)
@@ -401,24 +401,24 @@ namespace WindowsFormsApp1
                         canAdd = false;
                     }
                 }
-                if(canAdd)processedSeries.Points.AddXY(x, y);
+                if (canAdd) processedSeries.Points.AddXY(x, y);
             }
             else
             {
                 MessageBox.Show("Point coordinates have to be between 0 and 255", "Error");
             }
-            processedSeries.Sort(PointSortOrder.Ascending,"X");
+            processedSeries.Sort(PointSortOrder.Ascending, "X");
             foreach (var p in processedSeries.Points)
                 Console.WriteLine(p.ToString());
         }
         //create lookup function
         private void createLookupTableFromFunction(DataPoint startPoint, DataPoint endPoint)
         {
-            double coeff = (endPoint.YValues[0] - startPoint.YValues[0])/(endPoint.XValue - startPoint.XValue);
-            double b = startPoint.YValues[0] - coeff*startPoint.XValue;
+            double coeff = (endPoint.YValues[0] - startPoint.YValues[0]) / (endPoint.XValue - startPoint.XValue);
+            double b = startPoint.YValues[0] - coeff * startPoint.XValue;
             int range = (int)endPoint.XValue - (int)startPoint.XValue;
             var x = startPoint.XValue;
-            for (var i = 0; i < range+1; i++)
+            for (var i = 0; i < range + 1; i++)
             {
                 double ax = coeff * x;
 
@@ -435,15 +435,15 @@ namespace WindowsFormsApp1
             {
                 createLookupTableFromFunction(chart1.Series["Function"].Points[i], chart1.Series["Function"].Points[i + 1]);
             }
-            var bitmap = GrayScale((Bitmap)globalBitmap.Clone(),false);
-            
+            var bitmap = GrayScale((Bitmap)globalBitmap.Clone(), false);
+
             for (var y = 0; y < bitmap.Height; y++)
             {
-                for(var x = 0; x < bitmap.Width; x++)
+                for (var x = 0; x < bitmap.Width; x++)
                 {
                     var pixel = bitmap.GetPixel(x, y);
                     var colorValue = lookupTable[pixel.R];
-                    bitmap.SetPixel(x, y, Color.FromArgb((int)colorValue,(int)colorValue,(int)colorValue));
+                    bitmap.SetPixel(x, y, Color.FromArgb((int)colorValue, (int)colorValue, (int)colorValue));
                 }
             }
             pictureBox3.Image = bitmap;
@@ -510,16 +510,16 @@ namespace WindowsFormsApp1
         {
             var gamma = coeff;
             Bitmap bitmap = (Bitmap)globalBitmap.Clone();
-            for(int y = 0; y < bitmap.Height; y++)
+            for (int y = 0; y < bitmap.Height; y++)
             {
-                for(int x = 0; x < bitmap.Width; x++)
+                for (int x = 0; x < bitmap.Width; x++)
                 {
                     var pixel = globalBitmap.GetPixel(x, y);
                     double r = pixel.R;
                     var g = pixel.G;
                     var b = pixel.B;
 
-                    var newR = 255.0 * Math.Pow((r/255.0),gamma);
+                    var newR = 255.0 * Math.Pow((r / 255.0), gamma);
                     var newG = 255.0 * Math.Pow((g / 255.0), gamma);
                     var newB = 255.0 * Math.Pow((b / 255.0), gamma);
 
@@ -542,11 +542,11 @@ namespace WindowsFormsApp1
         }
         private void AvarageDithering()
         {
-            Bitmap bitmap =  GrayScale((Bitmap)globalBitmap.Clone(),false);
+            Bitmap bitmap = GrayScale((Bitmap)globalBitmap.Clone(), false);
             int treshold = CalcualteTreshold(bitmap);
-            for (int y =0; y < bitmap.Height; y++)
+            for (int y = 0; y < bitmap.Height; y++)
             {
-                for(int x = 0; x < bitmap.Width; x++)
+                for (int x = 0; x < bitmap.Width; x++)
                 {
                     var pixel = bitmap.GetPixel(x, y);
                     var avgValue = (pixel.R < treshold) ? 0 : 255;
@@ -578,7 +578,7 @@ namespace WindowsFormsApp1
         private void button17_Click(object sender, EventArgs e)
         {
             int grayLevel = 2;
-            switch(comboBox2.SelectedIndex)
+            switch (comboBox2.SelectedIndex)
             {
                 case 0:
                     break;
@@ -596,24 +596,24 @@ namespace WindowsFormsApp1
         }
         private void RandomDitheringOptimized(int levelOfGray)
         {
-            Bitmap bitmap = GrayScale((Bitmap)globalBitmap.Clone(),false);
+            Bitmap bitmap = GrayScale((Bitmap)globalBitmap.Clone(), false);
             Random random = new Random();
             int[] boundriesArray = new int[levelOfGray - 1];
-            for( var y = 0; y < bitmap.Height; y++)
+            for (var y = 0; y < bitmap.Height; y++)
             {
-                for(var x = 0; x < bitmap.Width; x++)
+                for (var x = 0; x < bitmap.Width; x++)
                 {
-                    var pixel = bitmap.GetPixel(x,y);
+                    var pixel = bitmap.GetPixel(x, y);
                     var channelValue = pixel.R;
-                    for(int i = 0; i < levelOfGray -1; i++)
+                    for (int i = 0; i < levelOfGray - 1; i++)
                     {
                         double startTempBound = i * 255.0 / (levelOfGray - 1);
                         double endTempBound = (i + 1) * 255.0 / (levelOfGray - 1);
                         boundriesArray[i] = random.Next((int)startTempBound, (int)endTempBound);
                     }
-                    for(var i = 0; i < levelOfGray -1; i++)
+                    for (var i = 0; i < levelOfGray - 1; i++)
                     {
-                        if(channelValue >= boundriesArray[levelOfGray-2])
+                        if (channelValue >= boundriesArray[levelOfGray - 2])
                         {
                             var boundedGrayLevelChannelValue = 255.0;
                             bitmap.SetPixel(x, y, Color.FromArgb(pixel.A, (int)boundedGrayLevelChannelValue, (int)boundedGrayLevelChannelValue, (int)boundedGrayLevelChannelValue));
@@ -653,19 +653,19 @@ namespace WindowsFormsApp1
             }
             OrderedDithering(ditherDotMatrix, 4, grayLevel);
         }
-        private void OrderedDithering(int[,]ditherMatix ,int ditherMatrixSize, int grayLevel)
+        private void OrderedDithering(int[,] ditherMatix, int ditherMatrixSize, int grayLevel)
         {
             var matrix = ditherMatix;
             //TODO : size of dithermatrix = [2,3,4,6]
             Bitmap bitmap = GrayScale((Bitmap)globalBitmap.Clone(), false);
             int[] levels = new int[grayLevel];
-            for(int i = 0; i < grayLevel; i++)
+            for (int i = 0; i < grayLevel; i++)
             {
                 levels[i] = i * 255 / (grayLevel - 1);
             }
             for (var y = 0; y < bitmap.Height; y++)
             {
-                for(var x = 0; x < bitmap.Width; x++)
+                for (var x = 0; x < bitmap.Width; x++)
                 {
                     var ditherMatrixValue = matrix[x % ditherMatrixSize, y % ditherMatrixSize];
                     double tresholdValue = ditherMatrixValue / ((ditherMatrixSize * ditherMatrixSize) + 1d);
@@ -685,8 +685,8 @@ namespace WindowsFormsApp1
         #region ditherMainTabs n = 2,3,4,6 + dots
         int[,] dither2Matrix = { { 1, 3 }, { 4, 2 } };
         int[,] dither3Matrix = { { 3, 7, 4 }, { 6, 1, 9 }, { 2, 8, 5 } };
-        int[,] dither4Matrix = { { 1, 3, 9, 11 }, { 4, 2, 12, 10 }, { 13, 15, 5, 7 }, {16,14,8,6} };
-        int[,] dither6Matrix = { {9,11,25,27,13,15}, {12,10,28,26,16,14}, { 21,23,1,3,33,35}, { 24,22,4,2,36,34}, {5,7,29,31,17,19}, {8,6,31,30,20,18}};
+        int[,] dither4Matrix = { { 1, 3, 9, 11 }, { 4, 2, 12, 10 }, { 13, 15, 5, 7 }, { 16, 14, 8, 6 } };
+        int[,] dither6Matrix = { { 9, 11, 25, 27, 13, 15 }, { 12, 10, 28, 26, 16, 14 }, { 21, 23, 1, 3, 33, 35 }, { 24, 22, 4, 2, 36, 34 }, { 5, 7, 29, 31, 17, 19 }, { 8, 6, 31, 30, 20, 18 } };
         int[,] ditherDotMatrix = { { 12, 5, 6, 13 }, { 4, 0, 1, 7 }, { 11, 3, 2, 8 }, { 15, 10, 9, 14 } };
         #endregion
         #region uniform color quantization
@@ -695,7 +695,7 @@ namespace WindowsFormsApp1
             int rDivisor = 1;
             int gDivisor = 1;
             int bDivisor = 1;
-            if(rDivisorTb.Text != null)
+            if (rDivisorTb.Text != null)
             {
                 int value;
                 rDivisor = Int32.TryParse(rDivisorTb.Text, out value) ? value : 1;
@@ -724,9 +724,9 @@ namespace WindowsFormsApp1
             var listOfGIntervals = CreateListWithInervals(gDivisor);
             var listOfBIntervals = CreateListWithInervals(bDivisor);
 
-            for(var y = 0; y < bitmap.Height; y++)
+            for (var y = 0; y < bitmap.Height; y++)
             {
-                for(var x = 0; x < bitmap.Width; x++)
+                for (var x = 0; x < bitmap.Width; x++)
                 {
                     var pixel = bitmap.GetPixel(x, y);
                     int r, g, b = 0;
@@ -744,9 +744,9 @@ namespace WindowsFormsApp1
             int r = 0;
             foreach (var el in listOfChannelIntervals)
             {
-                if (pixelRValue > listOfChannelIntervals.ElementAt(listOfChannelIntervals.Count-1))
+                if (pixelRValue > listOfChannelIntervals.ElementAt(listOfChannelIntervals.Count - 1))
                 {
-                    r = (listOfChannelIntervals.ElementAt(listOfChannelIntervals.Count-1) + listOfChannelIntervals.ElementAt(listOfChannelIntervals.Count - 2)) / 2;
+                    r = (listOfChannelIntervals.ElementAt(listOfChannelIntervals.Count - 1) + listOfChannelIntervals.ElementAt(listOfChannelIntervals.Count - 2)) / 2;
                     break;
                 }
                 else if (pixelRValue < el)
@@ -763,48 +763,103 @@ namespace WindowsFormsApp1
         private List<int> CreateListWithInervals(int divisor)
         {
             List<int> list = new List<int>();
-            for(int i = 0; i <= divisor; i++)
+            for (int i = 0; i <= divisor; i++)
             {
                 list.Add(((255 * i) / divisor));
             }
             return list;
         }
         #endregion
-
         #region Median-Cut algorithm
-        //TODO: Median-Cut algorithm
         private void button20_Click(object sender, EventArgs e)
         {
-            var value = 0 ;
-            int numberOfColors = Int32.TryParse(textBox4.Text, out value) ? value%2 == 0 ? value : 2 : 2;
-            MedianCutQuantization(2);
+            var value = 0;
+            int numberOfColors = Int32.TryParse(textBox4.Text, out value) ? isPowerOfTwo(value) ? value : ShowMessageBox("Input has to be power of two") : ShowMessageBox("Invalid input");
+            if(numberOfColors>0) MedianCutQuantization(numberOfColors);
+
+        }
+        private int ShowMessageBox(String message) { MessageBox.Show(message,"Error"); return 0; }
+        private bool isPowerOfTwo(int value)
+        {
+            return (Math.Ceiling(Math.Log(value, 2.0)) == Math.Floor(Math.Log(value, 2.0)));
+        }
+        private List<Color> RecursivelyDivideListintoParts(int depth, int maxDepth, List<Color> listOfPixels)
+        {
+            if (depth == maxDepth)
+            {
+                return listOfPixels;
+            }
+            else if(depth < maxDepth)
+            {
+                List<Color> returnList = new List<Color>();
+                var priority = GetChannelWithBiggestRange(listOfPixels);
+                var sortedList = SortWithChannelPriority(listOfPixels, priority);
+                var leftList = sortedList.Take(sortedList.Count / 2).ToList();
+                var rightList = sortedList.Skip(sortedList.Count / 2).ToList();
+                returnList.AddRange(RecursivelyDivideListintoParts(depth + 1, maxDepth, leftList));
+                returnList.AddRange(RecursivelyDivideListintoParts(depth + 1, maxDepth, rightList));
+                return returnList;
+            }
+            else
+                return null;
+
         }
         private void MedianCutQuantization(int numberOfColors)
         {
-            Bitmap bitmap = globalBitmap;
-            List<List<Color>> list = new List<List<Color>>();
-            var channelWithBiggestRange = GetChannelWithBiggestRange(bitmap);
+            Bitmap bitmap = (Bitmap)globalBitmap.Clone();
             var listOfPixels = GetListOfPixels(bitmap);
-            var sortedListOfPixels = SortWithChannelPriority(listOfPixels, channelWithBiggestRange);
-            var leftHalfList = sortedListOfPixels.Take(listOfPixels.Count / 2).ToList();
-            var rightHalfList = sortedListOfPixels.Skip(listOfPixels.Count / 2).ToList();
-            var c1 = rightHalfList.ElementAt(rightHalfList.Count / 2);
-            var c2 = leftHalfList.ElementAt(leftHalfList.Count / 2);
-            var rValueOfLastElemFromLeftList = leftHalfList.Last().R;
-            for (var y = 0; y < bitmap.Height; y++)
+            int depth = (int)Math.Sqrt(numberOfColors);
+            var pixels = RecursivelyDivideListintoParts(0, depth, listOfPixels);
+            var sizeOfCuboid = pixels.Count / numberOfColors;
+            List<Color> listOfColorsForGivenCuboid = new List<Color>();
+            int counter = 0;
+            int meanR = 0; int meanG = 0; int meanB = 0;
+            foreach(var pixel in pixels) { 
+                if (counter < sizeOfCuboid-1)
+                {
+                    var temp = pixel;
+                    meanR += temp.R;
+                    meanG += temp.G;
+                    meanB += temp.B;
+                    counter++;
+                }
+                else
+                {
+                    listOfColorsForGivenCuboid.Add(Color.FromArgb(255, meanR / sizeOfCuboid, meanG / sizeOfCuboid, meanB / sizeOfCuboid));
+                    meanR = 0; meanG = 0; meanB = 0; counter = 0;
+                }
+            }
+            for(var y = 0; y < bitmap.Height; y++)
             {
-                for (var x = 0; x < bitmap.Width; x++)
+                for(var x = 0; x < bitmap.Width; x++)
                 {
                     var pixel = bitmap.GetPixel(x, y);
-                    if (pixel.R < rValueOfLastElemFromLeftList)
-                        bitmap.SetPixel(x, y, c2);
-                    else
-                        bitmap.SetPixel(x, y, c1);
+                    Color color = SetColorForGivenPixelAccordingToProperCuboid(pixel,listOfColorsForGivenCuboid);
+                    bitmap.SetPixel(x, y, color);
                 }
             }
             pictureBox2.Image = bitmap;
         }
 
+        private Color SetColorForGivenPixelAccordingToProperCuboid(Color pixel, List<Color> listOfColorsForGivenCuboid)
+        {
+            double smallesDist = Math.Pow(255,3);
+            Color colorToSet = Color.FromArgb(255,255,255);
+            for(int i = 0; i < listOfColorsForGivenCuboid.Count; i++)
+            {
+                if(Distance(pixel,listOfColorsForGivenCuboid[i]) < smallesDist)
+                {
+                    smallesDist = Distance(pixel, listOfColorsForGivenCuboid[i]);
+                    colorToSet = listOfColorsForGivenCuboid[i];
+                }
+            }
+            return colorToSet;
+        }
+
+        private double Distance(Color pixel, Color color)
+        {
+            return Math.Sqrt(Math.Pow(pixel.R - color.R, 2) + Math.Pow(pixel.G - color.G, 2) + Math.Pow(pixel.B - color.B, 2));
+        }
 
         private List<Color> SortWithChannelPriority(List<Color> listOfPixels, int priority)
         {
@@ -836,20 +891,16 @@ namespace WindowsFormsApp1
             return list;
         }
 
-        private int GetChannelWithBiggestRange(Bitmap bitmap)
+        private int GetChannelWithBiggestRange(List<Color> list)
         {
-            int channelCode = -1;
+            int channelCode;
             int minR = 255;
             int minG = 255;
             int minB = 255;
             int maxR = 0;
             int maxG = 0;
             int maxB = 0;
-            for (var y = 0; y < bitmap.Height; y++)
-            {
-                for (var x = 0; x < bitmap.Width; x++)
-                {
-                    var pixel = bitmap.GetPixel(x, y);
+            foreach(var pixel in list) { 
                     if (pixel.R < minR) minR = pixel.R;
                     if (pixel.R > maxR) maxR = pixel.R;
                     if (pixel.G < minG) minG = pixel.G;
@@ -857,7 +908,6 @@ namespace WindowsFormsApp1
                     if (pixel.B > maxB) maxB = pixel.B;
                     if (pixel.B < minB) minB = pixel.B;
                 }
-            }
             channelCode = CompareChannels(maxR, maxG, maxB, minR, minG, minB);
             // 0-R | 1-G| 2-B
             return channelCode;
@@ -865,37 +915,17 @@ namespace WindowsFormsApp1
 
         private int CompareChannels(int maxR, int maxG, int maxB, int minR, int minG, int minB)
         {
-            int code = -1;
-            if(maxR >= maxG && maxR >= maxB)
-            {
-                if (minR <= minG && minR <= minB)
-                {
-                    code = 0;
-                    return code;
-                }
-            }
-            if (maxG > maxR && maxG > maxB)
-            {
-                if (minG < minR && minG < minB)
-                {
-                    code = 1;
-                    return code;
-                }
-            }
-            if (maxB > maxG && maxR < maxB)
-            {
-                if (minB < minG && minR > minB)
-                {
-                    code = 2;
-                    return code;
-                }
-            }
-            return -1;
+            int code = 0;
+            int rRange = maxR - minR;
+            int gRange = maxG - minG;
+            int bRange = maxB - minB;
+            if (rRange > gRange && rRange > bRange) code = 0;
+            else if (gRange > rRange && gRange > bRange) code = 1;
+            else if (bRange > rRange && bRange > gRange) code = 2;
+            return code;
         }
         #endregion
-
         #endregion
-
         #endregion
     }
 }
