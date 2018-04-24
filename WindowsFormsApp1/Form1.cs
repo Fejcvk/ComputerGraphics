@@ -956,7 +956,7 @@ namespace WindowsFormsApp1
 
         #endregion
         #region Lab3
-
+        #region Lab3 Home
         bool IsSecondClick = false;
         Color color = Color.FromArgb(255, 0, 255);
         Color bgColor = Color.Turquoise;
@@ -991,7 +991,7 @@ namespace WindowsFormsApp1
             public int calculateDistance()
             {
                 checkAndSwapCoordsIfNecessary();
-                var distance = Math.Sqrt((Math.Pow((x1 - x2),2) + Math.Pow((y1 - y2),2)));
+                var distance = Math.Sqrt((Math.Pow((x2 - x1),2) + Math.Pow((y2 - y1),2)));
                 return (int)distance;
             }
             public int X1 { get => x1; set => x1 = value; }
@@ -1033,8 +1033,60 @@ namespace WindowsFormsApp1
                         int wuRadius = tuple.calculateDistance();
                         XiaolinCircles(wuRadius);
                         break;
+                    case 4:
+                        int thickness = Int16.Parse(textBox5.Text);
+                        Bresenham(tuple.X1, tuple.Y1, tuple.X2, tuple.Y2, thickness);
+                        break;
                 }
             }
+        }
+
+        private void Bresenham(int x1, int y1, int x2, int y2, int thickness)
+        {
+            int dx = x2 - x1;
+            int dy = y2 - y1;
+            float m = (float)dy / (float)dx;
+            int d = 2 * dy - dx;
+            int dE = 2 * dy;
+            int dNE = 2 * (dy - dx);
+            int x = x1, y = y1;
+
+            while (x < x2)
+            {
+                if (d < 0)
+                {
+                    d += dE;
+                    x += 1;
+                }
+                else
+                {
+                    d += dNE;
+                    x += 1;
+                    y += 1;
+                }
+                canvas.SetPixel(x, y, color);
+                if (Math.Abs(dx) >= Math.Abs(dy))
+                {
+                    //Perform column copy
+                    Console.WriteLine("Column copy");
+                    for(int i = 0; i < thickness/2; i++)
+                    {
+                        canvas.SetPixel(x, y + i, color);
+                        canvas.SetPixel(x, y - i, color);
+                    }
+                }
+                else
+                {
+                    //perform row copy
+                    Console.WriteLine("Row copy");
+                    for (int i = 0; i < thickness / 2; i++)
+                    {
+                        canvas.SetPixel(x + i, y, color);
+                        canvas.SetPixel(x - i, y, color);
+                    }
+                }
+            }
+            canvasPb.Image = canvas;
         }
 
         private void XiaolinCircles(int wuRadius)
@@ -1075,10 +1127,10 @@ namespace WindowsFormsApp1
                     canvas.SetPixel(tuple.X1 + x - 1, tuple.Y1 + y, color1);
 
                     canvas.SetPixel(tuple.X1 + y, tuple.Y1 + x, color2);
-                    canvas.SetPixel(tuple.X1 + y - 1, tuple.Y1 + x, color1);
+                    canvas.SetPixel(tuple.X1 + y , tuple.Y1 + x - 1, color1);
 
                     canvas.SetPixel(tuple.X1 + y, tuple.Y1 - x, color2);
-                    canvas.SetPixel(tuple.X1 + y - 1, tuple.Y1 - x, color1);
+                    canvas.SetPixel(tuple.X1 + y , tuple.Y1 - x + 1, color1);
 
                     canvas.SetPixel(tuple.X1 + x, tuple.Y1 - y, color2);
                     canvas.SetPixel(tuple.X1 + x - 1, tuple.Y1 - y, color1);
@@ -1087,10 +1139,10 @@ namespace WindowsFormsApp1
                     canvas.SetPixel(tuple.X1 - x + 1, tuple.Y1 - y, color1);
 
                     canvas.SetPixel(tuple.X1 - y, tuple.Y1 - x, color2);
-                    canvas.SetPixel(tuple.X1 - y + 1, tuple.Y1 - x, color1);
+                    canvas.SetPixel(tuple.X1 - y , tuple.Y1 - x + 1, color1);
 
                     canvas.SetPixel(tuple.X1 - y, tuple.Y1 + x, color2);
-                    canvas.SetPixel(tuple.X1 - y + 1, tuple.Y1 + x, color1);
+                    canvas.SetPixel(tuple.X1 - y , tuple.Y1 + x - 1, color1);
 
                     canvas.SetPixel(tuple.X1 - x, tuple.Y1 + y, color2);
                     canvas.SetPixel(tuple.X1 - x + 1, tuple.Y1 + y, color1);
@@ -1225,6 +1277,9 @@ namespace WindowsFormsApp1
             canvas = new Bitmap(canvasPb.Size.Width, canvasPb.Size.Height);
             canvasPb.Image = canvas;
         }
+        #endregion
+        #region Lab3 Lab Task
+        #endregion
         #endregion
     }
 }
