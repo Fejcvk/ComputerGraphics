@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea8 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend8 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea5 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend5 = new System.Windows.Forms.DataVisualization.Charting.Legend();
             this.Graph = new System.Windows.Forms.TabPage();
             this.button13 = new System.Windows.Forms.Button();
             this.pictureBox3 = new System.Windows.Forms.PictureBox();
@@ -45,6 +45,8 @@
             this.button2 = new System.Windows.Forms.Button();
             this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.Filters = new System.Windows.Forms.TabPage();
+            this.label11 = new System.Windows.Forms.Label();
+            this.comboBox3 = new System.Windows.Forms.ComboBox();
             this.textBox4 = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
             this.button20 = new System.Windows.Forms.Button();
@@ -76,8 +78,12 @@
             this.button7 = new System.Windows.Forms.Button();
             this.button8 = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.comboBox3 = new System.Windows.Forms.ComboBox();
-            this.label11 = new System.Windows.Forms.Label();
+            this.Drawing = new System.Windows.Forms.TabPage();
+            this.canvasPb = new System.Windows.Forms.PictureBox();
+            this.button21 = new System.Windows.Forms.Button();
+            this.comboBox4 = new System.Windows.Forms.ComboBox();
+            this.textBox5 = new System.Windows.Forms.TextBox();
+            this.label12 = new System.Windows.Forms.Label();
             this.Graph.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
@@ -85,6 +91,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.tabControl1.SuspendLayout();
+            this.Drawing.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.canvasPb)).BeginInit();
             this.SuspendLayout();
             // 
             // Graph
@@ -105,7 +113,7 @@
             this.Graph.Location = new System.Drawing.Point(4, 25);
             this.Graph.Name = "Graph";
             this.Graph.Padding = new System.Windows.Forms.Padding(3);
-            this.Graph.Size = new System.Drawing.Size(1776, 1015);
+            this.Graph.Size = new System.Drawing.Size(1302, 646);
             this.Graph.TabIndex = 1;
             this.Graph.Text = "Graph";
             this.Graph.UseVisualStyleBackColor = true;
@@ -236,10 +244,10 @@
             // 
             // chart1
             // 
-            chartArea8.Name = "ChartArea1";
-            this.chart1.ChartAreas.Add(chartArea8);
-            legend8.Name = "Legend1";
-            this.chart1.Legends.Add(legend8);
+            chartArea5.Name = "ChartArea1";
+            this.chart1.ChartAreas.Add(chartArea5);
+            legend5.Name = "Legend1";
+            this.chart1.Legends.Add(legend5);
             this.chart1.Location = new System.Drawing.Point(7, 6);
             this.chart1.Name = "chart1";
             this.chart1.Size = new System.Drawing.Size(1769, 777);
@@ -285,10 +293,34 @@
             this.Filters.Location = new System.Drawing.Point(4, 25);
             this.Filters.Name = "Filters";
             this.Filters.Padding = new System.Windows.Forms.Padding(3);
-            this.Filters.Size = new System.Drawing.Size(1776, 1015);
+            this.Filters.Size = new System.Drawing.Size(1302, 646);
             this.Filters.TabIndex = 0;
             this.Filters.Text = "Filters";
             this.Filters.UseVisualStyleBackColor = true;
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(782, 619);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(110, 17);
+            this.label11.TabIndex = 37;
+            this.label11.Text = "Set dither matrix";
+            // 
+            // comboBox3
+            // 
+            this.comboBox3.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.comboBox3.ImeMode = System.Windows.Forms.ImeMode.Off;
+            this.comboBox3.Items.AddRange(new object[] {
+            "2",
+            "3",
+            "4",
+            "6"});
+            this.comboBox3.Location = new System.Drawing.Point(785, 639);
+            this.comboBox3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.comboBox3.Name = "comboBox3";
+            this.comboBox3.Size = new System.Drawing.Size(192, 24);
+            this.comboBox3.TabIndex = 36;
             // 
             // textBox4
             // 
@@ -585,43 +617,85 @@
             // 
             // tabControl1
             // 
+            this.tabControl1.Controls.Add(this.Drawing);
             this.tabControl1.Controls.Add(this.Filters);
             this.tabControl1.Controls.Add(this.Graph);
             this.tabControl1.Location = new System.Drawing.Point(1, 12);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1784, 1044);
+            this.tabControl1.Size = new System.Drawing.Size(1310, 675);
             this.tabControl1.TabIndex = 18;
             // 
-            // comboBox3
+            // Drawing
             // 
-            this.comboBox3.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.comboBox3.ImeMode = System.Windows.Forms.ImeMode.Off;
-            this.comboBox3.Items.AddRange(new object[] {
-            "2",
-            "3",
-            "4",
-            "6"});
-            this.comboBox3.Location = new System.Drawing.Point(785, 639);
-            this.comboBox3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.comboBox3.Name = "comboBox3";
-            this.comboBox3.Size = new System.Drawing.Size(192, 24);
-            this.comboBox3.TabIndex = 36;
+            this.Drawing.Controls.Add(this.canvasPb);
+            this.Drawing.Location = new System.Drawing.Point(4, 25);
+            this.Drawing.Name = "Drawing";
+            this.Drawing.Padding = new System.Windows.Forms.Padding(3);
+            this.Drawing.Size = new System.Drawing.Size(1302, 646);
+            this.Drawing.TabIndex = 2;
+            this.Drawing.Text = "Drawing";
+            this.Drawing.UseVisualStyleBackColor = true;
             // 
-            // label11
+            // canvasPb
             // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(782, 619);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(110, 17);
-            this.label11.TabIndex = 37;
-            this.label11.Text = "Set dither matrix";
+            this.canvasPb.BackColor = System.Drawing.Color.Turquoise;
+            this.canvasPb.Location = new System.Drawing.Point(7, 7);
+            this.canvasPb.Name = "canvasPb";
+            this.canvasPb.Size = new System.Drawing.Size(1298, 639);
+            this.canvasPb.TabIndex = 1;
+            this.canvasPb.TabStop = false;
+            this.canvasPb.MouseDown += new System.Windows.Forms.MouseEventHandler(this.canvas_MouseDown);
+            // 
+            // button21
+            // 
+            this.button21.Location = new System.Drawing.Point(1350, 44);
+            this.button21.Name = "button21";
+            this.button21.Size = new System.Drawing.Size(211, 38);
+            this.button21.TabIndex = 19;
+            this.button21.Text = "Clear canvas";
+            this.button21.UseVisualStyleBackColor = true;
+            this.button21.Click += new System.EventHandler(this.button21_Click);
+            // 
+            // comboBox4
+            // 
+            this.comboBox4.FormattingEnabled = true;
+            this.comboBox4.Items.AddRange(new object[] {
+            "Midpoint Line Algorithm",
+            "Midpoint Circle Algorith",
+            "Xiaolin Wu Line Aliasing",
+            "Xiaolin Wu Circle Aliasing",
+            "Midpoint Line Algorithm with set thickness"});
+            this.comboBox4.Location = new System.Drawing.Point(1350, 128);
+            this.comboBox4.Name = "comboBox4";
+            this.comboBox4.Size = new System.Drawing.Size(211, 24);
+            this.comboBox4.TabIndex = 20;
+            // 
+            // textBox5
+            // 
+            this.textBox5.Location = new System.Drawing.Point(1350, 176);
+            this.textBox5.Name = "textBox5";
+            this.textBox5.Size = new System.Drawing.Size(100, 22);
+            this.textBox5.TabIndex = 21;
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(1347, 156);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(92, 17);
+            this.label12.TabIndex = 22;
+            this.label12.Text = "Set thickness";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1780, 1053);
+            this.ClientSize = new System.Drawing.Size(1637, 693);
+            this.Controls.Add(this.label12);
+            this.Controls.Add(this.textBox5);
+            this.Controls.Add(this.comboBox4);
+            this.Controls.Add(this.button21);
             this.Controls.Add(this.tabControl1);
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "Form1";
@@ -635,7 +709,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.tabControl1.ResumeLayout(false);
+            this.Drawing.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.canvasPb)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -689,6 +766,12 @@
         private System.Windows.Forms.Button button20;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.ComboBox comboBox3;
+        private System.Windows.Forms.TabPage Drawing;
+        private System.Windows.Forms.PictureBox canvasPb;
+        private System.Windows.Forms.Button button21;
+        private System.Windows.Forms.ComboBox comboBox4;
+        private System.Windows.Forms.TextBox textBox5;
+        private System.Windows.Forms.Label label12;
     }
 }
 

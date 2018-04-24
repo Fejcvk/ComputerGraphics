@@ -15,6 +15,7 @@ namespace WindowsFormsApp1
     public partial class Form1 : Form
     {
         Bitmap globalBitmap;
+        Bitmap canvas;
         public Form1()
         {
             InitializeComponent();
@@ -24,6 +25,9 @@ namespace WindowsFormsApp1
             comboBox1.SelectedIndex = 0;
             comboBox2.SelectedIndex = 0;
             comboBox3.SelectedIndex = 0;
+            comboBox4.SelectedIndex = 0;
+            canvas = new Bitmap(canvasPb.Size.Width, canvasPb.Size.Height);
+            canvasPb.Image = canvas;
         }
         #region Lab1
         #region lab1Home
@@ -947,7 +951,280 @@ namespace WindowsFormsApp1
             return code;
         }
         #endregion
+
         #endregion
+
+        #endregion
+        #region Lab3
+
+        bool IsSecondClick = false;
+        Color color = Color.FromArgb(255, 0, 255);
+        Color bgColor = Color.Turquoise;
+        PointsTuple tuple = new PointsTuple();
+
+        private class PointsTuple
+        {
+            int x1;
+            int x2;
+            int y1;
+            int y2;
+
+            public PointsTuple()
+            {
+                x1 = 0;
+                x2 = 0;
+                y1 = 0;
+                y2 = 0;
+            }
+            public void checkAndSwapCoordsIfNecessary()
+            {
+                if (x1 > x2)
+                {
+                    var tempX = x2;
+                    x2 = x1;
+                    x1 = tempX;
+                    var tempY = y2;
+                    y2 = y1;
+                    y1 = tempY;
+                }
+            }
+            public int calculateDistance()
+            {
+                checkAndSwapCoordsIfNecessary();
+                var distance = Math.Sqrt((Math.Pow((x1 - x2),2) + Math.Pow((y1 - y2),2)));
+                return (int)distance;
+            }
+            public int X1 { get => x1; set => x1 = value; }
+            public int X2 { get => x2; set => x2 = value; }
+            public int Y1 { get => y1; set => y1 = value; }
+            public int Y2 { get => y2; set => y2 = value; }
+        }
+
+        private void canvas_MouseDown(object sender, MouseEventArgs e)
+        {
+
+            if (!IsSecondClick)
+            {
+                tuple.X1 = e.X;
+                tuple.Y1 = e.Y;
+                IsSecondClick = true;
+                Console.WriteLine("x : {0}, y: {1} click1", tuple.X1, tuple.Y1);
+            }
+            else if (IsSecondClick)
+            {
+                tuple.X2 = e.X;
+                tuple.Y2 = e.Y;
+                IsSecondClick = false;
+                Console.WriteLine("x : {0}, y: {1} click2", tuple.X2, tuple.Y2);
+                tuple.checkAndSwapCoordsIfNecessary();
+                switch (comboBox4.SelectedIndex)
+                {
+                    case 0:
+                        Bresenham(tuple.X1, tuple.Y1, tuple.X2, tuple.Y2);
+                        break;
+                    case 1:
+                        int radius = tuple.calculateDistance();
+                        MidpointCircle(radius);
+                        break;
+                    case 2:
+                        Xiaolin(tuple.X1, tuple.Y1, tuple.X2, tuple.Y2);
+                        break;
+                    case 3:
+                        int wuRadius = tuple.calculateDistance();
+                        XiaolinCircles(wuRadius);
+                        break;
+                }
+            }
+        }
+
+        private void XiaolinCircles(int wuRadius)
+        {
+            int x = wuRadius;
+            int y = 0;
+            try
+            {
+                canvas.SetPixel(tuple.X1 + wuRadius, tuple.Y1, color);
+
+                canvas.SetPixel(tuple.X1 - wuRadius, tuple.Y1, color);
+
+                canvas.SetPixel(tuple.X1, tuple.Y1 + wuRadius, color);
+
+                canvas.SetPixel(tuple.X1, tuple.Y1 - wuRadius, color);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("4 points placing " + e);
+            }
+            while (x > y)
+            {
+                y += 1;
+                x = (int)Math.Ceiling(Math.Sqrt(wuRadius * wuRadius - y * y));
+                float T = D(wuRadius, y);
+                var r2 = color.R * (1 - T) + bgColor.R * T;
+                var g2 = color.G * (1 - T) + bgColor.G * T;
+                var b2 = color.B * (1 - T) + bgColor.B * T;
+                var color2 = Color.FromArgb((int)r2, (int)g2, (int)b2);
+
+                var r1 = color.R * T + bgColor.R * (1 - T);
+                var g1 = color.G * T + bgColor.G * (1 - T);
+                var b1 = color.B * T + bgColor.B * (1 - T);
+                var color1 = Color.FromArgb((int)r1, (int)g1, (int)b1);
+                try
+                {
+                    canvas.SetPixel(tuple.X1 + x, tuple.Y1 + y, color2);
+                    canvas.SetPixel(tuple.X1 + x - 1, tuple.Y1 + y, color1);
+
+                    canvas.SetPixel(tuple.X1 + y, tuple.Y1 + x, color2);
+                    canvas.SetPixel(tuple.X1 + y - 1, tuple.Y1 + x, color1);
+
+                    canvas.SetPixel(tuple.X1 + y, tuple.Y1 - x, color2);
+                    canvas.SetPixel(tuple.X1 + y - 1, tuple.Y1 - x, color1);
+
+                    canvas.SetPixel(tuple.X1 + x, tuple.Y1 - y, color2);
+                    canvas.SetPixel(tuple.X1 + x - 1, tuple.Y1 - y, color1);
+
+                    canvas.SetPixel(tuple.X1 - x, tuple.Y1 - y, color2);
+                    canvas.SetPixel(tuple.X1 - x + 1, tuple.Y1 - y, color1);
+
+                    canvas.SetPixel(tuple.X1 - y, tuple.Y1 - x, color2);
+                    canvas.SetPixel(tuple.X1 - y + 1, tuple.Y1 - x, color1);
+
+                    canvas.SetPixel(tuple.X1 - y, tuple.Y1 + x, color2);
+                    canvas.SetPixel(tuple.X1 - y + 1, tuple.Y1 + x, color1);
+
+                    canvas.SetPixel(tuple.X1 - x, tuple.Y1 + y, color2);
+                    canvas.SetPixel(tuple.X1 - x + 1, tuple.Y1 + y, color1);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("16 points placing " + e);
+                }
+
+            }
+            canvasPb.Image = canvas;
+        }
+
+        private float D(int wuRadius, int y)
+        {
+            return (float)Math.Ceiling(Math.Sqrt(wuRadius * wuRadius - y * y)) - (float)Math.Sqrt(wuRadius * wuRadius - y * y);
+        }
+
+        private void Xiaolin(int x1, int y1, int x2, int y2)
+        {
+            float y = y1;
+            float dx = x2 - x1;
+            float dy = y2 - y1;
+            float m = (dy / dx) > 0.0f ? (dy/dx) : 1.0f;
+            for (int x = x1; x <= x2; ++x)
+            {
+                var r1 = color.R * (1 - modf(y)) + bgColor.R*modf(y);
+                var g1 = color.G * (1 - modf(y)) + bgColor.G * modf(y);
+                var b1 = color.B * (1 - modf(y)) + bgColor.B * modf(y);
+                var color1 = Color.FromArgb((int)r1, (int)g1, (int)b1);
+
+                var r2 = color.R * modf(y) + bgColor.R * (1 - modf(y));
+                var g2 = color.G * modf(y) + bgColor.G * (1 - modf(y));
+                var b2 = color.B * modf(y) + bgColor.B * (1 - modf(y));
+                var color2 = Color.FromArgb((int)r2, (int)g2, (int)b2);
+                canvas.SetPixel(x, (int)Math.Floor(y), color1);
+                canvas.SetPixel(x, (int)Math.Floor(y) + 1, color2);
+                y += m;
+            }
+            canvasPb.Image = canvas;
+        }
+        private float modf(float x)
+        {
+            int y = (int)Math.Floor(x);
+            return Math.Abs(x - y);
+        }
+        private void MidpointCircle(int radius)
+        {
+            int dE = 3;
+            int dSE = 5 - 2 * radius;
+            int d = 1 - radius;
+            int x = 0;
+            int y = radius;
+            try
+            {
+                canvas.SetPixel(tuple.X1 + radius, tuple.Y1, color);
+
+                canvas.SetPixel(tuple.X1 - radius, tuple.Y1, color);
+
+                canvas.SetPixel(tuple.X1 , tuple.Y1 + radius, color);
+
+                canvas.SetPixel(tuple.X1 , tuple.Y1 - radius, color);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("4 points placing " + e);
+            }
+            while ( y > x)
+            {
+                if( d < 0 )
+                {
+                    d += dE;
+                    dE += 2;
+                    dSE += 2;
+                }
+                else
+                {
+                    d += dSE;
+                    dE += 2;
+                    dSE += 4;
+                    y -= 1;
+                }
+                x += 1;
+                try
+                {
+                    canvas.SetPixel(tuple.X1 + x, tuple.Y1 + y, color);
+                    canvas.SetPixel(tuple.X1 + y, tuple.Y1 + x, color);
+                    canvas.SetPixel(tuple.X1 + y, tuple.Y1 - x, color);
+                    canvas.SetPixel(tuple.X1 + x, tuple.Y1 - y, color);
+                    canvas.SetPixel(tuple.X1 - x, tuple.Y1 - y, color);
+                    canvas.SetPixel(tuple.X1 - y, tuple.Y1 - x, color);
+                    canvas.SetPixel(tuple.X1 - y, tuple.Y1 + x, color);
+                    canvas.SetPixel(tuple.X1 - x, tuple.Y1 + y, color);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("8 points placing " + e);
+                }
+            }
+            canvasPb.Image = canvas;
+        }
+        private void Bresenham(int x1, int y1, int x2, int y2)
+        {
+            int dx = x2 - x1;
+            int dy = y2 - y1;
+            int d = 2 * dy - dx;
+            int dE = 2 * dy;
+            int dNE = 2 * (dy - dx);
+            int x = x1, y = y1;
+
+            while(x < x2)
+            {
+                if(d < 0)
+                {
+                    d += dE;
+                    x += 1;
+                }
+                else
+                {
+                    d += dNE;
+                    x+=1;
+                    y+=1;
+                }
+                canvas.SetPixel(x, y, color);
+            }
+            canvasPb.Image = canvas;
+        }
+
+        //Clear button
+        private void button21_Click(object sender, EventArgs e)
+        {
+            canvas = new Bitmap(canvasPb.Size.Width, canvasPb.Size.Height);
+            canvasPb.Image = canvas;
+        }
         #endregion
     }
 }
