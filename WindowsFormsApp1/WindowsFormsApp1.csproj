@@ -107,5 +107,11 @@
   <ItemGroup>
     <None Include="Resources\graphBG.bmp" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\canvas.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\canvas2.bmp" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

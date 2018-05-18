@@ -28,11 +28,14 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea5 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend5 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            this.button21 = new System.Windows.Forms.Button();
+            this.comboBox4 = new System.Windows.Forms.ComboBox();
+            this.textBox5 = new System.Windows.Forms.TextBox();
+            this.label12 = new System.Windows.Forms.Label();
             this.Graph = new System.Windows.Forms.TabPage();
             this.button13 = new System.Windows.Forms.Button();
-            this.pictureBox3 = new System.Windows.Forms.PictureBox();
             this.button4 = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -44,18 +47,20 @@
             this.button3 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.pictureBox3 = new System.Windows.Forms.PictureBox();
             this.Filters = new System.Windows.Forms.TabPage();
             this.label11 = new System.Windows.Forms.Label();
             this.comboBox3 = new System.Windows.Forms.ComboBox();
             this.textBox4 = new System.Windows.Forms.TextBox();
+            this.rDivisorTb = new System.Windows.Forms.TextBox();
+            this.bDivisorTb = new System.Windows.Forms.TextBox();
+            this.gDivisorTb = new System.Windows.Forms.TextBox();
+            this.textBox3 = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
             this.button20 = new System.Windows.Forms.Button();
             this.label9 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
-            this.rDivisorTb = new System.Windows.Forms.TextBox();
-            this.bDivisorTb = new System.Windows.Forms.TextBox();
-            this.gDivisorTb = new System.Windows.Forms.TextBox();
             this.button19 = new System.Windows.Forms.Button();
             this.button18 = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
@@ -64,11 +69,8 @@
             this.button16 = new System.Windows.Forms.Button();
             this.button15 = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
-            this.textBox3 = new System.Windows.Forms.TextBox();
             this.button14 = new System.Windows.Forms.Button();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.button9 = new System.Windows.Forms.Button();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.button10 = new System.Windows.Forms.Button();
@@ -77,16 +79,16 @@
             this.button6 = new System.Windows.Forms.Button();
             this.button7 = new System.Windows.Forms.Button();
             this.button8 = new System.Windows.Forms.Button();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.Drawing = new System.Windows.Forms.TabPage();
             this.canvasPb = new System.Windows.Forms.PictureBox();
-            this.button21 = new System.Windows.Forms.Button();
-            this.comboBox4 = new System.Windows.Forms.ComboBox();
-            this.textBox5 = new System.Windows.Forms.TextBox();
-            this.label12 = new System.Windows.Forms.Label();
+            this.button22 = new System.Windows.Forms.Button();
+            this.button23 = new System.Windows.Forms.Button();
             this.Graph.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
             this.Filters.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
@@ -95,10 +97,50 @@
             ((System.ComponentModel.ISupportInitialize)(this.canvasPb)).BeginInit();
             this.SuspendLayout();
             // 
+            // button21
+            // 
+            this.button21.Location = new System.Drawing.Point(1350, 44);
+            this.button21.Name = "button21";
+            this.button21.Size = new System.Drawing.Size(211, 38);
+            this.button21.TabIndex = 19;
+            this.button21.Text = "Clear canvas";
+            this.button21.UseVisualStyleBackColor = true;
+            this.button21.Click += new System.EventHandler(this.button21_Click);
+            // 
+            // comboBox4
+            // 
+            this.comboBox4.FormattingEnabled = true;
+            this.comboBox4.Items.AddRange(new object[] {
+            "Midpoint Line Algorithm",
+            "Midpoint Circle Algorith",
+            "Xiaolin Wu Line Aliasing",
+            "Xiaolin Wu Circle Aliasing",
+            "Midpoint Line Algorithm with set thickness",
+            "Supersampling"});
+            this.comboBox4.Location = new System.Drawing.Point(1350, 128);
+            this.comboBox4.Name = "comboBox4";
+            this.comboBox4.Size = new System.Drawing.Size(211, 24);
+            this.comboBox4.TabIndex = 20;
+            // 
+            // textBox5
+            // 
+            this.textBox5.Location = new System.Drawing.Point(1350, 176);
+            this.textBox5.Name = "textBox5";
+            this.textBox5.Size = new System.Drawing.Size(100, 22);
+            this.textBox5.TabIndex = 21;
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(1347, 156);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(92, 17);
+            this.label12.TabIndex = 22;
+            this.label12.Text = "Set thickness";
+            // 
             // Graph
             // 
             this.Graph.Controls.Add(this.button13);
-            this.Graph.Controls.Add(this.pictureBox3);
             this.Graph.Controls.Add(this.button4);
             this.Graph.Controls.Add(this.label4);
             this.Graph.Controls.Add(this.label3);
@@ -110,6 +152,7 @@
             this.Graph.Controls.Add(this.button3);
             this.Graph.Controls.Add(this.button2);
             this.Graph.Controls.Add(this.chart1);
+            this.Graph.Controls.Add(this.pictureBox3);
             this.Graph.Location = new System.Drawing.Point(4, 25);
             this.Graph.Name = "Graph";
             this.Graph.Padding = new System.Windows.Forms.Padding(3);
@@ -129,16 +172,6 @@
             this.button13.Text = "Delete point";
             this.button13.UseVisualStyleBackColor = true;
             this.button13.Click += new System.EventHandler(this.button13_Click);
-            // 
-            // pictureBox3
-            // 
-            this.pictureBox3.Image = global::WindowsFormsApp1.Properties.Resources.singapur2;
-            this.pictureBox3.Location = new System.Drawing.Point(669, 860);
-            this.pictureBox3.Name = "pictureBox3";
-            this.pictureBox3.Size = new System.Drawing.Size(478, 149);
-            this.pictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBox3.TabIndex = 27;
-            this.pictureBox3.TabStop = false;
             // 
             // button4
             // 
@@ -244,10 +277,10 @@
             // 
             // chart1
             // 
-            chartArea5.Name = "ChartArea1";
-            this.chart1.ChartAreas.Add(chartArea5);
-            legend5.Name = "Legend1";
-            this.chart1.Legends.Add(legend5);
+            chartArea1.Name = "ChartArea1";
+            this.chart1.ChartAreas.Add(chartArea1);
+            legend1.Name = "Legend1";
+            this.chart1.Legends.Add(legend1);
             this.chart1.Location = new System.Drawing.Point(7, 6);
             this.chart1.Name = "chart1";
             this.chart1.Size = new System.Drawing.Size(1769, 777);
@@ -256,19 +289,30 @@
             this.chart1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.chart1_MouseMove);
             this.chart1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.chart1_MouseUp);
             // 
+            // pictureBox3
+            // 
+            this.pictureBox3.Image = global::WindowsFormsApp1.Properties.Resources.singapur2;
+            this.pictureBox3.Location = new System.Drawing.Point(669, 860);
+            this.pictureBox3.Name = "pictureBox3";
+            this.pictureBox3.Size = new System.Drawing.Size(478, 149);
+            this.pictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox3.TabIndex = 27;
+            this.pictureBox3.TabStop = false;
+            // 
             // Filters
             // 
             this.Filters.Controls.Add(this.label11);
             this.Filters.Controls.Add(this.comboBox3);
             this.Filters.Controls.Add(this.textBox4);
+            this.Filters.Controls.Add(this.rDivisorTb);
+            this.Filters.Controls.Add(this.bDivisorTb);
+            this.Filters.Controls.Add(this.gDivisorTb);
+            this.Filters.Controls.Add(this.textBox3);
             this.Filters.Controls.Add(this.label10);
             this.Filters.Controls.Add(this.button20);
             this.Filters.Controls.Add(this.label9);
             this.Filters.Controls.Add(this.label8);
             this.Filters.Controls.Add(this.label7);
-            this.Filters.Controls.Add(this.rDivisorTb);
-            this.Filters.Controls.Add(this.bDivisorTb);
-            this.Filters.Controls.Add(this.gDivisorTb);
             this.Filters.Controls.Add(this.button19);
             this.Filters.Controls.Add(this.button18);
             this.Filters.Controls.Add(this.label6);
@@ -277,11 +321,8 @@
             this.Filters.Controls.Add(this.button16);
             this.Filters.Controls.Add(this.button15);
             this.Filters.Controls.Add(this.label5);
-            this.Filters.Controls.Add(this.textBox3);
             this.Filters.Controls.Add(this.button14);
-            this.Filters.Controls.Add(this.pictureBox1);
             this.Filters.Controls.Add(this.label1);
-            this.Filters.Controls.Add(this.pictureBox2);
             this.Filters.Controls.Add(this.button9);
             this.Filters.Controls.Add(this.comboBox1);
             this.Filters.Controls.Add(this.button10);
@@ -290,6 +331,8 @@
             this.Filters.Controls.Add(this.button6);
             this.Filters.Controls.Add(this.button7);
             this.Filters.Controls.Add(this.button8);
+            this.Filters.Controls.Add(this.pictureBox1);
+            this.Filters.Controls.Add(this.pictureBox2);
             this.Filters.Location = new System.Drawing.Point(4, 25);
             this.Filters.Name = "Filters";
             this.Filters.Padding = new System.Windows.Forms.Padding(3);
@@ -328,6 +371,34 @@
             this.textBox4.Name = "textBox4";
             this.textBox4.Size = new System.Drawing.Size(129, 22);
             this.textBox4.TabIndex = 35;
+            // 
+            // rDivisorTb
+            // 
+            this.rDivisorTb.Location = new System.Drawing.Point(422, 740);
+            this.rDivisorTb.Name = "rDivisorTb";
+            this.rDivisorTb.Size = new System.Drawing.Size(42, 22);
+            this.rDivisorTb.TabIndex = 28;
+            // 
+            // bDivisorTb
+            // 
+            this.bDivisorTb.Location = new System.Drawing.Point(515, 740);
+            this.bDivisorTb.Name = "bDivisorTb";
+            this.bDivisorTb.Size = new System.Drawing.Size(37, 22);
+            this.bDivisorTb.TabIndex = 27;
+            // 
+            // gDivisorTb
+            // 
+            this.gDivisorTb.Location = new System.Drawing.Point(470, 740);
+            this.gDivisorTb.Name = "gDivisorTb";
+            this.gDivisorTb.Size = new System.Drawing.Size(39, 22);
+            this.gDivisorTb.TabIndex = 26;
+            // 
+            // textBox3
+            // 
+            this.textBox3.Location = new System.Drawing.Point(422, 639);
+            this.textBox3.Name = "textBox3";
+            this.textBox3.Size = new System.Drawing.Size(130, 22);
+            this.textBox3.TabIndex = 17;
             // 
             // label10
             // 
@@ -374,27 +445,6 @@
             this.label7.Size = new System.Drawing.Size(40, 17);
             this.label7.TabIndex = 29;
             this.label7.Text = "R div";
-            // 
-            // rDivisorTb
-            // 
-            this.rDivisorTb.Location = new System.Drawing.Point(422, 740);
-            this.rDivisorTb.Name = "rDivisorTb";
-            this.rDivisorTb.Size = new System.Drawing.Size(42, 22);
-            this.rDivisorTb.TabIndex = 28;
-            // 
-            // bDivisorTb
-            // 
-            this.bDivisorTb.Location = new System.Drawing.Point(515, 740);
-            this.bDivisorTb.Name = "bDivisorTb";
-            this.bDivisorTb.Size = new System.Drawing.Size(37, 22);
-            this.bDivisorTb.TabIndex = 27;
-            // 
-            // gDivisorTb
-            // 
-            this.gDivisorTb.Location = new System.Drawing.Point(470, 740);
-            this.gDivisorTb.Name = "gDivisorTb";
-            this.gDivisorTb.Size = new System.Drawing.Size(39, 22);
-            this.gDivisorTb.TabIndex = 26;
             // 
             // button19
             // 
@@ -479,13 +529,6 @@
             this.label5.TabIndex = 18;
             this.label5.Text = "Set value of gamma";
             // 
-            // textBox3
-            // 
-            this.textBox3.Location = new System.Drawing.Point(422, 639);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(130, 22);
-            this.textBox3.TabIndex = 17;
-            // 
             // button14
             // 
             this.button14.Location = new System.Drawing.Point(215, 773);
@@ -496,15 +539,6 @@
             this.button14.UseVisualStyleBackColor = true;
             this.button14.Click += new System.EventHandler(this.button14_Click);
             // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Location = new System.Drawing.Point(17, 49);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(855, 557);
-            this.pictureBox1.TabIndex = 0;
-            this.pictureBox1.TabStop = false;
-            // 
             // label1
             // 
             this.label1.AutoSize = true;
@@ -513,15 +547,6 @@
             this.label1.Size = new System.Drawing.Size(99, 17);
             this.label1.TabIndex = 12;
             this.label1.Text = "Original image";
-            // 
-            // pictureBox2
-            // 
-            this.pictureBox2.Location = new System.Drawing.Point(889, 49);
-            this.pictureBox2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(855, 557);
-            this.pictureBox2.TabIndex = 1;
-            this.pictureBox2.TabStop = false;
             // 
             // button9
             // 
@@ -615,6 +640,24 @@
             this.button8.UseVisualStyleBackColor = true;
             this.button8.Click += new System.EventHandler(this.button8_Click);
             // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Location = new System.Drawing.Point(17, 49);
+            this.pictureBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(855, 557);
+            this.pictureBox1.TabIndex = 0;
+            this.pictureBox1.TabStop = false;
+            // 
+            // pictureBox2
+            // 
+            this.pictureBox2.Location = new System.Drawing.Point(889, 49);
+            this.pictureBox2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(855, 557);
+            this.pictureBox2.TabIndex = 1;
+            this.pictureBox2.TabStop = false;
+            // 
             // tabControl1
             // 
             this.tabControl1.Controls.Add(this.Drawing);
@@ -647,51 +690,34 @@
             this.canvasPb.TabStop = false;
             this.canvasPb.MouseDown += new System.Windows.Forms.MouseEventHandler(this.canvas_MouseDown);
             // 
-            // button21
+            // button22
             // 
-            this.button21.Location = new System.Drawing.Point(1350, 44);
-            this.button21.Name = "button21";
-            this.button21.Size = new System.Drawing.Size(211, 38);
-            this.button21.TabIndex = 19;
-            this.button21.Text = "Clear canvas";
-            this.button21.UseVisualStyleBackColor = true;
-            this.button21.Click += new System.EventHandler(this.button21_Click);
+            this.button22.Enabled = false;
+            this.button22.Location = new System.Drawing.Point(1350, 228);
+            this.button22.Name = "button22";
+            this.button22.Size = new System.Drawing.Size(211, 37);
+            this.button22.TabIndex = 3;
+            this.button22.Text = "Perform Clipping";
+            this.button22.UseVisualStyleBackColor = true;
+            this.button22.Click += new System.EventHandler(this.button22_Click);
             // 
-            // comboBox4
+            // button23
             // 
-            this.comboBox4.FormattingEnabled = true;
-            this.comboBox4.Items.AddRange(new object[] {
-            "Midpoint Line Algorithm",
-            "Midpoint Circle Algorith",
-            "Xiaolin Wu Line Aliasing",
-            "Xiaolin Wu Circle Aliasing",
-            "Midpoint Line Algorithm with set thickness"});
-            this.comboBox4.Location = new System.Drawing.Point(1350, 128);
-            this.comboBox4.Name = "comboBox4";
-            this.comboBox4.Size = new System.Drawing.Size(211, 24);
-            this.comboBox4.TabIndex = 20;
-            // 
-            // textBox5
-            // 
-            this.textBox5.Location = new System.Drawing.Point(1350, 176);
-            this.textBox5.Name = "textBox5";
-            this.textBox5.Size = new System.Drawing.Size(100, 22);
-            this.textBox5.TabIndex = 21;
-            // 
-            // label12
-            // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(1347, 156);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(92, 17);
-            this.label12.TabIndex = 22;
-            this.label12.Text = "Set thickness";
+            this.button23.Location = new System.Drawing.Point(1350, 294);
+            this.button23.Name = "button23";
+            this.button23.Size = new System.Drawing.Size(211, 37);
+            this.button23.TabIndex = 23;
+            this.button23.Text = "Generate Clip";
+            this.button23.UseVisualStyleBackColor = true;
+            this.button23.Click += new System.EventHandler(this.button23_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1637, 693);
+            this.ClientSize = new System.Drawing.Size(1647, 703);
+            this.Controls.Add(this.button23);
+            this.Controls.Add(this.button22);
             this.Controls.Add(this.label12);
             this.Controls.Add(this.textBox5);
             this.Controls.Add(this.comboBox4);
@@ -702,8 +728,8 @@
             this.Text = "Form1";
             this.Graph.ResumeLayout(false);
             this.Graph.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
             this.Filters.ResumeLayout(false);
             this.Filters.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
@@ -717,8 +743,16 @@
         }
 
         #endregion
-
+        private System.Windows.Forms.Button button21;
+        private System.Windows.Forms.ComboBox comboBox4;
+        private System.Windows.Forms.TextBox textBox5;
+        private System.Windows.Forms.Label label12;
         private System.Windows.Forms.TabPage Graph;
+        private System.Windows.Forms.Button button13;
+        private System.Windows.Forms.PictureBox pictureBox3;
+        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Button button12;
@@ -728,6 +762,27 @@
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.DataVisualization.Charting.Chart chart1;
         private System.Windows.Forms.TabPage Filters;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.ComboBox comboBox3;
+        private System.Windows.Forms.TextBox textBox4;
+        private System.Windows.Forms.TextBox rDivisorTb;
+        private System.Windows.Forms.TextBox bDivisorTb;
+        private System.Windows.Forms.TextBox gDivisorTb;
+        private System.Windows.Forms.TextBox textBox3;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Button button20;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Button button19;
+        private System.Windows.Forms.Button button18;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.ComboBox comboBox2;
+        private System.Windows.Forms.Button button17;
+        private System.Windows.Forms.Button button16;
+        private System.Windows.Forms.Button button15;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Button button14;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.PictureBox pictureBox2;
@@ -740,38 +795,10 @@
         private System.Windows.Forms.Button button7;
         private System.Windows.Forms.Button button8;
         private System.Windows.Forms.TabControl tabControl1;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.PictureBox pictureBox3;
-        private System.Windows.Forms.Button button13;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.TextBox textBox3;
-        private System.Windows.Forms.Button button14;
-        private System.Windows.Forms.Button button15;
-        private System.Windows.Forms.Button button16;
-        private System.Windows.Forms.Button button17;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.ComboBox comboBox2;
-        private System.Windows.Forms.Button button18;
-        private System.Windows.Forms.Button button19;
-        private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.TextBox rDivisorTb;
-        private System.Windows.Forms.TextBox bDivisorTb;
-        private System.Windows.Forms.TextBox gDivisorTb;
-        private System.Windows.Forms.TextBox textBox4;
-        private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.Button button20;
-        private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.ComboBox comboBox3;
+        private System.Windows.Forms.Button button22;
         private System.Windows.Forms.TabPage Drawing;
         private System.Windows.Forms.PictureBox canvasPb;
-        private System.Windows.Forms.Button button21;
-        private System.Windows.Forms.ComboBox comboBox4;
-        private System.Windows.Forms.TextBox textBox5;
-        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.Button button23;
     }
 }
 

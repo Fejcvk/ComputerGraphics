@@ -1,21 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 
 namespace WindowsFormsApp1
 {
-    //TODO: median cut color quantization
     public partial class Form1 : Form
     {
         Bitmap globalBitmap;
         Bitmap canvas;
+        Bitmap memoryCanvas;
         public Form1()
         {
             InitializeComponent();
@@ -27,8 +24,10 @@ namespace WindowsFormsApp1
             comboBox3.SelectedIndex = 0;
             comboBox4.SelectedIndex = 0;
             canvas = new Bitmap(canvasPb.Size.Width, canvasPb.Size.Height);
+            memoryCanvas = new Bitmap(canvas.Width * 2, canvas.Height * 2);
             canvasPb.Image = canvas;
         }
+
         #region Lab1
         #region lab1Home
         #region inverse filter
@@ -959,6 +958,7 @@ namespace WindowsFormsApp1
         #region Lab3 Home
         bool IsSecondClick = false;
         Color color = Color.FromArgb(255, 0, 255);
+        Color newColor = Color.Black;
         Color bgColor = Color.Turquoise;
         PointsTuple tuple = new PointsTuple();
 
@@ -1000,9 +1000,10 @@ namespace WindowsFormsApp1
             public int Y2 { get => y2; set => y2 = value; }
         }
 
+        List<Line> listOfLanes = new List<Line>();
+
         private void canvas_MouseDown(object sender, MouseEventArgs e)
         {
-
             if (!IsSecondClick)
             {
                 tuple.X1 = e.X;
@@ -1020,7 +1021,8 @@ namespace WindowsFormsApp1
                 switch (comboBox4.SelectedIndex)
                 {
                     case 0:
-                        Bresenham(tuple.X1, tuple.Y1, tuple.X2, tuple.Y2);
+                        Bresenham(tuple.X1, tuple.Y1, tuple.X2, tuple.Y2,1);
+                        listOfLanes.Add(new Line(tuple.X1, tuple.Y1, tuple.X2, tuple.Y2));
                         break;
                     case 1:
                         int radius = tuple.calculateDistance();
@@ -1034,61 +1036,306 @@ namespace WindowsFormsApp1
                         XiaolinCircles(wuRadius);
                         break;
                     case 4:
-                        int thickness = Int16.Parse(textBox5.Text);
+                        int thickness = textBox5.Text != "" ? Int16.Parse(textBox5.Text) : 1 ;
                         Bresenham(tuple.X1, tuple.Y1, tuple.X2, tuple.Y2, thickness);
+                        break;
+                    case 5:
+                        int thicknessSS = textBox5.Text != "" ? Int16.Parse(textBox5.Text) : 1;
+                        thicknessSS += 2;
+                        Bresenham(tuple.X1, tuple.Y1, tuple.X2, tuple.Y2, thicknessSS,memoryCanvas);
                         break;
                 }
             }
         }
 
-        private void Bresenham(int x1, int y1, int x2, int y2, int thickness)
+        private void Bresenham(int x1, int y1, int x2, int y2, int thickness, Bitmap memoryBitmap)
         {
-            int dx = x2 - x1;
-            int dy = y2 - y1;
-            float m = (float)dy / (float)dx;
-            int d = 2 * dy - dx;
-            int dE = 2 * dy;
-            int dNE = 2 * (dy - dx);
-            int x = x1, y = y1;
 
-            while (x < x2)
+            for(int ii = 0; ii < memoryBitmap.Width; ii++)
             {
-                if (d < 0)
+                for (int jj = 0; jj < memoryBitmap.Height; jj++)
                 {
-                    d += dE;
-                    x += 1;
+                    memoryBitmap.SetPixel(ii, jj, Color.Turquoise);
                 }
-                else
+            }
+
+
+            x1 *= 2;
+            x2 *= 2;
+            y1 *= 2;
+            y2 *= 2;
+            int x = x1, y = y1;
+            int d, dx, dy, dE, dNE, xi, yi;
+
+            if (x1 < x2)
+            {
+                xi = 1;
+                dx = x2 - x1;
+            }
+            else
+            {
+                xi = -1;
+                dx = x1 - x2;
+            }
+
+            if (y1 < y2)
+            {
+                yi = 1;
+                dy = y2 - y1;
+            }
+            else
+            {
+                yi = -1;
+                dy = y1 - y2;
+            }
+
+            if (dx > dy)
+            {
+                d = dy * 2 - dx;
+                dE = dy * 2;
+                dNE = (dy - dx) * 2;
+                while (x != x2)
                 {
-                    d += dNE;
-                    x += 1;
-                    y += 1;
-                }
-                canvas.SetPixel(x, y, color);
-                if (Math.Abs(dx) >= Math.Abs(dy))
-                {
-                    //Perform column copy
-                    Console.WriteLine("Column copy");
-                    for(int i = 0; i < thickness/2; i++)
+                    if (d < 0)
                     {
-                        canvas.SetPixel(x, y + i, color);
-                        canvas.SetPixel(x, y - i, color);
+                        d += dE;
+                        x += xi;
                     }
-                }
-                else
-                {
-                    //perform row copy
-                    Console.WriteLine("Row copy");
-                    for (int i = 0; i < thickness / 2; i++)
+                    else
                     {
-                        canvas.SetPixel(x + i, y, color);
-                        canvas.SetPixel(x - i, y, color);
+                        d += dNE;
+                        x += xi;
+                        y += yi;
                     }
+                    memoryBitmap.SetPixel(x, y, color);
+                        //Perform column copy
+                        for (int i = 0; i < thickness / 2; i++)
+                        {
+                            memoryBitmap.SetPixel(x, y + i, color);
+                            memoryBitmap.SetPixel(x, y - i, color);
+                        }
+                }
+            }
+            else
+            {
+                //zamienic dy i dx
+                d = dx * 2 - dy;
+                dE = dx * 2;
+                dNE = (dx - dy) * 2;
+                while (y != y2)
+                {
+                    if (d < 0)
+                    {
+                        d += dE;
+                        y += yi;
+                    }
+                    else
+                    {
+                        d += dNE;
+                        x += xi;
+                        y += yi;
+                    }
+                    memoryBitmap.SetPixel(x, y, color);
+                        //perform row copy
+                        for (int i = 0; i < thickness / 2; i++)
+                        {
+                            memoryBitmap.SetPixel(x + i, y, color);
+                            memoryBitmap.SetPixel(x - i, y, color);
+                        }
+                       
+                }
+            }
+            for(int xM = 0; xM < memoryBitmap.Width; xM+=2)
+            {
+                for(int yM = 0; yM < memoryBitmap.Height; yM+=2)
+                {
+                    int sumR = 0;
+                    int sumG = 0;
+                    int sumB = 0;
+                    for(int i = 0; i < 2; i++)
+                    {
+                        for(int j = 0; j < 2; j++)
+                        {
+                            var color = memoryBitmap.GetPixel(xM + i, yM + j);
+                            sumR += color.R;
+                            sumG += color.G;
+                            sumB += color.B;
+                        }
+                    }
+                    var avgColor = Color.FromArgb(sumR / 4, sumG / 4, sumB / 4);
+                    canvas.SetPixel(xM / 2, yM / 2, avgColor);
                 }
             }
             canvasPb.Image = canvas;
         }
+        private void Bresenham(int x1, int y1, int x2, int y2, int thickness)
+        {
+            int x = x1, y = y1;
+            int d, dx, dy, dE, dNE, xi, yi;
 
+            if (x1 < x2)
+            {
+                xi = 1;
+                dx = x2 - x1;
+            }
+            else
+            {
+                xi = -1;
+                dx = x1 - x2;
+            }
+
+            if (y1 < y2)
+            {
+                yi = 1;
+                dy = y2 - y1;
+            }
+            else
+            {
+                yi = -1;
+                dy = y1 - y2;
+            }
+
+            if (dx > dy)
+            {
+                d = dy * 2 - dx;
+                dE = dy * 2;
+                dNE = (dy - dx) * 2;
+                while (x != x2)
+                {
+                    if (d < 0)
+                    {
+                        d += dE;
+                        x += xi;
+                    }
+                    else
+                    {
+                        d += dNE;
+                        x += xi;
+                        y += yi;
+                    }
+                    canvas.SetPixel(x, y, color);
+                        //Perform column copy;
+                        for (int i = 0; i < thickness / 2; i++)
+                        {
+                            canvas.SetPixel(x, y + i, color);
+                            canvas.SetPixel(x, y - i, color);
+                        }
+                }
+            }
+            else
+            {
+                d = dx * 2 - dy;
+                dE = dx * 2;
+                dNE = (dx - dy) * 2;
+                while (y != y2)
+                {
+                    if (d < 0)
+                    {
+                        d += dE;
+                        y += yi;
+                    }
+                    else
+                    {
+                        d += dNE;
+                        x += xi;
+                        y += yi;
+                    }
+                    canvas.SetPixel(x, y, color);
+                        //Row copy
+                        for (int i = 0; i < thickness / 2; i++)
+                        {
+                            canvas.SetPixel(x + i, y, color);
+                            canvas.SetPixel(x - i, y, color);
+                        }
+                    
+                }
+            }
+            canvasPb.Image = canvas;
+        }
+        private void Bresenham(int x1, int y1, int x2, int y2, int thickness, Color colorOfLine)
+        {
+            int x = x1, y = y1;
+            int d, dx, dy, dE, dNE, xi, yi;
+
+            if (x1 < x2)
+            {
+                xi = 1;
+                dx = x2 - x1;
+            }
+            else
+            {
+                xi = -1;
+                dx = x1 - x2;
+            }
+
+            if (y1 < y2)
+            {
+                yi = 1;
+                dy = y2 - y1;
+            }
+            else
+            {
+                yi = -1;
+                dy = y1 - y2;
+            }
+
+            if (dx > dy)
+            {
+                d = dy * 2 - dx;
+                dE = dy * 2;
+                dNE = (dy - dx) * 2;
+                while (x != x2)
+                {
+                    if (d < 0)
+                    {
+                        d += dE;
+                        x += xi;
+                    }
+                    else
+                    {
+                        d += dNE;
+                        x += xi;
+                        y += yi;
+                    }
+                    canvas.SetPixel(x, y, colorOfLine);
+                    //Perform column copy;
+                    for (int i = 0; i < thickness / 2; i++)
+                    {
+                        canvas.SetPixel(x, y + i, colorOfLine);
+                        canvas.SetPixel(x, y - i, colorOfLine);
+                    }
+                }
+            }
+            else
+            {
+                d = dx * 2 - dy;
+                dE = dx * 2;
+                dNE = (dx - dy) * 2;
+                while (y != y2)
+                {
+                    if (d < 0)
+                    {
+                        d += dE;
+                        y += yi;
+                    }
+                    else
+                    {
+                        d += dNE;
+                        x += xi;
+                        y += yi;
+                    }
+                    canvas.SetPixel(x, y, colorOfLine);
+                    //Row copy
+                    for (int i = 0; i < thickness / 2; i++)
+                    {
+                        canvas.SetPixel(x + i, y, colorOfLine);
+                        canvas.SetPixel(x - i, y, colorOfLine);
+                    }
+
+                }
+            }
+            canvasPb.Image = canvas;
+        }
         private void XiaolinCircles(int wuRadius)
         {
             int x = wuRadius;
@@ -1155,32 +1402,67 @@ namespace WindowsFormsApp1
             }
             canvasPb.Image = canvas;
         }
-
         private float D(int wuRadius, int y)
         {
             return (float)Math.Ceiling(Math.Sqrt(wuRadius * wuRadius - y * y)) - (float)Math.Sqrt(wuRadius * wuRadius - y * y);
         }
-
         private void Xiaolin(int x1, int y1, int x2, int y2)
         {
-            float y = y1;
             float dx = x2 - x1;
             float dy = y2 - y1;
-            float m = (dy / dx) > 0.0f ? (dy/dx) : 1.0f;
-            for (int x = x1; x <= x2; ++x)
-            {
-                var r1 = color.R * (1 - modf(y)) + bgColor.R*modf(y);
-                var g1 = color.G * (1 - modf(y)) + bgColor.G * modf(y);
-                var b1 = color.B * (1 - modf(y)) + bgColor.B * modf(y);
-                var color1 = Color.FromArgb((int)r1, (int)g1, (int)b1);
+            float constM = 100f;
+            float m = dx != 0 ? dy / dx : constM;
 
-                var r2 = color.R * modf(y) + bgColor.R * (1 - modf(y));
-                var g2 = color.G * modf(y) + bgColor.G * (1 - modf(y));
-                var b2 = color.B * modf(y) + bgColor.B * (1 - modf(y));
-                var color2 = Color.FromArgb((int)r2, (int)g2, (int)b2);
-                canvas.SetPixel(x, (int)Math.Floor(y), color1);
-                canvas.SetPixel(x, (int)Math.Floor(y) + 1, color2);
-                y += m;
+            if (dx > dy)
+            {
+                float y = y1;
+
+                for (int x = x1; x <= x2; ++x)
+                {
+                    var r1 = color.R * (1 - modf(y)) + bgColor.R * modf(y);
+                    var g1 = color.G * (1 - modf(y)) + bgColor.G * modf(y);
+                    var b1 = color.B * (1 - modf(y)) + bgColor.B * modf(y);
+                    var color1 = Color.FromArgb((int)r1, (int)g1, (int)b1);
+
+                    var r2 = color.R * modf(y) + bgColor.R * (1 - modf(y));
+                    var g2 = color.G * modf(y) + bgColor.G * (1 - modf(y));
+                    var b2 = color.B * modf(y) + bgColor.B * (1 - modf(y));
+                    var color2 = Color.FromArgb((int)r2, (int)g2, (int)b2);
+                    canvas.SetPixel(x, (int)Math.Floor(y), color1);
+                    canvas.SetPixel(x, (int)Math.Floor(y) + 1, color2);
+                    y += m;
+                }
+            }
+            else
+            {
+                
+                if (y1 > y2)
+                {
+                    var temp = y2;
+                    y2 = y1;
+                    y1 = temp;
+                    var tempX = x2;
+                    x1 = x2;
+                    x2 = tempX;
+                }
+
+                float x = x1;
+                float tempM = (x2-x1)/ (y2-y1);
+                for (int y = y1; y <= y2; ++y)
+                {
+                    var r1 = color.R * (1 - modf(x)) + bgColor.R * modf(x);
+                    var g1 = color.G * (1 - modf(x)) + bgColor.G * modf(x);
+                    var b1 = color.B * (1 - modf(x)) + bgColor.B * modf(x);
+                    var color1 = Color.FromArgb((int)r1, (int)g1, (int)b1);
+
+                    var r2 = color.R * modf(x) + bgColor.R * (1 - modf(x));
+                    var g2 = color.G * modf(x) + bgColor.G * (1 - modf(x));
+                    var b2 = color.B * modf(x) + bgColor.B * (1 - modf(x));
+                    var color2 = Color.FromArgb((int)r2, (int)g2, (int)b2);
+                    canvas.SetPixel((int)Math.Floor(x), y, color1);
+                    canvas.SetPixel((int)Math.Floor(x) + 1, y, color2);
+                    x += tempM;
+                }
             }
             canvasPb.Image = canvas;
         }
@@ -1244,42 +1526,222 @@ namespace WindowsFormsApp1
             }
             canvasPb.Image = canvas;
         }
-        private void Bresenham(int x1, int y1, int x2, int y2)
-        {
-            int dx = x2 - x1;
-            int dy = y2 - y1;
-            int d = 2 * dy - dx;
-            int dE = 2 * dy;
-            int dNE = 2 * (dy - dx);
-            int x = x1, y = y1;
-
-            while(x < x2)
-            {
-                if(d < 0)
-                {
-                    d += dE;
-                    x += 1;
-                }
-                else
-                {
-                    d += dNE;
-                    x+=1;
-                    y+=1;
-                }
-                canvas.SetPixel(x, y, color);
-            }
-            canvasPb.Image = canvas;
-        }
 
         //Clear button
         private void button21_Click(object sender, EventArgs e)
         {
             canvas = new Bitmap(canvasPb.Size.Width, canvasPb.Size.Height);
             canvasPb.Image = canvas;
+            listOfLanes.Clear();
+            button22.Enabled = false;
         }
         #endregion
-        #region Lab3 Lab Task
+        #endregion
+        #region Lab4
+        #region Lab4 Home
+        //TODO: Liang-Barsky and 2nd update method - Vertex Sorting
+        
+        #region lb clipping
+        private int GetMaximumVal(dynamic val1, dynamic val2)
+        {
+            return Math.Max(val1, val2);
+        }
+        private int GetMinimumVal(dynamic val1, dynamic val2)
+        {
+            return Math.Min(val1, val2);
+        }
+        private int GetDelta(int val1, int val2)
+        {
+            return val2 - val1;
+        }
+        private int [] GetQSet(int x0, int y0, int xMin, int yMin, int xMax, int yMax) {
+            int q1 = x0 - xMin;
+            int q2 = xMax - x0;
+            int q3 = y0 - yMin;
+            int q4 = yMax - y0;
+            int [] returnArray = { q1, q2, q3, q4 };
+            return returnArray;
+        }
+        private int [] GetPSet(int x0, int y0, int x1, int y1)
+        {
+            int dX = GetDelta(x0, x1);
+            int dY = GetDelta(y0, y1);
+            int[] returnArray = { (-1 * dX), dX, (-1 * dY), dY };
+            return returnArray;
+        }
+        private void LinagBarskyClipping(List<Line> listOfLines, Clip clip)
+        {
+            int xMin = clip.GetXMin;
+            int yMin = clip.GetYMin;
+            int xMax = clip.GetXMax;
+            int yMax = clip.GetYMax;
+            double t1 = 0.0;
+            double t2 = 1.0;
+            var linesToDraw = new List<Line>();
+            foreach (var line in listOfLines)
+            {
+                var pSet = GetPSet(line.X0, line.Y0, line.X1, line.Y1);
+                var qSet = GetQSet(line.X0, line.Y0, xMin, yMin, xMax, yMax);
+                if (pSet.Any(val => val == 0))
+                {
+                    //TODO line is parallel and can be moved into window
+                    Console.WriteLine("Discard the line because it's parallel to a window");
+                }
+                List<double> lessThanZerolist = new List<double>();
+                lessThanZerolist.Add(t1);
+                List<double> biggerThanZerolist = new List<double>();
+                biggerThanZerolist.Add(t2);
+                for (int i = 0; i < pSet.Length; i++)
+                {
+                    double currVal = (double)qSet[i] / (double)pSet[i];
+                    if (pSet[i] < 0)
+                    {
+                        lessThanZerolist.Add(currVal);
+                    }
+                    else
+                    {
+                        biggerThanZerolist.Add(currVal);
+                    }
+                }
+
+                double newT1 = lessThanZerolist.Max();
+                double newT2 = biggerThanZerolist.Min();
+                //if t-values has changed calcualte new x,y
+                if(newT1 > newT2)
+                {
+                    Console.WriteLine("Reject line, because it's outside the clip");
+                }
+                else if (t1 != newT1 && t2 == newT2)
+                {
+                    //TODO calculate x0, y0
+                    int x0 = line.X0 + (int)(newT1 * GetDelta(line.X0, line.X1));
+                    int y0 = line.Y0 + (int)(newT1 * GetDelta(line.Y0, line.Y1));
+                    Line newLine = new Line(x0, y0, line.X1, line.Y1);
+                    linesToDraw.Add(newLine);
+                }
+                else if (t1 == newT1 && t2 != newT2)
+                {
+                    //TODO calculate x1,y1
+                    int x1 = line.X1 + (int)(newT2 * GetDelta(line.X0, line.X1));
+                    int y1 = line.Y1 + (int)(newT2 * GetDelta(line.Y0, line.Y1));
+                    Line newLine = new Line(line.X0, line.Y0, x1, y1);
+                    linesToDraw.Add(newLine);
+                }
+                else if (t1 != newT1 && t2 != newT2)
+                {
+                    //TODO calculate new set of coordinates
+                    int x0 = line.X0 + (int)(newT1 * (float)GetDelta(line.X0, line.X1));
+                    int y0 = line.Y0 + (int)(newT1 * (float)GetDelta(line.Y0, line.Y1));
+                    int x1 = line.X0 + (int)(newT2 * (float)GetDelta(line.X0, line.X1));
+                    int y1 = line.Y0 + (int)(newT2 * (float)GetDelta(line.Y0, line.Y1));
+                    if ((x0 < canvas.Width && x1 < canvas.Width) && (y0 < canvas.Height && y1 < canvas.Height))
+                    {
+                        Line newLine = new Line(x0, y0, x1, y1);
+                        linesToDraw.Add(newLine);
+                    }
+                }
+                else if (t1 == newT1 && t2 == newT2)
+                {
+                    //line is already in clip
+                    Console.WriteLine("Line is already in the clip");
+                }
+            }
+            RedrawCanvasWithClippedLines(linesToDraw, clip);
+        }
+
+        private void RedrawCanvasWithClippedLines(List<Line> linesToDraw, Clip clip)
+        {
+            button21.PerformClick();
+            DrawClip(clip);
+            foreach (var lineToDraw in linesToDraw)
+            {
+                Console.WriteLine(lineToDraw.ToString());
+                DrawLine(lineToDraw);
+            }
+        }
+
+        public class Line
+        {
+            int x0;
+            int x1;
+            int y0;
+            int y1;
+            public Line(int _x0, int _y0, int _x1, int _y1)
+            {
+                this.X0 = _x0;
+                this.X1 = _x1;
+                this.Y0 = _y0;
+                this.Y1 = _y1;
+            }
+
+            public int X0 { get => x0; set => x0 = value; }
+            public int X1 { get => x1; set => x1 = value; }
+            public int Y0 { get => y0; set => y0 = value; }
+            public int Y1 { get => y1; set => y1 = value; }
+
+            public override string ToString()
+            {
+                return String.Format("x0 = {0}, y0 = {1}, x1 = {2}, y1 = {3}", x0, y0, x1, y1);
+            }
+        }
+        private void DrawLine(Line line)
+        {
+            Bresenham(line.X0, line.Y0, line.X1, line.Y1, 1);
+        }
+
+        private void DrawLine(Line line, Color color)
+        {
+            Bresenham(line.X0, line.Y0, line.X1, line.Y1, 1, color);
+        }
+        class Clip
+        {
+            Line bottomLine;
+            Line rightLine;
+            Line leftLine;
+            Line topLine;
+            
+            public Clip(int width, int height, int x0, int y0)
+            {
+                bottomLine = new Line(x0, y0, x0 + width, y0);
+                topLine = new Line(x0, y0 + height, x0 + width, y0 + height);
+                rightLine = new Line(x0 + width, y0, x0 + width, y0 + height);
+                leftLine = new Line(x0, y0, x0, y0 + height);
+            }
+
+            public int GetXMin { get => Math.Min(topLine.X0,topLine.X1); }
+            public int GetXMax { get => Math.Max(topLine.X1,topLine.X0); }
+            public int GetYMax { get => Math.Max(rightLine.Y1,rightLine.Y0); }
+            public int GetYMin { get => Math.Min(rightLine.Y0,rightLine.Y1); }
+
+            public Line BottomLine { get => bottomLine; set => bottomLine = value; }
+            public Line RightLine { get => rightLine; set => rightLine = value; }
+            public Line LeftLine { get => leftLine; set => leftLine = value; }
+            public Line TopLine { get => topLine; set => topLine = value; }
+        }
+
+        private void DrawClip(Clip clip)
+        {
+            DrawLine(clip.BottomLine);
+            DrawLine(clip.TopLine);
+            DrawLine(clip.LeftLine);
+            DrawLine(clip.RightLine);
+        }
+        private void button22_Click(object sender, EventArgs e)
+        {
+            LinagBarskyClipping(listOfLanes, clip);
+        }
+        #endregion
+        #region vertex sorting
+
         #endregion
         #endregion
+        #endregion
+        Clip clip;
+        private void button23_Click(object sender, EventArgs e)
+        {
+            clip = new Clip(400, 200, 300, 140);
+            DrawClip(clip);
+            button22.Enabled = true;
+        }
     }
 }
