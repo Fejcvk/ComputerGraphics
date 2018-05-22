@@ -1612,6 +1612,7 @@ namespace WindowsFormsApp1
                 lessThanZerolist.Add(t1);
                 List<double> biggerThanZerolist = new List<double>();
                 biggerThanZerolist.Add(t2);
+                //TODO : zamiast list/ min i max jako zmienne z ifem
                 for (int i = 0; i < pSet.Length; i++)
                 {
                     double currVal = (double)qSet[i] / (double)pSet[i];
@@ -1892,11 +1893,23 @@ namespace WindowsFormsApp1
             {
                 this.startPoint = sp;
                 this.endPoint = ep;
-                this.yMax = Math.Max(sp.Y, ep.Y);
-                this.xMin = Math.Min(sp.X, ep.X);
-                double dy = ep.Y - sp.Y;
-                double dx = ep.X - sp.X;
-                coeff = 1.0 / (dy / dx);
+                double dy;
+                double dx;
+                if (sp.Y > ep.Y)
+                {
+                    yMax = sp.Y;
+                    xMin = ep.X;
+                    dy = sp.Y - ep.Y;
+                    dx = sp.X - ep.X;
+                }
+                else
+                {
+                    yMax = ep.Y;
+                    xMin = sp.X;
+                    dy = ep.Y - sp.Y;
+                    dx = ep.X - sp.X;
+                }
+                coeff = (dx / dy);
             }
             public double YMax { get => yMax; set => yMax = value; }
             public double XMin { get => xMin; set => xMin = value; }
@@ -1984,7 +1997,7 @@ namespace WindowsFormsApp1
             var yMin = polygon.ListOfVertices.ElementAt(indices[0]).Y;
             var yMax = polygon.ListOfVertices.ElementAt(indices[numberOfVertices - 1]).Y;
             Console.WriteLine("Y min = {0}, Y Max = {1}", yMin, yMax);
-            for(var y = yMin; y <= yMax; y++)
+            for(var y = yMin; y <= yMax;)
             {
                 var list = polygon.ListOfVertices;
                 while (list[curr_vertex_idx].Y == y)
@@ -2006,6 +2019,7 @@ namespace WindowsFormsApp1
                 activeEdgeTable.Edges = activeEdgeTable.Edges.OrderBy(edge => edge.XMin).ToList();
 
                 FillPixelsBetweenIntersection(activeEdgeTable.Edges, y, color);
+                y++;
                 activeEdgeTable.RemoveEdges(y);
 
                 activeEdgeTable.AddConstToX();
@@ -2017,11 +2031,13 @@ namespace WindowsFormsApp1
         {
             for (int i = 0; i < sorted.Count - 1; i += 2)
             {
-                var p1 = new Point((int)Math.Round(sorted[i].XMin,10), y);
-                var p2 = new Point((int)Math.Round(sorted[i + 1].XMin, 10), y);
+                var p1 = new Point((int)Math.Round(sorted[i].XMin), y);
+                var p2 = new Point((int)Math.Round(sorted[i + 1].XMin), y);
                 if (p1.X >= 0 && p2.X >= 0)
+                {
                     Console.WriteLine("Drawing line from X={0} Y={1}, to X={2} Y ={3}", p1.X, p1.Y, p2.X, p2.Y);
                     Bresenham(p1.X, p1.Y, p2.X, p2.Y, 1, color);
+                }
             }
         }
         #endregion
@@ -2030,6 +2046,7 @@ namespace WindowsFormsApp1
         Clip clip;
         private void button23_Click(object sender, EventArgs e)
         {
+            //todo interfejs
             clip = new Clip(400, 200, 300, 140);
             DrawClip(clip);
             button22.Enabled = true;
