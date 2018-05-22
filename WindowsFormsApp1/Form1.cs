@@ -1001,51 +1001,70 @@ namespace WindowsFormsApp1
         }
 
         List<Line> listOfLanes = new List<Line>();
+        Boolean drawPolygonMode = false;
+        Polygon polygon = new Polygon();
 
         private void canvas_MouseDown(object sender, MouseEventArgs e)
         {
-            if (!IsSecondClick)
+            if (!drawPolygonMode)
             {
-                tuple.X1 = e.X;
-                tuple.Y1 = e.Y;
-                IsSecondClick = true;
-                Console.WriteLine("x : {0}, y: {1} click1", tuple.X1, tuple.Y1);
-            }
-            else if (IsSecondClick)
-            {
-                tuple.X2 = e.X;
-                tuple.Y2 = e.Y;
-                IsSecondClick = false;
-                Console.WriteLine("x : {0}, y: {1} click2", tuple.X2, tuple.Y2);
-                tuple.checkAndSwapCoordsIfNecessary();
-                switch (comboBox4.SelectedIndex)
+                if (!IsSecondClick)
                 {
-                    case 0:
-                        Bresenham(tuple.X1, tuple.Y1, tuple.X2, tuple.Y2,1);
-                        listOfLanes.Add(new Line(tuple.X1, tuple.Y1, tuple.X2, tuple.Y2));
-                        break;
-                    case 1:
-                        int radius = tuple.calculateDistance();
-                        MidpointCircle(radius);
-                        break;
-                    case 2:
-                        Xiaolin(tuple.X1, tuple.Y1, tuple.X2, tuple.Y2);
-                        break;
-                    case 3:
-                        int wuRadius = tuple.calculateDistance();
-                        XiaolinCircles(wuRadius);
-                        break;
-                    case 4:
-                        int thickness = textBox5.Text != "" ? Int16.Parse(textBox5.Text) : 1 ;
-                        Bresenham(tuple.X1, tuple.Y1, tuple.X2, tuple.Y2, thickness);
-                        break;
-                    case 5:
-                        int thicknessSS = textBox5.Text != "" ? Int16.Parse(textBox5.Text) : 1;
-                        thicknessSS += 2;
-                        Bresenham(tuple.X1, tuple.Y1, tuple.X2, tuple.Y2, thicknessSS,memoryCanvas);
-                        break;
+                    tuple.X1 = e.X;
+                    tuple.Y1 = e.Y;
+                    IsSecondClick = true;
+                    Console.WriteLine("x : {0}, y: {1} click1", tuple.X1, tuple.Y1);
+                }
+                else if (IsSecondClick)
+                {
+                    tuple.X2 = e.X;
+                    tuple.Y2 = e.Y;
+                    IsSecondClick = false;
+                    Console.WriteLine("x : {0}, y: {1} click2", tuple.X2, tuple.Y2);
+                    tuple.checkAndSwapCoordsIfNecessary();
+                    switch (comboBox4.SelectedIndex)
+                    {
+                        case 0:
+                            Bresenham(tuple.X1, tuple.Y1, tuple.X2, tuple.Y2, 1);
+                            listOfLanes.Add(new Line(tuple.X1, tuple.Y1, tuple.X2, tuple.Y2));
+                            break;
+                        case 1:
+                            int radius = tuple.calculateDistance();
+                            MidpointCircle(radius);
+                            break;
+                        case 2:
+                            Xiaolin(tuple.X1, tuple.Y1, tuple.X2, tuple.Y2);
+                            break;
+                        case 3:
+                            int wuRadius = tuple.calculateDistance();
+                            XiaolinCircles(wuRadius);
+                            break;
+                        case 4:
+                            int thickness = textBox5.Text != "" ? Int16.Parse(textBox5.Text) : 1;
+                            Bresenham(tuple.X1, tuple.Y1, tuple.X2, tuple.Y2, thickness);
+                            break;
+                        case 5:
+                            int thicknessSS = textBox5.Text != "" ? Int16.Parse(textBox5.Text) : 1;
+                            thicknessSS += 2;
+                            Bresenham(tuple.X1, tuple.Y1, tuple.X2, tuple.Y2, thicknessSS, memoryCanvas);
+                            break;
+                    }
                 }
             }
+            else
+            {
+                if (drawPolygonMode)
+                {
+                    polygon.AddVertex(new Point(e.X, e.Y));
+                    Console.WriteLine("x : {0}, y: {1} new vertex nr {2} added", e.X, e.Y, polygon.GetNumberOfVertices());
+                    var isFinished = CheckIfDrawingFinished();
+                }
+            }
+        }
+
+        private Boolean CheckIfDrawingFinished()
+        {
+            return generatingPolygonRequested == true;
         }
 
         private void Bresenham(int x1, int y1, int x2, int y2, int thickness, Bitmap memoryBitmap)
@@ -1532,8 +1551,10 @@ namespace WindowsFormsApp1
         {
             canvas = new Bitmap(canvasPb.Size.Width, canvasPb.Size.Height);
             canvasPb.Image = canvas;
+            polygon.ListOfVertices.Clear();
             listOfLanes.Clear();
             button22.Enabled = false;
+            drawPolygonMode = false;
         }
         #endregion
         #endregion
@@ -1649,6 +1670,97 @@ namespace WindowsFormsApp1
             RedrawCanvasWithClippedLines(linesToDraw, clip);
         }
 
+        private void LinagBarskyClipping(List<Line> listOfLines, Polygon polygon)
+        {
+            int xMin = polygon.XMin;
+            int yMin = polygon.YMin;
+            int xMax = polygon.XMax;
+            int yMax = polygon.YMax;
+            double t1 = 0.0;
+            double t2 = 1.0;
+            var linesToDraw = new List<Line>();
+            foreach (var line in listOfLines)
+            {
+                var pSet = GetPSet(line.X0, line.Y0, line.X1, line.Y1);
+                var qSet = GetQSet(line.X0, line.Y0, xMin, yMin, xMax, yMax);
+                if (pSet.Any(val => val == 0))
+                {
+                    //TODO line is parallel and can be moved into window
+                    Console.WriteLine("Discard the line because it's parallel to a window");
+                }
+                List<double> lessThanZerolist = new List<double>();
+                lessThanZerolist.Add(t1);
+                List<double> biggerThanZerolist = new List<double>();
+                biggerThanZerolist.Add(t2);
+                for (int i = 0; i < pSet.Length; i++)
+                {
+                    double currVal = (double)qSet[i] / (double)pSet[i];
+                    if (pSet[i] < 0)
+                    {
+                        lessThanZerolist.Add(currVal);
+                    }
+                    else
+                    {
+                        biggerThanZerolist.Add(currVal);
+                    }
+                }
+
+                double newT1 = lessThanZerolist.Max();
+                double newT2 = biggerThanZerolist.Min();
+                //if t-values has changed calcualte new x,y
+                if (newT1 > newT2)
+                {
+                    Console.WriteLine("Reject line, because it's outside the clip");
+                }
+                else if (t1 != newT1 && t2 == newT2)
+                {
+                    //TODO calculate x0, y0
+                    int x0 = line.X0 + (int)(newT1 * GetDelta(line.X0, line.X1));
+                    int y0 = line.Y0 + (int)(newT1 * GetDelta(line.Y0, line.Y1));
+                    Line newLine = new Line(x0, y0, line.X1, line.Y1);
+                    linesToDraw.Add(newLine);
+                }
+                else if (t1 == newT1 && t2 != newT2)
+                {
+                    //TODO calculate x1,y1
+                    int x1 = line.X1 + (int)(newT2 * GetDelta(line.X0, line.X1));
+                    int y1 = line.Y1 + (int)(newT2 * GetDelta(line.Y0, line.Y1));
+                    Line newLine = new Line(line.X0, line.Y0, x1, y1);
+                    linesToDraw.Add(newLine);
+                }
+                else if (t1 != newT1 && t2 != newT2)
+                {
+                    //TODO calculate new set of coordinates
+                    int x0 = line.X0 + (int)(newT1 * (float)GetDelta(line.X0, line.X1));
+                    int y0 = line.Y0 + (int)(newT1 * (float)GetDelta(line.Y0, line.Y1));
+                    int x1 = line.X0 + (int)(newT2 * (float)GetDelta(line.X0, line.X1));
+                    int y1 = line.Y0 + (int)(newT2 * (float)GetDelta(line.Y0, line.Y1));
+                    if ((x0 < canvas.Width && x1 < canvas.Width) && (y0 < canvas.Height && y1 < canvas.Height))
+                    {
+                        Line newLine = new Line(x0, y0, x1, y1);
+                        linesToDraw.Add(newLine);
+                    }
+                }
+                else if (t1 == newT1 && t2 == newT2)
+                {
+                    //line is already in clip
+                    Console.WriteLine("Line is already in the clip");
+                }
+            }
+            RedrawCanvasWithClippedLines(linesToDraw, polygon);
+        }
+
+        private void RedrawCanvasWithClippedLines(List<Line> linesToDraw, Polygon polygon)
+        {
+            button21.PerformClick();
+            DrawPolygon(polygon);
+            foreach (var lineToDraw in linesToDraw)
+            {
+                Console.WriteLine(lineToDraw.ToString());
+                DrawLine(lineToDraw);
+            }
+        }
+
         private void RedrawCanvasWithClippedLines(List<Line> linesToDraw, Clip clip)
         {
             button21.PerformClick();
@@ -1733,6 +1845,185 @@ namespace WindowsFormsApp1
         #endregion
         #region vertex sorting
 
+        class ActiveEdgeTable
+        {
+            List<EdgeEntry> edges = new List<EdgeEntry>();
+
+            public List<EdgeEntry> Edges { get => edges; set => edges = value; }
+
+            public void Add(Point p1, Point p2)
+            {
+                EdgeEntry edge = new EdgeEntry(p1, p2);
+                this.edges.Add(edge);
+            }
+
+            internal void RemoveEdges(int y)
+            {
+                //TODO: Remove all the edges with yMax == y
+                for(int i = 0; i < edges.Count; i++)
+                {
+                    var entry = edges.ElementAt(i);
+                    if ((int)entry.YMax == y)
+                    {
+                        edges.RemoveAt(i);
+                        i--;
+                    }
+                }
+            }
+
+            internal void AddConstToX()
+            {
+                //TODO: To each x in edge add 1/m
+                foreach (var edge in edges)
+                {
+                    edge.XMin += edge.Coeff;
+                }
+            }
+        }
+
+        class EdgeEntry
+        {
+            double yMax;
+            double xMin;
+            double coeff;
+            Point startPoint;
+            Point endPoint;
+            public EdgeEntry(Point sp, Point ep)
+            {
+                this.startPoint = sp;
+                this.endPoint = ep;
+                this.yMax = Math.Max(sp.Y, ep.Y);
+                this.xMin = Math.Min(sp.X, ep.X);
+                double dy = ep.Y - sp.Y;
+                double dx = ep.X - sp.X;
+                coeff = 1.0 / (dy / dx);
+            }
+            public double YMax { get => yMax; set => yMax = value; }
+            public double XMin { get => xMin; set => xMin = value; }
+            public double Coeff { get => coeff; set => coeff = value; }
+            public Point StartPoint { get => startPoint; set => startPoint = value; }
+            public Point EndPoint { get => endPoint; set => endPoint = value; }
+        }
+
+        class Polygon
+        {
+            List<Point> listOfVertex = new List<Point>();
+
+            int xMin;
+            int xMax;
+            int yMin;
+            int yMax;
+
+            public int XMax
+            {
+                get => listOfVertex.OrderBy(v => v.X).Last().X;
+            }
+            public int XMin
+            {
+                get => listOfVertex.OrderBy(v => v.X).First().X;
+            }
+            public int YMax
+            {
+                get => listOfVertex.OrderBy(v => v.Y).Last().Y;
+            }
+            public int YMin
+            {
+                get => listOfVertex.OrderBy(v => v.Y).First().Y;
+            }
+
+            public List<Point> ListOfVertices { get => listOfVertex; set => listOfVertex = value; }
+
+            public void AddVertex(Point point)
+            {
+                listOfVertex.Add(point);
+            }
+            public Polygon()
+            {
+
+            }
+            public int [] CreateListOfIndeces()
+            {
+                int n = ListOfVertices.Count;
+                int[] ListOfIndeces = new int [n];
+                var verticesSortByYCord = ListOfVertices.OrderBy(p => p.Y).ToList();
+                for(int i = 0; i < n; i++)
+                {
+                    ListOfIndeces[i] = ListOfVertices.IndexOf(verticesSortByYCord.ElementAt(i));
+                }
+                return ListOfIndeces;
+            }
+            public int GetNumberOfVertices()
+            {
+                return listOfVertex.Count;
+            }
+        }
+        private void DrawPolygon(Polygon polygon)
+        {
+            for (int i = 0; i < polygon.ListOfVertices.Count - 1; i++)
+            {
+                var currpoint = polygon.ListOfVertices.ElementAt(i);
+                var nextPoint = polygon.ListOfVertices.ElementAt(i + 1);
+                DrawLine(new Line(currpoint.X, currpoint.Y, nextPoint.X, nextPoint.Y));
+            }
+            DrawLine(new Line(polygon.ListOfVertices.Last().X, polygon.ListOfVertices.Last().Y, polygon.ListOfVertices.First().X, polygon.ListOfVertices.First().Y));
+        }
+
+
+        public int Mod(int x, int m)
+        {
+            return (x % m + m) % m;
+        }
+
+        private void FillPolygon(Polygon polygon, Color color)
+        {
+            ActiveEdgeTable activeEdgeTable = new ActiveEdgeTable();
+            int k = 0;
+            var indices = polygon.CreateListOfIndeces();
+            int curr_vertex_idx = indices[k];
+            int numberOfVertices = polygon.GetNumberOfVertices();
+            var yMin = polygon.ListOfVertices.ElementAt(indices[0]).Y;
+            var yMax = polygon.ListOfVertices.ElementAt(indices[numberOfVertices - 1]).Y;
+            Console.WriteLine("Y min = {0}, Y Max = {1}", yMin, yMax);
+            for(var y = yMin; y <= yMax; y++)
+            {
+                var list = polygon.ListOfVertices;
+                while (list[curr_vertex_idx].Y == y)
+                {
+                    if (list[Mod(curr_vertex_idx - 1,list.Count)].Y > list[curr_vertex_idx].Y)
+                    {
+                        activeEdgeTable.Add(list[curr_vertex_idx], list[Mod(curr_vertex_idx - 1, list.Count)]);
+                    }
+                    if (list[Mod(curr_vertex_idx + 1, list.Count)].Y > list[curr_vertex_idx].Y)
+                    {
+                        activeEdgeTable.Add(list[curr_vertex_idx], list[Mod(curr_vertex_idx + 1, list.Count)]);
+                    }
+                    ++k;
+                    if (k >= indices.Count()) {
+                        break;
+                        }
+                    curr_vertex_idx = indices[k];
+                }
+                activeEdgeTable.Edges = activeEdgeTable.Edges.OrderBy(edge => edge.XMin).ToList();
+
+                FillPixelsBetweenIntersection(activeEdgeTable.Edges, y, color);
+                activeEdgeTable.RemoveEdges(y);
+
+                activeEdgeTable.AddConstToX();
+            }
+
+        }
+
+        private void FillPixelsBetweenIntersection(List<EdgeEntry> sorted, int y, Color color)
+        {
+            for (int i = 0; i < sorted.Count - 1; i += 2)
+            {
+                var p1 = new Point((int)Math.Round(sorted[i].XMin,10), y);
+                var p2 = new Point((int)Math.Round(sorted[i + 1].XMin, 10), y);
+                if (p1.X >= 0 && p2.X >= 0)
+                    Console.WriteLine("Drawing line from X={0} Y={1}, to X={2} Y ={3}", p1.X, p1.Y, p2.X, p2.Y);
+                    Bresenham(p1.X, p1.Y, p2.X, p2.Y, 1, color);
+            }
+        }
         #endregion
         #endregion
         #endregion
@@ -1742,6 +2033,26 @@ namespace WindowsFormsApp1
             clip = new Clip(400, 200, 300, 140);
             DrawClip(clip);
             button22.Enabled = true;
+        }
+
+        Boolean generatingPolygonRequested = false;
+        private void button24_Click(object sender, EventArgs e)
+        {
+            drawPolygonMode = drawPolygonMode == false ? true : false;
+            Console.WriteLine(drawPolygonMode);
+        }
+
+        private void button25_Click(object sender, EventArgs e)
+        {
+            generatingPolygonRequested = generatingPolygonRequested == false ? true : false;
+            drawPolygonMode = false;
+            DrawPolygon(polygon);
+            Console.WriteLine(generatingPolygonRequested + " REQUEST");
+        }
+
+        private void button26_Click(object sender, EventArgs e)
+        {
+            FillPolygon(polygon, Color.Red);
         }
     }
 }

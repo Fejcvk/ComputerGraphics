@@ -86,6 +86,9 @@
             this.canvasPb = new System.Windows.Forms.PictureBox();
             this.button22 = new System.Windows.Forms.Button();
             this.button23 = new System.Windows.Forms.Button();
+            this.button24 = new System.Windows.Forms.Button();
+            this.button25 = new System.Windows.Forms.Button();
+            this.button26 = new System.Windows.Forms.Button();
             this.Graph.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
@@ -711,11 +714,44 @@
             this.button23.UseVisualStyleBackColor = true;
             this.button23.Click += new System.EventHandler(this.button23_Click);
             // 
+            // button24
+            // 
+            this.button24.Location = new System.Drawing.Point(1350, 368);
+            this.button24.Name = "button24";
+            this.button24.Size = new System.Drawing.Size(211, 37);
+            this.button24.TabIndex = 24;
+            this.button24.Text = "Enter draw polygon mode";
+            this.button24.UseVisualStyleBackColor = true;
+            this.button24.Click += new System.EventHandler(this.button24_Click);
+            // 
+            // button25
+            // 
+            this.button25.Location = new System.Drawing.Point(1350, 432);
+            this.button25.Name = "button25";
+            this.button25.Size = new System.Drawing.Size(211, 37);
+            this.button25.TabIndex = 25;
+            this.button25.Text = "Generate polygon";
+            this.button25.UseVisualStyleBackColor = true;
+            this.button25.Click += new System.EventHandler(this.button25_Click);
+            // 
+            // button26
+            // 
+            this.button26.Location = new System.Drawing.Point(1350, 495);
+            this.button26.Name = "button26";
+            this.button26.Size = new System.Drawing.Size(211, 37);
+            this.button26.TabIndex = 26;
+            this.button26.Text = "Fill polygon";
+            this.button26.UseVisualStyleBackColor = true;
+            this.button26.Click += new System.EventHandler(this.button26_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1647, 703);
+            this.Controls.Add(this.button26);
+            this.Controls.Add(this.button25);
+            this.Controls.Add(this.button24);
             this.Controls.Add(this.button23);
             this.Controls.Add(this.button22);
             this.Controls.Add(this.label12);
@@ -799,6 +835,9 @@
         private System.Windows.Forms.TabPage Drawing;
         private System.Windows.Forms.PictureBox canvasPb;
         private System.Windows.Forms.Button button23;
+        private System.Windows.Forms.Button button24;
+        private System.Windows.Forms.Button button25;
+        private System.Windows.Forms.Button button26;
     }
 }
 
